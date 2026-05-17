@@ -146,7 +146,7 @@ export default async function CatalogPage({
                   <img
                     src={image.image_url}
                     alt={image.prompt}
-                    className="h-80 w-full object-cover"
+                    className="max-h-[650px] w-full object-contain bg-black"
                   />
                 )}
 
