@@ -143,11 +143,18 @@ export default async function CatalogPage({
                 className="overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900 shadow-2xl shadow-black/30"
               >
                 {image.image_url && (
-                  <img
-                    src={image.image_url}
-                    alt={image.prompt}
-                    className="max-h-[650px] w-full object-contain bg-black"
-                  />
+                  <a
+                    href={image.image_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block cursor-zoom-in bg-black"
+                  >
+                    <img
+                      src={image.image_url}
+                      alt={image.prompt}
+                      className="max-h-[650px] w-full object-contain bg-black"
+                    />
+                  </a>
                 )}
 
                 <div className="p-5">
