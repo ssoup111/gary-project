@@ -30,17 +30,11 @@ export default function Home() {
         </p>
 
         <div className="mt-10 flex flex-wrap gap-4">
-          <Link
-            href="/categories"
-            className="rounded-xl bg-white px-6 py-3 font-bold text-black"
-          >
+          <Link href="/categories" className="rounded-xl bg-white px-6 py-3 font-bold text-black">
             Browse Categories
           </Link>
 
-          <Link
-            href="/admin"
-            className="rounded-xl border border-zinc-600 px-6 py-3 font-bold text-white"
-          >
+          <Link href="/admin" className="rounded-xl border border-zinc-600 px-6 py-3 font-bold text-white">
             Admin Review
           </Link>
         </div>
@@ -54,7 +48,7 @@ export default function Home() {
             <Link
               key={category.slug}
               href={`/catalog?category=${category.slug}`}
-              className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-lg transition hover:border-amber-400 hover:bg-zinc-800"
+              className="block rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-lg transition hover:border-amber-400 hover:bg-zinc-800"
             >
               <h3 className="text-xl font-bold">{category.name}</h3>
               <p className="mt-3 text-sm leading-6 text-zinc-400">
