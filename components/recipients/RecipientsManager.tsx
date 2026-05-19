@@ -76,6 +76,24 @@ export default function RecipientsManager() {
     await loadRecipients();
   }
 
+
+  async function deleteRecipient(recipientId: string) {
+    setStatus("Deleting recipient...");
+
+    const { error } = await supabase
+      .from("inmate_contacts")
+      .delete()
+      .eq("id", recipientId);
+
+    if (error) {
+      setStatus(error.message);
+      return;
+    }
+
+    setStatus("Recipient deleted.");
+    await loadRecipients();
+  }
+
   useEffect(() => {
     loadRecipients();
   }, []);
@@ -114,6 +132,14 @@ export default function RecipientsManager() {
                 <p className="text-sm text-zinc-400">Facility: {recipient.facility_name || "Not provided"}</p>
                 <p className="text-sm text-zinc-400">State: {recipient.state || "Not provided"}</p>
                 {recipient.notes && <p className="mt-3 text-sm leading-6 text-zinc-300">{recipient.notes}</p>}
+
+                <button
+                  type="button"
+                  onClick={() => deleteRecipient(recipient.id)}
+                  className="mt-4 rounded-xl border border-red-800 px-4 py-2 text-sm font-bold text-red-300 hover:bg-red-950"
+                >
+                  Delete Recipient
+                </button>
               </div>
             ))}
           </div>
