@@ -12,8 +12,15 @@ type Recipient = {
   notes: string | null;
 };
 
+type Facility = {
+  id: string;
+  name: string;
+  state: string;
+};
+
 export default function RecipientsManager() {
   const [recipients, setRecipients] = useState<Recipient[]>([]);
+  const [facilities, setFacilities] = useState<Facility[]>([]);
   const [fullName, setFullName] = useState("");
   const [inmateNumber, setInmateNumber] = useState("");
   const [facilityName, setFacilityName] = useState("");
@@ -21,6 +28,17 @@ export default function RecipientsManager() {
   const [notes, setNotes] = useState("");
   const [status, setStatus] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
+
+  async function loadFacilities() {
+    const { data } = await supabase
+      .from("facilities")
+      .select("id,name,state")
+      .eq("is_active", true)
+      .order("state")
+      .order("name");
+
+    setFacilities(data || []);
+  }
 
   async function loadRecipients() {
     const { data: userData } = await supabase.auth.getUser();
@@ -137,6 +155,7 @@ export default function RecipientsManager() {
   }
 
   useEffect(() => {
+    loadFacilities();
     loadRecipients();
   }, []);
 
@@ -148,7 +167,24 @@ export default function RecipientsManager() {
         <form className="mt-6 grid gap-5">
           <input value={fullName} onChange={(e) => setFullName(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Recipient full name" />
           <input value={inmateNumber} onChange={(e) => setInmateNumber(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Inmate / DOC number" />
-          <input value={facilityName} onChange={(e) => setFacilityName(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Facility name" />
+          <select
+            value={`${facilityName}|${state}`}
+            onChange={(e) => {
+              const [selectedFacility, selectedState] = e.target.value.split("|");
+              setFacilityName(selectedFacility || "");
+              setState(selectedState || "");
+            }}
+            className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white"
+          >
+            <option value="|">Select facility</option>
+            {facilities.map((facility) => (
+              <option key={facility.id} value={`${facility.name}|${facility.state}`}>
+                {facility.name} — {facility.state}
+              </option>
+            ))}
+          </select>
+
+          <input value={facilityName} onChange={(e) => setFacilityName(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Facility name if not listed" />
           <input value={state} onChange={(e) => setState(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="State" />
           <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="min-h-28 rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Mailing rules or notes" />
 
