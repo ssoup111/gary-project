@@ -29,6 +29,7 @@ export default function SiteFooter() {
             <Link href="/privacy" className="hover:text-amber-300">Privacy</Link>
             <Link href="/terms" className="hover:text-amber-300">Terms</Link>
             <Link href="/content-rules" className="hover:text-amber-300">Content Rules</Link>
+            <Link href="/contact" className="hover:text-amber-300">Contact</Link>
           </div>
         </div>
       </div>
