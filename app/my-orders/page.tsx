@@ -77,7 +77,7 @@ export default function MyOrdersPage() {
                     </p>
 
                     <p className="mt-2 text-lg font-black">
-                      ${(order.total_cents || 0 / 100).toFixed(2)}
+                      ${((order.total_cents || 0) / 100).toFixed(2)}
                     </p>
                   </div>
                 </div>
