@@ -62,6 +62,28 @@ export default function FavoritesPage() {
     setStatus("");
   }
 
+  async function removeFavorite(imageId: string) {
+    const { data: userData } = await supabase.auth.getUser();
+
+    if (!userData.user) {
+      setStatus("Sign in to manage favorites.");
+      return;
+    }
+
+    const { error } = await supabase
+      .from("favorite_images")
+      .delete()
+      .eq("user_id", userData.user.id)
+      .eq("generated_image_id", imageId);
+
+    if (error) {
+      setStatus(error.message);
+      return;
+    }
+
+    await loadFavorites();
+  }
+
   useEffect(() => {
     loadFavorites();
   }, []);
@@ -101,12 +123,22 @@ export default function FavoritesPage() {
                       {image.prompt}
                     </p>
 
-                    <Link
-                      href={`/order?imageId=${encodeURIComponent(image.id)}`}
-                      className="mt-5 inline-block rounded-xl bg-white px-4 py-2 text-sm font-black text-black"
-                    >
-                      Order This Image
-                    </Link>
+                    <div className="mt-5 flex flex-wrap gap-3">
+                      <Link
+                        href={`/order?imageId=${encodeURIComponent(image.id)}`}
+                        className="rounded-xl bg-white px-4 py-2 text-sm font-black text-black"
+                      >
+                        Order This Image
+                      </Link>
+
+                      <button
+                        type="button"
+                        onClick={() => removeFavorite(image.id)}
+                        className="rounded-xl border border-red-800 px-4 py-2 text-sm font-black text-red-300 hover:bg-red-950"
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
