@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
 import SiteNav from "@/components/layout/SiteNav";
+import SiteFooter from "@/components/layout/SiteFooter";
 
 export const metadata: Metadata = {
   title: "Friends Behind Bars",
@@ -36,6 +37,7 @@ export default function RootLayout({
 
         <SiteNav />
           {children}
+          <SiteFooter />
       </body>
     </html>
   );
