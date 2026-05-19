@@ -26,6 +26,9 @@ export default function SiteFooter() {
             <Link href="/login" className="hover:text-amber-300">Login</Link>
             <Link href="/signup" className="hover:text-amber-300">Create Account</Link>
             <Link href="/dashboard" className="hover:text-amber-300">Dashboard</Link>
+            <Link href="/privacy" className="hover:text-amber-300">Privacy</Link>
+            <Link href="/terms" className="hover:text-amber-300">Terms</Link>
+            <Link href="/content-rules" className="hover:text-amber-300">Content Rules</Link>
           </div>
         </div>
       </div>
