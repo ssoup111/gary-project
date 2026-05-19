@@ -9,6 +9,14 @@ type CatalogImage = {
   image_url: string | null;
 };
 
+type Recipient = {
+  id: string;
+  full_name: string;
+  inmate_number: string | null;
+  facility_name: string | null;
+  state: string | null;
+};
+
 export default function OrderPage() {
   const [images, setImages] = useState<CatalogImage[]>([]);
   const [selectedImageId, setSelectedImageId] = useState("");
@@ -17,11 +25,27 @@ export default function OrderPage() {
   const [offenderId, setOffenderId] = useState("");
   const [state, setState] = useState("");
   const [status, setStatus] = useState("");
+  const [savedRecipients, setSavedRecipients] = useState<Recipient[]>([]);
+  const [selectedRecipientId, setSelectedRecipientId] = useState("");
 
   const selectedImage = useMemo(
     () => images.find((image) => image.id === selectedImageId) || null,
     [images, selectedImageId]
   );
+
+  async function loadRecipients() {
+    const { data: userData } = await supabase.auth.getUser();
+
+    if (!userData.user) return;
+
+    const { data } = await supabase
+      .from("inmate_contacts")
+      .select("id,full_name,inmate_number,facility_name,state")
+      .eq("user_id", userData.user.id)
+      .order("created_at", { ascending: false });
+
+    setSavedRecipients(data || []);
+  }
 
   async function loadImages() {
     const { data, error } = await supabase
@@ -48,6 +72,7 @@ export default function OrderPage() {
 
   useEffect(() => {
     loadImages();
+    loadRecipients();
   }, []);
 
   async function createOrder() {
@@ -56,27 +81,35 @@ export default function OrderPage() {
       return;
     }
 
-    if (!offenderId || !state) {
+    if (!selectedRecipientId && (!offenderId || !state)) {
       setStatus("Recipient information is required.");
       return;
     }
 
     setStatus("Creating order...");
 
-    const { data: recipientData, error: recipientError } = await supabase
-      .from("recipients")
-      .insert({
-        first_name: recipientFirstName,
-        last_name: recipientLastName,
-        offender_id: offenderId,
-        state,
-      })
-      .select()
-      .single();
+    let recipientData: any = null;
 
-    if (recipientError || !recipientData) {
-      setStatus(`Failed to create recipient: ${recipientError?.message || "Unknown error"}`);
-      return;
+    if (selectedRecipientId) {
+      recipientData = { id: selectedRecipientId };
+    } else {
+      const recipientInsert = await supabase
+        .from("recipients")
+        .insert({
+          first_name: recipientFirstName,
+          last_name: recipientLastName,
+          offender_id: offenderId,
+          state,
+        })
+        .select()
+        .single();
+
+      if (recipientInsert.error || !recipientInsert.data) {
+        setStatus(`Failed to create recipient: ${recipientInsert.error?.message || "Unknown error"}`);
+        return;
+      }
+
+      recipientData = recipientInsert.data;
     }
 
     const { data: orderData, error: orderError } = await supabase
@@ -245,7 +278,42 @@ export default function OrderPage() {
           <section className="rounded-3xl border border-zinc-800 bg-zinc-900 p-8">
             <h2 className="text-2xl font-bold">Recipient Information</h2>
 
-            <div className="mt-6 space-y-5">
+            
+            {savedRecipients.length > 0 && (
+              <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
+                <p className="text-sm font-bold uppercase tracking-[0.2em] text-amber-300">
+                  Saved Recipients
+                </p>
+
+                <div className="mt-4 grid gap-3">
+                  {savedRecipients.map((recipient) => (
+                    <button
+                      key={recipient.id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedRecipientId(recipient.id);
+                        setStatus(`Selected ${recipient.full_name}`);
+                      }}
+                      className={`rounded-2xl border p-4 text-left transition ${
+                        selectedRecipientId === recipient.id
+                          ? "border-green-400 bg-green-400/10"
+                          : "border-zinc-800 bg-zinc-900 hover:border-zinc-600"
+                      }`}
+                    >
+                      <p className="font-black">{recipient.full_name}</p>
+                      <p className="mt-1 text-sm text-zinc-400">
+                        {recipient.inmate_number || "No inmate number"}
+                      </p>
+                      <p className="text-sm text-zinc-400">
+                        {recipient.facility_name || "No facility"} • {recipient.state || "No state"}
+                      </p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+<div className="mt-6 space-y-5">
               <div>
                 <label className="block text-sm font-bold text-zinc-300">
                   First Name
