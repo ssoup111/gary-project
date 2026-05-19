@@ -2,15 +2,22 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 export async function POST(req: Request) {
   try {
+    const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!stripeSecretKey || !supabaseUrl || !supabaseServiceRoleKey) {
+      return NextResponse.json(
+        { success: false, error: "Checkout environment variables are not configured." },
+        { status: 500 }
+      );
+    }
+
+    const stripe = new Stripe(stripeSecretKey);
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceRoleKey);
+
     const { planId } = await req.json();
 
     if (!planId) {
