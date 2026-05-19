@@ -18,7 +18,7 @@ export default function Home() {
     <main className="min-h-screen bg-zinc-950 text-white">
       <section className="mx-auto max-w-6xl px-6 py-24">
         <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-amber-400">
-          JPIX
+          Friends Behind Bars
         </p>
 
         <h1 className="max-w-4xl text-5xl font-bold leading-tight md:text-7xl">
@@ -26,7 +26,7 @@ export default function Home() {
         </h1>
 
         <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-300">
-          JPIX is a modern platform for creating, reviewing, organizing, and delivering approved digital image collections.
+          Friends Behind Bars is a modern platform for creating, reviewing, organizing, and delivering approved digital image collections.
         </p>
 
         <div className="mt-10 flex flex-wrap gap-4">

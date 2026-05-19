@@ -59,7 +59,7 @@ export default function SubscriptionsPage() {
         <h1 className="text-5xl font-black">Plans & Packs</h1>
 
         <p className="mt-4 max-w-2xl text-zinc-400">
-          Single images, image packs, and monthly subscription options for JPIX.
+          Single images, image packs, and monthly subscription options for Friends Behind Bars.
         </p>
 
         {status && (

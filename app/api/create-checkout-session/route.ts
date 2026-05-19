@@ -23,7 +23,7 @@ export async function POST(req: Request) {
           price_data: {
             currency: "usd",
             product_data: {
-              name: "JPIX Single Image Delivery",
+              name: "Friends Behind Bars Single Image Delivery",
               description: "Approved image assigned to recipient delivery queue.",
             },
             unit_amount: 199,

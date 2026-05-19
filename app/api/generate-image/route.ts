@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     }
 
     const safePrompt = `
-Create an appropriate, non-explicit, adult-only image for the JPIX catalog.
+Create an appropriate, non-explicit, adult-only image for the Friends Behind Bars catalog.
 
 Hard rules:
 - No children

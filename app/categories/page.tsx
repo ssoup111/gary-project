@@ -20,13 +20,13 @@ export default async function CategoriesPage() {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">
-              JPIX
+              Friends Behind Bars
             </p>
 
             <h1 className="mt-4 text-5xl font-black">Categories</h1>
 
             <p className="mt-4 max-w-2xl text-zinc-400">
-              Choose a category to browse approved JPIX catalog images.
+              Choose a category to browse approved Friends Behind Bars catalog images.
             </p>
           </div>
 
@@ -48,7 +48,7 @@ export default async function CategoriesPage() {
           <div className="mt-10 rounded-2xl border border-zinc-800 bg-zinc-900 p-8">
             <h2 className="text-2xl font-bold">No active categories yet</h2>
             <p className="mt-3 text-zinc-400">
-              Active categories from the JPIX database will appear here.
+              Active categories from the Friends Behind Bars database will appear here.
             </p>
           </div>
         ) : (

@@ -51,7 +51,7 @@ export default async function CatalogPage({
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">
-              JPIX Catalog
+              Friends Behind Bars Catalog
             </p>
 
             <h1 className="mt-4 text-5xl font-black">

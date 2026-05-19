@@ -43,8 +43,8 @@ export async function POST(req: Request) {
           price_data: {
             currency: "usd",
             product_data: {
-              name: `JPIX ${plan.name}`,
-              description: plan.description || "JPIX image plan",
+              name: `Friends Behind Bars ${plan.name}`,
+              description: plan.description || "Friends Behind Bars image plan",
             },
             unit_amount: plan.price_cents,
             ...(isSubscription

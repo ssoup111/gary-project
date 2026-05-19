@@ -3,7 +3,7 @@ import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "JPIX",
+  title: "Friends Behind Bars",
   description: "AI-generated image collections reviewed and approved before release.",
 };
 
@@ -18,7 +18,7 @@ export default function RootLayout({
         <header className="border-b border-zinc-800 bg-zinc-950 text-white">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-5">
             <Link href="/" className="text-2xl font-black tracking-tight">
-              JPIX
+              Friends Behind Bars
             </Link>
 
             <nav className="flex flex-wrap gap-5 text-sm font-semibold text-zinc-300">
