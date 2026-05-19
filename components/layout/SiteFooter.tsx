@@ -30,6 +30,7 @@ export default function SiteFooter() {
             <Link href="/terms" className="hover:text-amber-300">Terms</Link>
             <Link href="/content-rules" className="hover:text-amber-300">Content Rules</Link>
             <Link href="/contact" className="hover:text-amber-300">Contact</Link>
+            <Link href="/faq" className="hover:text-amber-300">FAQ</Link>
           </div>
         </div>
       </div>
