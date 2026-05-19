@@ -136,11 +136,11 @@ export default async function CatalogPage({
             </p>
           </div>
         ) : (
-          <div className="mt-12 grid gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="mt-12 columns-1 gap-7 sm:columns-2 lg:columns-3 xl:columns-4">
             {images.map((image: CatalogImage) => (
               <div
                 key={image.id}
-                className="overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900 shadow-2xl shadow-black/30"
+                className="mb-7 break-inside-avoid overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900 shadow-2xl shadow-black/30"
               >
                 {image.image_url && (
                   <a
@@ -152,7 +152,7 @@ export default async function CatalogPage({
                     <img
                       src={image.image_url}
                       alt={image.prompt}
-                      className="max-h-[650px] w-full object-contain bg-black"
+                      className="w-full object-contain bg-black"
                     />
                   </a>
                 )}
