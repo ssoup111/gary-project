@@ -191,7 +191,7 @@ export default function OrderPage() {
                 <img
                   src={selectedImage.image_url}
                   alt={selectedImage.prompt}
-                  className="h-60 w-full rounded-2xl object-cover"
+                  className="max-h-[420px] w-full rounded-2xl object-contain bg-black"
                 />
               )}
 
@@ -241,11 +241,19 @@ export default function OrderPage() {
                     }`}
                   >
                     {image.image_url && (
-                      <img
-                        src={image.image_url}
-                        alt={image.prompt}
-                        className="h-72 w-full object-cover"
-                      />
+                      <a
+                        href={image.image_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="block cursor-zoom-in bg-black"
+                      >
+                        <img
+                          src={image.image_url}
+                          alt={image.prompt}
+                          className="w-full object-contain bg-black"
+                        />
+                      </a>
                     )}
 
                     <div className="p-5">
