@@ -9,6 +9,8 @@ export default function SiteNav() {
         </Link>
 
         <nav className="flex flex-wrap gap-3 text-sm font-bold">
+          <Link href="/about" className="hover:text-amber-300">About</Link>
+          <Link href="/how-it-works" className="hover:text-amber-300">How It Works</Link>
           <Link href="/catalog" className="hover:text-amber-300">Catalog</Link>
           <Link href="/categories" className="hover:text-amber-300">Categories</Link>
           <Link href="/subscriptions" className="hover:text-amber-300">Subscriptions</Link>
