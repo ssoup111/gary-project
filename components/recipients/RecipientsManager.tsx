@@ -20,6 +20,7 @@ export default function RecipientsManager() {
   const [state, setState] = useState("");
   const [notes, setNotes] = useState("");
   const [status, setStatus] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   async function loadRecipients() {
     const { data: userData } = await supabase.auth.getUser();
@@ -94,6 +95,47 @@ export default function RecipientsManager() {
     await loadRecipients();
   }
 
+  async function startEdit(recipient: Recipient) {
+    setEditingId(recipient.id);
+    setFullName(recipient.full_name);
+    setInmateNumber(recipient.inmate_number || "");
+    setFacilityName(recipient.facility_name || "");
+    setState(recipient.state || "");
+    setNotes(recipient.notes || "");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  async function updateRecipient() {
+    if (!editingId) return;
+
+    setStatus("Updating recipient...");
+
+    const { error } = await supabase
+      .from("inmate_contacts")
+      .update({
+        full_name: fullName,
+        inmate_number: inmateNumber,
+        facility_name: facilityName,
+        state,
+        notes,
+      })
+      .eq("id", editingId);
+
+    if (error) {
+      setStatus(error.message);
+      return;
+    }
+
+    setEditingId(null);
+    setFullName("");
+    setInmateNumber("");
+    setFacilityName("");
+    setState("");
+    setNotes("");
+    setStatus("Recipient updated.");
+    await loadRecipients();
+  }
+
   useEffect(() => {
     loadRecipients();
   }, []);
@@ -110,9 +152,31 @@ export default function RecipientsManager() {
           <input value={state} onChange={(e) => setState(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="State" />
           <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="min-h-28 rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Mailing rules or notes" />
 
-          <button type="button" onClick={saveRecipient} className="rounded-xl bg-white px-6 py-3 font-black text-black">
-            Save Recipient
+          <button
+            type="button"
+            onClick={editingId ? updateRecipient : saveRecipient}
+            className="rounded-xl bg-white px-6 py-3 font-black text-black"
+          >
+            {editingId ? "Update Recipient" : "Save Recipient"}
           </button>
+
+          {editingId && (
+            <button
+              type="button"
+              onClick={() => {
+                setEditingId(null);
+                setFullName("");
+                setInmateNumber("");
+                setFacilityName("");
+                setState("");
+                setNotes("");
+                setStatus("Edit cancelled.");
+              }}
+              className="rounded-xl border border-zinc-700 px-6 py-3 font-black text-white"
+            >
+              Cancel Edit
+            </button>
+          )}
 
           {status && <p className="font-bold text-amber-300">{status}</p>}
         </form>
@@ -133,13 +197,23 @@ export default function RecipientsManager() {
                 <p className="text-sm text-zinc-400">State: {recipient.state || "Not provided"}</p>
                 {recipient.notes && <p className="mt-3 text-sm leading-6 text-zinc-300">{recipient.notes}</p>}
 
-                <button
-                  type="button"
-                  onClick={() => deleteRecipient(recipient.id)}
-                  className="mt-4 rounded-xl border border-red-800 px-4 py-2 text-sm font-bold text-red-300 hover:bg-red-950"
-                >
-                  Delete Recipient
-                </button>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <button
+                    type="button"
+                    onClick={() => startEdit(recipient)}
+                    className="rounded-xl border border-amber-700 px-4 py-2 text-sm font-bold text-amber-300 hover:bg-amber-950"
+                  >
+                    Edit Recipient
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => deleteRecipient(recipient.id)}
+                    className="rounded-xl border border-red-800 px-4 py-2 text-sm font-bold text-red-300 hover:bg-red-950"
+                  >
+                    Delete Recipient
+                  </button>
+                </div>
               </div>
             ))}
           </div>
