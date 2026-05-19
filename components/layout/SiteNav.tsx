@@ -14,6 +14,7 @@ export default function SiteNav() {
           <Link href="/catalog" className="hover:text-amber-300">Catalog</Link>
           <Link href="/categories" className="hover:text-amber-300">Categories</Link>
           <Link href="/subscriptions" className="hover:text-amber-300">Subscriptions</Link>
+          <Link href="/facilities" className="hover:text-amber-300">Facilities</Link>
           <Link href="/dashboard" className="hover:text-amber-300">Dashboard</Link>
           <Link href="/login" className="hover:text-amber-300">Login</Link>
         </nav>

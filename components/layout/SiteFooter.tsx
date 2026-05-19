@@ -19,6 +19,7 @@ export default function SiteFooter() {
             <Link href="/catalog" className="hover:text-amber-300">Catalog</Link>
             <Link href="/categories" className="hover:text-amber-300">Categories</Link>
             <Link href="/subscriptions" className="hover:text-amber-300">Subscriptions</Link>
+            <Link href="/facilities" className="hover:text-amber-300">Facilities</Link>
           </div>
         </div>
 
