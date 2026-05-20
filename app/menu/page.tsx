@@ -12,6 +12,7 @@ const links = [
   { label: "Login", href: "/login" },
   { label: "Contact", href: "/contact" },
   { label: "FAQ", href: "/faq" },
+  { label: "Install App", href: "/install" },
 ];
 
 export default function MenuPage() {
