@@ -24,6 +24,7 @@ export default async function AdminOrdersPage() {
           <Link href="/admin" className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-black text-white hover:border-amber-400">Review Queue</Link>
           <Link href="/admin/images" className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-black text-white hover:border-amber-400">Images</Link>
           <Link href="/admin/orders" className="rounded-xl bg-white px-4 py-2 text-sm font-black text-black">Orders</Link>
+          <Link href="/admin/facilities" className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-black text-white hover:border-amber-400">Facilities</Link>
           <Link href="/admin/checklist" className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-black text-white hover:border-amber-400">Launch Checklist</Link>
         </div>
 
