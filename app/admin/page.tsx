@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import AdminNav from "@/components/admin/AdminNav";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
@@ -182,31 +182,7 @@ export default function AdminPage() {
   return (
     <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
       <div className="mx-auto max-w-6xl">
-        <div className="mb-8 flex flex-wrap gap-3">
-          <Link href="/admin" className="rounded-xl bg-white px-4 py-2 text-sm font-black text-black">
-            Review Queue
-          </Link>
-          <Link href="/admin/images" className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-black text-white hover:border-amber-400">
-            Images
-          </Link>
-          <Link href="/admin/orders" className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-black text-white hover:border-amber-400">Orders</Link>
-          <Link href="/admin/facilities" className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-black text-white hover:border-amber-400">Facilities</Link>
-          <Link href="/admin/checklist" className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-black text-white hover:border-amber-400">
-            Launch Checklist
-          </Link>
-        </div>
-
-        <div className="mb-8 flex flex-wrap gap-3">
-          <Link href="/admin" className="rounded-xl bg-white px-4 py-2 text-sm font-black text-black">
-            Review Queue
-          </Link>
-          <Link href="/admin/images" className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-black text-white hover:border-amber-400">
-            Images
-          </Link>
-          <Link href="/admin/checklist" className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-black text-white hover:border-amber-400">
-            Launch Checklist
-          </Link>
-        </div>
+        <AdminNav />
 
         <h1 className="text-5xl font-bold">Admin Review Queue</h1>
 
