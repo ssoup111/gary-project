@@ -190,6 +190,15 @@ export default function AdminPage() {
           Generate AI images, approve or reject them, and assign approved images to catalog categories.
         </p>
 
+        <div className="mt-6">
+          <a
+            href="/admin/stats"
+            className="inline-block rounded-xl bg-amber-400 px-5 py-3 font-black text-black"
+          >
+            View Admin Stats
+          </a>
+        </div>
+
         <section className="mt-10 rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
           <h2 className="text-2xl font-bold">Generate New Image</h2>
 
