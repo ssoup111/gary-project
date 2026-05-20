@@ -33,6 +33,28 @@ export default function AdminDeliveryPage() {
     setStatus("");
   }
 
+  async function updateDelivery(deliveryId: string, newStatus: string) {
+    setStatus("Updating delivery item...");
+
+    const response = await fetch("/api/admin/delivery/update-status", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ deliveryId, status: newStatus }),
+    });
+
+    const result = await response.json();
+
+    if (!result.success) {
+      setStatus(result.error || "Failed to update delivery item.");
+      return;
+    }
+
+    setStatus("Delivery item updated.");
+    await loadQueue();
+  }
+
   useEffect(() => {
     loadQueue();
   }, []);
@@ -58,6 +80,32 @@ export default function AdminDeliveryPage() {
                 <p className="text-sm text-zinc-400">
                   Created: {new Date(item.created_at).toLocaleString()}
                 </p>
+
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <button
+                    type="button"
+                    onClick={() => updateDelivery(item.id, "in_progress")}
+                    className="rounded-xl bg-amber-400 px-4 py-2 text-sm font-black text-black"
+                  >
+                    In Progress
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => updateDelivery(item.id, "completed")}
+                    className="rounded-xl bg-green-500 px-4 py-2 text-sm font-black text-black"
+                  >
+                    Completed
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => updateDelivery(item.id, "problem")}
+                    className="rounded-xl border border-red-800 px-4 py-2 text-sm font-black text-red-300 hover:bg-red-950"
+                  >
+                    Problem
+                  </button>
+                </div>
               </div>
             ))}
           </div>
