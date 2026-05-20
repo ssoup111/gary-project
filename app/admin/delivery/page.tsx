@@ -94,6 +94,12 @@ export default function AdminDeliveryPage() {
                   </p>
                 )}
 
+                {item.admin_notes && (
+                  <p className="mt-3 rounded-xl border border-zinc-800 bg-zinc-950 p-3 text-sm text-zinc-300">
+                    Notes: {item.admin_notes}
+                  </p>
+                )}
+
                 <div className="mt-4 flex flex-wrap gap-3">
                   <button
                     type="button"
