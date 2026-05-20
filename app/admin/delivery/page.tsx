@@ -10,6 +10,7 @@ type DeliveryItem = {
   recipient_id: string | null;
   status: string | null;
   platform: string | null;
+  admin_notes: string | null;
   created_at: string;
 };
 
@@ -20,7 +21,7 @@ export default function AdminDeliveryPage() {
   async function loadQueue() {
     const { data, error } = await supabase
       .from("delivery_queue")
-      .select("id,order_id,recipient_id,status,platform,created_at")
+      .select("id,order_id,recipient_id,status,platform,admin_notes,created_at")
       .order("created_at", { ascending: false })
       .limit(100);
 
@@ -80,6 +81,18 @@ export default function AdminDeliveryPage() {
                 <p className="text-sm text-zinc-400">
                   Created: {new Date(item.created_at).toLocaleString()}
                 </p>
+
+                {item.admin_notes && (
+                  <p className="mt-3 rounded-xl border border-zinc-800 bg-zinc-950 p-3 text-sm text-zinc-300">
+                    Notes: {item.admin_notes}
+                  </p>
+                )}
+
+                {item.admin_notes && (
+                  <p className="mt-3 rounded-xl border border-zinc-800 bg-zinc-950 p-3 text-sm text-zinc-300">
+                    Notes: {item.admin_notes}
+                  </p>
+                )}
 
                 <div className="mt-4 flex flex-wrap gap-3">
                   <button
