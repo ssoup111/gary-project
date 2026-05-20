@@ -34,7 +34,7 @@ export default function AdminDeliveryPage() {
     setStatus("");
   }
 
-  async function updateDelivery(deliveryId: string, newStatus: string) {
+  async function updateDelivery(deliveryId: string, newStatus: string, adminNotes?: string) {
     setStatus("Updating delivery item...");
 
     const response = await fetch("/api/admin/delivery/update-status", {
@@ -42,7 +42,7 @@ export default function AdminDeliveryPage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ deliveryId, status: newStatus }),
+      body: JSON.stringify({ deliveryId, status: newStatus, adminNotes }),
     });
 
     const result = await response.json();
@@ -100,10 +100,17 @@ export default function AdminDeliveryPage() {
                   </p>
                 )}
 
+                <textarea
+                  defaultValue={item.admin_notes || ""}
+                  id={`notes-${item.id}`}
+                  className="mt-4 min-h-24 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-sm text-white"
+                  placeholder="Admin delivery notes"
+                />
+
                 <div className="mt-4 flex flex-wrap gap-3">
                   <button
                     type="button"
-                    onClick={() => updateDelivery(item.id, "in_progress")}
+                    onClick={() => updateDelivery(item.id, "in_progress", (document.getElementById(`notes-${item.id}`) as HTMLTextAreaElement)?.value || "")}
                     className="rounded-xl bg-amber-400 px-4 py-2 text-sm font-black text-black"
                   >
                     In Progress
@@ -111,7 +118,7 @@ export default function AdminDeliveryPage() {
 
                   <button
                     type="button"
-                    onClick={() => updateDelivery(item.id, "completed")}
+                    onClick={() => updateDelivery(item.id, "completed", (document.getElementById(`notes-${item.id}`) as HTMLTextAreaElement)?.value || "")}
                     className="rounded-xl bg-green-500 px-4 py-2 text-sm font-black text-black"
                   >
                     Completed
@@ -119,7 +126,7 @@ export default function AdminDeliveryPage() {
 
                   <button
                     type="button"
-                    onClick={() => updateDelivery(item.id, "problem")}
+                    onClick={() => updateDelivery(item.id, "problem", (document.getElementById(`notes-${item.id}`) as HTMLTextAreaElement)?.value || "")}
                     className="rounded-xl border border-red-800 px-4 py-2 text-sm font-black text-red-300 hover:bg-red-950"
                   >
                     Problem

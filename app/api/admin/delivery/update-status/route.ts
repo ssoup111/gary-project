@@ -14,11 +14,19 @@ export async function POST(req: Request) {
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
-    const { deliveryId, status } = await req.json();
+    const { deliveryId, status, adminNotes } = await req.json();
+
+    const updateData: {
+      status?: string;
+      admin_notes?: string;
+    } = {};
+
+    if (status !== undefined) updateData.status = status;
+    if (adminNotes !== undefined) updateData.admin_notes = adminNotes;
 
     const { error } = await supabase
       .from("delivery_queue")
-      .update({ status })
+      .update(updateData)
       .eq("id", deliveryId);
 
     if (error) {
