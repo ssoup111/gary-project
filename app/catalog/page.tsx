@@ -1,3 +1,5 @@
+export const metadata = { title: "Catalog" };
+
 import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
 

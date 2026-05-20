@@ -1,3 +1,5 @@
+export const metadata = { title: "Contact" };
+
 "use client";
 
 import { useState } from "react";

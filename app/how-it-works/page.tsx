@@ -1,3 +1,5 @@
+export const metadata = { title: "How It Works" };
+
 export default function HowItWorksPage() {
   const steps = [
     {
