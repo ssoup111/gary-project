@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function AdminChecklistPage() {
   const sections = [
     {
@@ -40,6 +42,18 @@ export default function AdminChecklistPage() {
   return (
     <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
       <div className="mx-auto max-w-5xl">
+        <div className="mb-8 flex flex-wrap gap-3">
+          <Link href="/admin" className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-black text-white hover:border-amber-400">
+            Review Queue
+          </Link>
+          <Link href="/admin/images" className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-black text-white hover:border-amber-400">
+            Images
+          </Link>
+          <Link href="/admin/checklist" className="rounded-xl bg-white px-4 py-2 text-sm font-black text-black">
+            Launch Checklist
+          </Link>
+        </div>
+
         <h1 className="text-5xl font-black">Launch Checklist</h1>
 
         <div className="mt-10 grid gap-6">
