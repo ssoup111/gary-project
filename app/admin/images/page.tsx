@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import AdminNav from "@/components/admin/AdminNav";
 
 type Category = {
   id: string;
@@ -181,6 +182,8 @@ export default function AdminPage() {
   return (
     <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
       <div className="mx-auto max-w-6xl">
+        <AdminNav />
+
         <h1 className="text-5xl font-bold">Admin Review Queue</h1>
 
         <p className="mt-4 max-w-2xl text-zinc-400">
