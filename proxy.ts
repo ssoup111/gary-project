@@ -21,7 +21,7 @@ export function proxy(req: NextRequest) {
     return new NextResponse("Admin login required", {
       status: 401,
       headers: {
-        "WWW-Authenticate": 'Basic realm="JPIX Admin"',
+        "WWW-Authenticate": 'Basic realm="Friends Behind Bars Admin"',
       },
     });
   }
