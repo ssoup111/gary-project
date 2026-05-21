@@ -26,7 +26,7 @@ export async function POST(req: Request) {
       from: gmailUser,
       to: gmailUser,
       replyTo: email,
-      subject: "New Gary Project Inquiry",
+      subject: "New Friends Behind Bars Inquiry",
       text: `
 Name: ${name}
 Email: ${email}
