@@ -22,13 +22,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               Friends Behind Bars
             </Link>
             <nav className="flex flex-wrap gap-5 text-sm font-semibold text-zinc-300">
-              <Link href="/">Home</Link>
-              <Link href="/categories">Categories</Link>
               <Link href="/catalog">Catalog</Link>
-              <Link href="/admin">Admin Review</Link>
-              <Link href="/orders">Orders</Link>
               <Link href="/order">Create Order</Link>
+              <Link href="/my-orders">My Orders</Link>
               <Link href="/subscriptions">Subscriptions</Link>
+              <Link href="/dashboard">Dashboard</Link>
+              <Link href="/login">Login</Link>
             </nav>
           </div>
         </header>

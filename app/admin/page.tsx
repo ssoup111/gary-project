@@ -43,10 +43,36 @@ export default function AdminPage() {
   const [importingId, setImportingId] = useState<string | null>(null);
   const [importedIds, setImportedIds] = useState<Set<string>>(new Set());
   const [stockCategoryId, setStockCategoryId] = useState("");
+  const [stats, setStats] = useState([
+    { label: "Pending Review", value: "...", color: "text-amber-400" },
+    { label: "Approved Images", value: "...", color: "text-green-400" },
+    { label: "Total Orders", value: "...", color: "text-white" },
+    { label: "Pending Delivery", value: "...", color: "text-blue-400" },
+  ]);
 
   async function loadData() {
     const { data: categoryData } = await supabase.from("categories").select("id,name,slug").eq("is_active", true).order("name");
     setCategories(categoryData || []);
+
+    // Load dashboard stats
+    const [
+      { count: pendingCount },
+      { count: approvedCount },
+      { count: ordersCount },
+      { count: deliveryCount },
+    ] = await Promise.all([
+      supabase.from("generated_images").select("*", { count: "exact", head: true }).eq("status", "pending_review"),
+      supabase.from("generated_images").select("*", { count: "exact", head: true }).eq("status", "approved"),
+      supabase.from("orders").select("*", { count: "exact", head: true }),
+      supabase.from("delivery_queue").select("*", { count: "exact", head: true }).eq("status", "queued_for_delivery"),
+    ]);
+
+    setStats([
+      { label: "Pending Review", value: String(pendingCount || 0), color: (pendingCount || 0) > 0 ? "text-amber-400" : "text-green-400" },
+      { label: "Approved Images", value: String(approvedCount || 0), color: "text-green-400" },
+      { label: "Total Orders", value: String(ordersCount || 0), color: "text-white" },
+      { label: "Pending Delivery", value: String(deliveryCount || 0), color: (deliveryCount || 0) > 0 ? "text-blue-400" : "text-green-400" },
+    ]);
     const { data: pendingData } = await supabase.from("generated_images").select("id,prompt,image_url,status,created_at,category_slug").eq("status", "pending_review").order("created_at", { ascending: false });
     setPendingImages(pendingData || []);
     const { data: approvedData } = await supabase.from("generated_images").select("id,prompt,image_url,status,created_at,category_slug").eq("status", "approved").order("created_at", { ascending: false }).limit(24);
@@ -127,6 +153,15 @@ export default function AdminPage() {
     <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
       <div className="mx-auto max-w-6xl">
         <AdminNav />
+        <div className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {stats.map((stat) => (
+            <div key={stat.label} className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+              <p className="text-sm font-bold uppercase tracking-wider text-zinc-500">{stat.label}</p>
+              <p className={"mt-2 text-4xl font-black " + stat.color}>{stat.value}</p>
+            </div>
+          ))}
+        </div>
+
         <h1 className="text-5xl font-black">Admin Review Queue</h1>
         <p className="mt-4 max-w-2xl text-zinc-400">Generate AI images or import stock photos, then approve them into the catalog.</p>
 
