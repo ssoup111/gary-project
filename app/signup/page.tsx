@@ -9,11 +9,23 @@ export default function SignupPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [status, setStatus] = useState("");
 
   async function handleSignup() {
-    if (!email.trim() || !password.trim()) { setStatus("Please fill in all fields."); return; }
-    if (password.length < 6) { setStatus("Password must be at least 6 characters."); return; }
+    if (!email.trim() || !password.trim() || !confirmPassword.trim()) {
+      setStatus("Please fill in all fields.");
+      return;
+    }
+    if (password.length < 6) {
+      setStatus("Password must be at least 6 characters.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      setStatus("Passwords do not match. Please re-enter them.");
+      return;
+    }
     setStatus("Creating account...");
     const { error } = await supabase.auth.signUp({ email, password });
     if (error) { setStatus(error.message); return; }
@@ -35,12 +47,27 @@ export default function SignupPage() {
               className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white placeholder:text-zinc-600"
               placeholder="you@example.com" />
           </div>
+
           <div>
-            <label className="block text-sm font-bold text-zinc-300">Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-bold text-zinc-300">Password</label>
+              <button type="button" onClick={() => setShowPassword(!showPassword)}
+                className="text-xs font-bold text-amber-300">
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+            <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
               className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white placeholder:text-zinc-600"
               placeholder="At least 6 characters" />
           </div>
+
+          <div>
+            <label className="block text-sm font-bold text-zinc-300">Confirm Password</label>
+            <input type={showPassword ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
+              className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white placeholder:text-zinc-600"
+              placeholder="Re-enter your password" />
+          </div>
+
           <button type="button" onClick={handleSignup}
             className="w-full rounded-xl bg-white px-6 py-3 font-black text-black">
             Create Account
