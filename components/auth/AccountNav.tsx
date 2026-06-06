@@ -1,11 +1,25 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 
 export default function AccountNav() {
   const router = useRouter();
+  const [displayName, setDisplayName] = useState("");
+
+  useEffect(() => {
+    async function getUser() {
+      const { data } = await supabase.auth.getUser();
+      if (data.user) {
+        const email = data.user.email || "";
+        const name = data.user.user_metadata?.full_name || email.split("@")[0];
+        setDisplayName(name);
+      }
+    }
+    getUser();
+  }, []);
 
   async function signOut() {
     await supabase.auth.signOut();
@@ -13,7 +27,7 @@ export default function AccountNav() {
   }
 
   return (
-    <div className="mb-8 flex flex-wrap gap-3">
+    <div className="mb-8 flex flex-wrap items-center gap-3">
       <Link href="/dashboard" className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-bold text-zinc-200 hover:border-amber-400">
         Dashboard
       </Link>
@@ -33,6 +47,11 @@ export default function AccountNav() {
       >
         Sign Out
       </button>
+      {displayName && (
+        <span className="ml-2 text-sm font-bold text-amber-300">
+          👋 {displayName}
+        </span>
+      )}
     </div>
   );
 }

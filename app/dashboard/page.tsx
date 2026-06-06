@@ -1,8 +1,26 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import AuthGuard from "@/components/auth/AuthGuard";
 import AccountNav from "@/components/auth/AccountNav";
+import { supabase } from "@/lib/supabaseClient";
 
 export default function DashboardPage() {
+  const [displayName, setDisplayName] = useState("");
+
+  useEffect(() => {
+    async function getUser() {
+      const { data } = await supabase.auth.getUser();
+      if (data.user) {
+        const email = data.user.email || "";
+        const name = data.user.user_metadata?.full_name || email.split("@")[0];
+        setDisplayName(name);
+      }
+    }
+    getUser();
+  }, []);
+
   return (
     <AuthGuard>
       <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
@@ -13,7 +31,9 @@ export default function DashboardPage() {
             Friends Behind Bars
           </p>
 
-          <h1 className="mt-4 text-5xl font-black">Customer Dashboard</h1>
+          <h1 className="mt-4 text-5xl font-black">
+            {displayName ? `Welcome back, ${displayName}!` : "Customer Dashboard"}
+          </h1>
 
           <p className="mt-4 max-w-2xl text-zinc-400">
             Manage recipients, orders, subscriptions, favorites, and saved images.
