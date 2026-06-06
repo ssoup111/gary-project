@@ -145,18 +145,16 @@ export default async function CatalogPage({
                 className="mb-7 break-inside-avoid overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900 shadow-2xl shadow-black/30"
               >
                 {image.image_url && (
-                  <a
-                    href={image.image_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block cursor-zoom-in bg-black"
+                  <Link
+                    href={`/catalog/${encodeURIComponent(image.id)}`}
+                    className="block cursor-pointer bg-black"
                   >
                     <img
                       src={image.image_url}
                       alt={image.prompt}
                       className="w-full object-contain bg-black"
                     />
-                  </a>
+                  </Link>
                 )}
 
                 <div className="p-5">
