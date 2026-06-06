@@ -84,7 +84,9 @@ export default function AdminPage() {
   async function generateImage() {
     if (!prompt.trim()) { setStatus("Enter a prompt first."); return; }
     setStatus("Generating image...");
-    const response = await fetch("/api/generate-image", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt, categoryId }) });
+    const { data: { session } } = await supabase.auth.getSession();
+    const token = session?.access_token;
+    const response = await fetch("/api/generate-image", { method: "POST", headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) }, body: JSON.stringify({ prompt, categoryId }) });
     const result = await response.json();
     if (!result.success) { setStatus(result.error || "Generation failed."); return; }
     setPrompt("");
@@ -93,7 +95,9 @@ export default function AdminPage() {
   }
 
   async function updateImageStatus(imageId: string, newStatus: string) {
-    const response = await fetch("/api/admin/images/update-status", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ imageId, status: newStatus }) });
+    const { data: { session } } = await supabase.auth.getSession();
+    const token = session?.access_token;
+    const response = await fetch("/api/admin/images/update-status", { method: "POST", headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) }, body: JSON.stringify({ imageId, status: newStatus }) });
     const result = await response.json();
     if (!result.success) { setStatus(result.error || "Update failed."); return; }
     setStatus(`Image marked as ${newStatus}.`);
@@ -102,7 +106,9 @@ export default function AdminPage() {
 
   async function updateImageCategory(imageId: string, categorySlug: string) {
     setSavingCategoryId(imageId);
-    const response = await fetch("/api/admin/images/update-category", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ imageId, categorySlug }) });
+    const { data: { session } } = await supabase.auth.getSession();
+    const token = session?.access_token;
+    const response = await fetch("/api/admin/images/update-category", { method: "POST", headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) }, body: JSON.stringify({ imageId, categorySlug }) });
     const result = await response.json();
     setSavingCategoryId(null);
     if (!result.success) { setStatus(result.error || "Category update failed."); return; }
@@ -123,7 +129,9 @@ export default function AdminPage() {
 
   async function importStockPhoto(photo: StockPhoto) {
     setImportingId(photo.id);
-    const res = await fetch("/api/admin/stock-import", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ imageUrl: photo.url, description: photo.description, source: photo.source, photographer: photo.photographer, categoryId: stockCategoryId || null }) });
+    const { data: { session } } = await supabase.auth.getSession();
+    const token = session?.access_token;
+    const res = await fetch("/api/admin/stock-import", { method: "POST", headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) }, body: JSON.stringify({ imageUrl: photo.url, description: photo.description, source: photo.source, photographer: photo.photographer, categoryId: stockCategoryId || null }) });
     const result = await res.json();
     setImportingId(null);
     if (!result.success) { setStockStatus(result.error || "Import failed."); return; }

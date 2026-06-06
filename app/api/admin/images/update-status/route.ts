@@ -5,12 +5,26 @@ export async function POST(req: Request) {
   try {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const adminEmail = process.env.ADMIN_EMAIL;
 
     if (!supabaseUrl || !supabaseAnonKey) {
       return NextResponse.json(
         { success: false, error: "Supabase is not configured." },
         { status: 500 }
       );
+    }
+
+    // Verify admin
+    const authHeader = req.headers.get("authorization");
+    if (!authHeader || !adminEmail) {
+      return NextResponse.json({ success: false, error: "Unauthorized." }, { status: 401 });
+    }
+    const supabaseAuth = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: userData } = await supabaseAuth.auth.getUser();
+    if (!userData.user || userData.user.email !== adminEmail) {
+      return NextResponse.json({ success: false, error: "Unauthorized." }, { status: 401 });
     }
 
     const supabase = createClient(supabaseUrl, supabaseAnonKey);

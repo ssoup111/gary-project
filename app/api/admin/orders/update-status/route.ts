@@ -13,6 +13,21 @@ export async function POST(req: Request) {
       );
     }
 
+    // Verify admin
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const authHeader = req.headers.get("authorization");
+    if (!authHeader || !adminEmail || !supabaseAnonKey) {
+      return NextResponse.json({ success: false, error: "Unauthorized." }, { status: 401 });
+    }
+    const supabaseAuth = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: userData } = await supabaseAuth.auth.getUser();
+    if (!userData.user || userData.user.email !== adminEmail) {
+      return NextResponse.json({ success: false, error: "Unauthorized." }, { status: 401 });
+    }
+
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
     const { orderId, status, deliveryStatus } = await req.json();
 

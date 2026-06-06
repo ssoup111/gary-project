@@ -65,9 +65,11 @@ export default function AdminDeliveryPage() {
 
   async function updateDelivery(deliveryId: string, newStatus: string, adminNotes: string) {
     setStatus("Updating...");
+    const { data: { session } } = await supabase.auth.getSession();
+    const token = session?.access_token;
     const response = await fetch("/api/admin/delivery/update-status", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
       body: JSON.stringify({ deliveryId, status: newStatus, adminNotes }),
     });
     const result = await response.json();

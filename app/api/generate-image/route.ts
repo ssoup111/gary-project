@@ -7,8 +7,9 @@ export async function POST(req: Request) {
     const openaiApiKey = process.env.OPENAI_API_KEY;
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-    if (!openaiApiKey || !supabaseUrl || !supabaseServiceRoleKey) {
+    if (!openaiApiKey || !supabaseUrl || !supabaseServiceRoleKey || !supabaseAnonKey) {
       return NextResponse.json(
         {
           success: false,
@@ -16,6 +17,19 @@ export async function POST(req: Request) {
         },
         { status: 500 }
       );
+    }
+
+    // Verify the caller is an authenticated user
+    const authHeader = req.headers.get("authorization");
+    if (!authHeader) {
+      return NextResponse.json({ success: false, error: "Unauthorized." }, { status: 401 });
+    }
+    const supabaseUser = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: userData, error: userError } = await supabaseUser.auth.getUser();
+    if (userError || !userData.user) {
+      return NextResponse.json({ success: false, error: "Unauthorized." }, { status: 401 });
     }
 
     const openai = new OpenAI({

@@ -10,6 +10,21 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: "Supabase not configured." }, { status: 500 });
     }
 
+    // Verify admin
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const authHeader = req.headers.get("authorization");
+    if (!authHeader || !adminEmail || !supabaseAnonKey) {
+      return NextResponse.json({ success: false, error: "Unauthorized." }, { status: 401 });
+    }
+    const supabaseAuth = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: userData } = await supabaseAuth.auth.getUser();
+    if (!userData.user || userData.user.email !== adminEmail) {
+      return NextResponse.json({ success: false, error: "Unauthorized." }, { status: 401 });
+    }
+
     const supabaseAdmin = createClient(supabaseUrl, supabaseServiceRoleKey);
     const { imageUrl, description, source, photographer, categoryId } = await req.json();
 

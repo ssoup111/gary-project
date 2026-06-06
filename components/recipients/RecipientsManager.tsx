@@ -168,15 +168,20 @@ export default function RecipientsManager() {
           <input value={fullName} onChange={(e) => setFullName(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Recipient full name" />
           <input value={inmateNumber} onChange={(e) => setInmateNumber(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Inmate / DOC number" />
           <select
-            value={`${facilityName}|${state}`}
+            value={facilities.some(f => f.name === facilityName && f.state === state) ? `${facilityName}|${state}` : "|"}
             onChange={(e) => {
-              const [selectedFacility, selectedState] = e.target.value.split("|");
-              setFacilityName(selectedFacility || "");
-              setState(selectedState || "");
+              if (e.target.value === "|") {
+                setFacilityName("");
+                setState("");
+              } else {
+                const [selectedFacility, selectedState] = e.target.value.split("|");
+                setFacilityName(selectedFacility || "");
+                setState(selectedState || "");
+              }
             }}
             className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white"
           >
-            <option value="|">Select facility</option>
+            <option value="|">Select facility (or enter manually below)</option>
             {facilities.map((facility) => (
               <option key={facility.id} value={`${facility.name}|${facility.state}`}>
                 {facility.name} — {facility.state}
@@ -184,8 +189,12 @@ export default function RecipientsManager() {
             ))}
           </select>
 
-          <input value={facilityName} onChange={(e) => setFacilityName(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Facility name if not listed" />
-          <input value={state} onChange={(e) => setState(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="State" />
+          {!facilities.some(f => f.name === facilityName && f.state === state) && (
+            <>
+              <input value={facilityName} onChange={(e) => setFacilityName(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Facility name if not listed" />
+              <input value={state} onChange={(e) => setState(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="State" />
+            </>
+          )}
           <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="min-h-28 rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Mailing rules or notes" />
 
           <button
