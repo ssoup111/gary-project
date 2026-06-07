@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
@@ -16,7 +16,7 @@ type ProductPlan = {
   description: string | null;
 };
 
-export default function SubscriptionsPage() {
+function SubscriptionsContent() {
   const searchParams = useSearchParams();
   const paymentStatus = searchParams.get("payment");
 
@@ -93,5 +93,13 @@ export default function SubscriptionsPage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function SubscriptionsPage() {
+  return (
+    <Suspense fallback={<main className="min-h-screen bg-zinc-950 px-6 py-16 text-white"><p className="text-zinc-400">Loading...</p></main>}>
+      <SubscriptionsContent />
+    </Suspense>
   );
 }

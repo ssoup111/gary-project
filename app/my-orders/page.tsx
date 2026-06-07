@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
@@ -31,7 +31,7 @@ type CatalogImage = {
   image_url: string | null;
 };
 
-export default function MyOrdersPage() {
+function MyOrdersContent() {
   const searchParams = useSearchParams();
   const paymentStatus = searchParams.get("payment");
 
@@ -239,5 +239,13 @@ export default function MyOrdersPage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function MyOrdersPage() {
+  return (
+    <Suspense fallback={<main className="min-h-screen bg-zinc-950 px-6 py-16 text-white"><p className="text-zinc-400">Loading...</p></main>}>
+      <MyOrdersContent />
+    </Suspense>
   );
 }

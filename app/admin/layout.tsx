@@ -1,30 +1,34 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+"use client";
 
-// Admin email is set via NEXT_PUBLIC_ADMIN_EMAIL env var.
-// Falls back to the owner email if the var is missing.
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
+
 const ADMIN_EMAIL =
-  process.env.NEXT_PUBLIC_ADMIN_EMAIL ||
-  process.env.ADMIN_EMAIL ||
-  "ssoup1@gmail.com";
+  process.env.NEXT_PUBLIC_ADMIN_EMAIL || "ssoup1@gmail.com";
 
-export default async function AdminLayout({
+export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createServerComponentClient({ cookies });
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const router = useRouter();
+  const [allowed, setAllowed] = useState(false);
 
-  if (!user) {
-    redirect("/login");
-  }
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) { router.replace("/login"); return; }
+      if (user.email !== ADMIN_EMAIL) { router.replace("/"); return; }
+      setAllowed(true);
+    });
+  }, [router]);
 
-  if (user.email !== ADMIN_EMAIL) {
-    redirect("/");
+  if (!allowed) {
+    return (
+      <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
+        <p className="text-zinc-400">Verifying access...</p>
+      </main>
+    );
   }
 
   return <>{children}</>;
