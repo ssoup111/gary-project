@@ -1,17 +1,11 @@
 import Link from "next/link";
+import { createClient } from "@supabase/supabase-js";
 
-const categories = [
-  { name: "Female Models", slug: "female-models" },
-  { name: "Male Models", slug: "male-models" },
-  { name: "Cars & Motorcycles", slug: "cars-motorcycles" },
-  { name: "Sports", slug: "sports" },
-  { name: "Seasonal", slug: "seasonal" },
-  { name: "Faith", slug: "faith" },
-  { name: "Military", slug: "military" },
-  { name: "Animals", slug: "animals" },
-  { name: "Nature", slug: "nature" },
-  { name: "Inspirational", slug: "inspirational" },
-];
+function getServerSupabase() {
+  const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+  const key = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+  return createClient(url, key);
+}
 
 const features = [
   "Reviewed image collections",
@@ -22,7 +16,14 @@ const features = [
   "Admin approval workflow",
 ];
 
-export default function Home() {
+export default async function Home() {
+  const supabase = getServerSupabase();
+  const { data: categories } = await supabase
+    .from("categories")
+    .select("name,slug")
+    .eq("is_active", true)
+    .order("name");
+
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
       <section className="mx-auto max-w-7xl px-6 py-24">
@@ -60,12 +61,12 @@ export default function Home() {
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">Catalog</p>
-            <h2 className="mt-3 text-4xl font-black">Starting Categories</h2>
+            <h2 className="mt-3 text-4xl font-black">Browse by Category</h2>
           </div>
-          <Link href="/categories" className="rounded-xl border border-zinc-700 px-5 py-3 font-bold hover:border-amber-400">View All Categories</Link>
+          <Link href="/catalog" className="rounded-xl border border-zinc-700 px-5 py-3 font-bold hover:border-amber-400">View Full Catalog</Link>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map((category) => (
+          {(categories || []).map((category) => (
             <Link key={category.slug} href={`/catalog?category=${category.slug}`} className="block rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-lg transition hover:border-amber-400 hover:bg-zinc-800">
               <h3 className="text-xl font-bold text-white">{category.name}</h3>
               <p className="mt-3 text-base leading-7 text-zinc-300">

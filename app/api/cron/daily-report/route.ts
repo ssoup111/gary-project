@@ -33,7 +33,7 @@ export async function GET(req: Request) {
     supabase.from("generated_images").select("*", { count: "exact", head: true }).eq("status", "pending_review"),
     supabase.from("delivery_queue").select("*", { count: "exact", head: true }).eq("status", "queued_for_delivery"),
     supabase.from("generated_images").select("*", { count: "exact", head: true }).eq("status", "approved"),
-    supabase.from("inmate_contacts").select("*", { count: "exact", head: true }),
+    supabase.from("orders").select("*", { count: "exact", head: true }),
     supabase.from("orders").select("id,status,payment_status,total_cents,created_at").gte("created_at", since).order("created_at", { ascending: false }).limit(10),
   ]);
 
@@ -79,7 +79,7 @@ body{font-family:Arial,sans-serif;background:#f4f4f4;padding:20px}
     <div class="stat"><p class="stat-value">${pendingImages || 0}</p><p class="stat-label">Images Pending Review</p></div>
     <div class="stat"><p class="stat-value">${pendingDelivery || 0}</p><p class="stat-label">Deliveries Pending</p></div>
     <div class="stat"><p class="stat-value">${totalImages || 0}</p><p class="stat-label">Approved Catalog Images</p></div>
-    <div class="stat"><p class="stat-value">${totalUsers || 0}</p><p class="stat-label">Saved Recipients</p></div>
+    <div class="stat"><p class="stat-value">${totalUsers || 0}</p><p class="stat-label">Total Orders (All Time)</p></div>
   </div>
   <div class="section">
     <h2>Action Items</h2>
@@ -95,7 +95,7 @@ body{font-family:Arial,sans-serif;background:#f4f4f4;padding:20px}
   </div>
   <div class="footer">
     <p>Friends Behind Bars — Daily Report sent at 8:00 AM</p>
-    <p><a href="https://jpix-eight.vercel.app/admin">Open Admin Panel</a></p>
+    <p><a href="https://friendsbehindbars.com/admin">Open Admin Panel</a></p>
   </div>
 </div>
 </body>
