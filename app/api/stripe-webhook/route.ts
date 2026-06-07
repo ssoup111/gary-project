@@ -61,14 +61,15 @@ export async function POST(req: Request) {
 
       if (orderData?.recipient_id) {
         const { data: recipientData } = await supabaseAdmin
-          .from("inmate_contacts")
-          .select("full_name,facility_name,state")
+          .from("recipients")
+          .select("first_name,last_name,facility,state")
           .eq("id", orderData.recipient_id)
           .single();
 
         if (recipientData) {
-          recipientName = recipientData.full_name || recipientName;
-          facilityName = recipientData.facility_name || facilityName;
+          const fullName = [recipientData.first_name, recipientData.last_name].filter(Boolean).join(" ");
+          recipientName = fullName || recipientName;
+          facilityName = recipientData.facility || facilityName;
           facilityState = recipientData.state ? `, ${recipientData.state}` : "";
         }
       }
@@ -77,7 +78,7 @@ export async function POST(req: Request) {
       const image = Array.isArray(imageArr) ? imageArr[0] : imageArr;
       const imageUrl = image?.image_url || null;
       const imagePrompt = image?.prompt || "Your selected image";
-      const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://jpix-eight.vercel.app";
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL || "https://friendsbehindbars.com";
       const amount = orderData?.total_cents ? `$${(orderData.total_cents / 100).toFixed(2)}` : "$1.99";
 
       if (customerEmail && process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {

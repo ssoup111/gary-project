@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
@@ -16,6 +17,9 @@ type ProductPlan = {
 };
 
 export default function SubscriptionsPage() {
+  const searchParams = useSearchParams();
+  const paymentStatus = searchParams.get("payment");
+
   const [plans, setPlans] = useState<ProductPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState("");
@@ -50,6 +54,19 @@ export default function SubscriptionsPage() {
         <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">Friends Behind Bars</p>
         <h1 className="mt-4 text-5xl font-black">Plans & Packs</h1>
         <p className="mt-4 max-w-2xl text-zinc-400">Single images, image packs, and monthly subscription options.</p>
+
+        {paymentStatus === "success" && (
+          <div className="mt-8 rounded-2xl border border-green-500/40 bg-green-500/10 p-5">
+            <p className="text-lg font-black text-green-300">Payment successful!</p>
+            <p className="mt-1 text-sm text-green-200/70">Your plan is now active. Check your dashboard to manage it.</p>
+          </div>
+        )}
+        {paymentStatus === "cancelled" && (
+          <div className="mt-8 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-5">
+            <p className="font-bold text-amber-300">Payment cancelled — no charge was made.</p>
+          </div>
+        )}
+
         {status && <div className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-4 font-bold text-amber-300">{status}</div>}
         {loading ? (
           <LoadingSpinner message="Loading plans..." />

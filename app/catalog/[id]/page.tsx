@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
@@ -18,6 +18,8 @@ export default function ImageDetailPage() {
   const params = useParams();
   const router = useRouter();
   const id = params?.id as string;
+  const hasHistory = useRef(false);
+  useEffect(() => { hasHistory.current = window.history.length > 1; }, []);
 
   const [image, setImage] = useState<CatalogImage | null>(null);
   const [loading, setLoading] = useState(true);
@@ -75,7 +77,7 @@ export default function ImageDetailPage() {
         {/* Back button */}
         <button
           type="button"
-          onClick={() => router.back()}
+          onClick={() => hasHistory.current ? router.back() : router.push("/catalog")}
           className="mb-8 flex items-center gap-2 rounded-xl border border-zinc-700 px-4 py-2 text-sm font-bold text-zinc-200 hover:border-amber-400 hover:text-amber-300"
         >
           ← Back to Catalog
