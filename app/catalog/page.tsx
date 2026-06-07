@@ -1,7 +1,21 @@
 export const metadata = { title: "Catalog" };
 
 import Link from "next/link";
-import { supabase } from "@/lib/supabaseClient";
+import { createClient } from "@supabase/supabase-js";
+
+// Use server-only env vars (no NEXT_PUBLIC_ prefix) so the URL is read at
+// runtime rather than being baked into the bundle at build time.
+function getServerSupabase() {
+  const url =
+    process.env.SUPABASE_URL ||
+    process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    "";
+  const key =
+    process.env.SUPABASE_ANON_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    "";
+  return createClient(url, key);
+}
 
 type CatalogImage = {
   id: string;
@@ -24,6 +38,8 @@ export default async function CatalogPage({
 }) {
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const selectedCategory = resolvedSearchParams?.category || "";
+
+  const supabase = getServerSupabase();
 
   const { data: categories } = await supabase
     .from("categories")
