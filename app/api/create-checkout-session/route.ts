@@ -42,7 +42,7 @@ export async function POST(req: Request) {
       metadata: {
         orderId,
       },
-      success_url: `${appUrl}/orders?payment=success&session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${appUrl}/my-orders?payment=success&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/order?payment=cancelled`,
     });
 
