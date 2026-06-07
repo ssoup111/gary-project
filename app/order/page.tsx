@@ -65,24 +65,62 @@ export default function OrderPage() {
 
   async function createOrder() {
     if (!selectedImageId) { setStatus("Select an image."); return; }
-    if (!selectedRecipientId && (!fullName.trim() || !inmateNumber.trim())) { setStatus("Please select a saved recipient or fill in Full Name and Inmate Number."); return; }
+
+    // Resolve recipient data — from saved contact or form inputs
+    let rName = fullName.trim();
+    let rInmate = inmateNumber.trim();
+    let rFacility = facilityName.trim();
+    let rState = state.trim();
+
+    if (selectedRecipientId) {
+      const saved = savedRecipients.find((r) => r.id === selectedRecipientId);
+      if (!saved) { setStatus("Selected recipient not found."); return; }
+      rName = saved.full_name;
+      rInmate = saved.inmate_number || "";
+      rFacility = saved.facility_name || "";
+      rState = saved.state || "";
+    }
+
+    if (!rName) { setStatus("Please provide the recipient's full name."); return; }
+    if (!rInmate) { setStatus("Please provide the inmate / offender number."); return; }
+    if (!rState) { setStatus("Please provide the recipient's state."); return; }
+
     setStatus("Creating order...");
     const { data: userData } = await supabase.auth.getUser();
     if (!userData.user) { setStatus("Please sign in to place an order."); return; }
-    let recipientId: string;
-    if (selectedRecipientId) {
-      recipientId = selectedRecipientId;
-    } else {
-      const duplicate = savedRecipients.find((r) => r.inmate_number?.trim().toLowerCase() === inmateNumber.trim().toLowerCase());
-      if (duplicate) { setStatus("Inmate number " + inmateNumber + " already exists: " + duplicate.full_name + ". Select them from saved recipients above."); return; }
-      const { data: insertedRecipient, error: recipientError } = await supabase.from("inmate_contacts").insert({ user_id: userData.user.id, full_name: fullName.trim(), inmate_number: inmateNumber.trim(), facility_name: facilityName.trim() || null, state: state.trim() || null }).select("id").single();
-      if (recipientError || !insertedRecipient) { setStatus("Failed to save recipient: " + (recipientError?.message || "unknown error")); return; }
-      recipientId = insertedRecipient.id;
+
+    // Split full name into first / last for the recipients table
+    const nameParts = rName.split(" ");
+    const firstName = nameParts[0] || "";
+    const lastName = nameParts.slice(1).join(" ") || "";
+
+    // Insert into `recipients` — this is what orders and delivery_queue FK to
+    const { data: recipientRow, error: recipientError } = await supabase
+      .from("recipients")
+      .insert({ first_name: firstName, last_name: lastName, offender_id: rInmate, state: rState, facility: rFacility || null })
+      .select("id")
+      .single();
+    if (recipientError || !recipientRow) { setStatus("Failed to save recipient: " + (recipientError?.message || "unknown error")); return; }
+
+    // Also save to inmate_contacts for future use (if entering manually and not a duplicate)
+    if (!selectedRecipientId) {
+      const duplicate = savedRecipients.find((r) => r.inmate_number?.trim().toLowerCase() === rInmate.toLowerCase());
+      if (!duplicate) {
+        await supabase.from("inmate_contacts").insert({ user_id: userData.user.id, full_name: rName, inmate_number: rInmate, facility_name: rFacility || null, state: rState || null });
+      }
     }
-    const { data: orderData, error: orderError } = await supabase.from("orders").insert({ recipient_id: recipientId, purchase_type: "single_image", status: "pending", total_cents: 199, customer_email: userData.user.email }).select().single();
+
+    // Create the order using the recipients.id
+    const { data: orderData, error: orderError } = await supabase
+      .from("orders")
+      .insert({ recipient_id: recipientRow.id, purchase_type: "single_image", status: "pending", total_cents: 199, customer_email: userData.user.email })
+      .select()
+      .single();
     if (orderError || !orderData) { setStatus("Failed to create order: " + (orderError?.message || "unknown error")); return; }
+
     await supabase.from("order_items").insert({ order_id: orderData.id, generated_image_id: selectedImageId, quantity: 1 });
-    await supabase.from("delivery_queue").insert({ order_id: orderData.id, recipient_id: recipientId, status: "pending", platform: "Securus/JPay" });
+    await supabase.from("delivery_queue").insert({ order_id: orderData.id, recipient_id: recipientRow.id, status: "pending", platform: "Securus/JPay" });
+
     setStatus("Redirecting to Stripe checkout...");
     const checkoutResponse = await fetch("/api/create-checkout-session", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ orderId: orderData.id }) });
     const checkoutResult = await checkoutResponse.json();
