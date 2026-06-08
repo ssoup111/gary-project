@@ -76,7 +76,7 @@ async function main() {
     const rows = photos.map((photo) => ({
       prompt: photo.description || photo.alt_description || category.query,
       image_url: photo.urls.regular,
-      status: "pending",
+      status: "pending_review",
       category_slug: category.slug,
     }));
 

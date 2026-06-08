@@ -237,7 +237,7 @@ export default function AdminPage() {
             <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {pendingImages.map((image) => (
                 <div key={image.id} className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
-                  {image.image_url && <img src={image.image_url} alt={image.prompt} className="h-72 w-full object-cover" />}
+                  {image.image_url && <a href={image.image_url} target="_blank" rel="noopener noreferrer"><img src={image.image_url} alt={image.prompt} className="h-72 w-full object-cover hover:opacity-80 transition" /></a>}
                   <div className="p-5">
                     <p className="text-sm leading-6 text-zinc-300">{image.prompt}</p>
                     <p className="mt-3 text-xs font-bold uppercase tracking-wider text-amber-400">{image.status}</p>
