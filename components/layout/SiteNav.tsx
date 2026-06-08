@@ -16,6 +16,7 @@ export default function SiteNav() {
           <Link href="/subscriptions" className="hover:text-amber-300">Subscriptions</Link>
           <Link href="/dashboard" className="hover:text-amber-300">Dashboard</Link>
           <Link href="/login" className="hover:text-amber-300">Login</Link>
+          <Link href="/admin" className="text-amber-500 hover:text-amber-300">Admin</Link>
         </nav>
 
         <Link href="/menu" className="rounded-xl bg-white px-4 py-2 text-sm font-black text-black md:hidden">

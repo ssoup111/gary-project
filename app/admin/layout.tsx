@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 
 const ADMIN_EMAIL =
-  process.env.NEXT_PUBLIC_ADMIN_EMAIL || "ssoup1@gmail.com";
+  process.env.NEXT_PUBLIC_ADMIN_EMAIL || "ssoup1@protonmail.com";
 
 export default function AdminLayout({
   children,

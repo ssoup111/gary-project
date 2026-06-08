@@ -10,6 +10,7 @@ const links = [
   { label: "Facilities", href: "/facilities" },
   { label: "Dashboard", href: "/dashboard" },
   { label: "Login", href: "/login" },
+  { label: "Admin", href: "/admin" },
   { label: "Contact", href: "/contact" },
   { label: "FAQ", href: "/faq" },
   { label: "Install App", href: "/install" },
