@@ -243,9 +243,11 @@ export default function AdminPage() {
                     <p className="mt-3 text-xs font-bold uppercase tracking-wider text-amber-400">{image.status}</p>
                     <CategoryControls image={image} />
                     <div className="mt-5 flex flex-wrap gap-3">
-                      <button onClick={() => updateImageStatus(image.id, "approved")} className="rounded-lg bg-green-500 px-4 py-2 text-sm font-bold text-black">Approve</button>
-                      <button onClick={() => updateImageStatus(image.id, "rejected")} className="rounded-lg bg-red-500 px-4 py-2 text-sm font-bold text-white">Reject</button>
+                      <button onClick={() => updateImageStatus(image.id, "approved")} className="rounded-lg bg-green-500 px-4 py-2 text-sm font-bold text-black cursor-pointer">Approve</button>
+                      <button onClick={() => updateImageStatus(image.id, "rejected")} className="rounded-lg bg-red-500 px-4 py-2 text-sm font-bold text-white cursor-pointer">Reject</button>
+                      {image.image_url && <a href={image.image_url} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-zinc-600 px-4 py-2 text-sm font-bold text-zinc-300 hover:border-amber-400">View Full ↗</a>}
                     </div>
+                    {status && <p className="mt-3 text-sm font-bold text-amber-300">{status}</p>}
                   </div>
                 </div>
               ))}
@@ -261,11 +263,15 @@ export default function AdminPage() {
             <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {approvedImages.map((image) => (
                 <div key={image.id} className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
-                  {image.image_url && <img src={image.image_url} alt={image.prompt} className="h-56 w-full object-cover" />}
+                  {image.image_url && <a href={image.image_url} target="_blank" rel="noopener noreferrer"><img src={image.image_url} alt={image.prompt} className="h-56 w-full object-cover hover:opacity-80 transition" /></a>}
                   <div className="p-4">
                     <p className="text-sm leading-6 text-zinc-300">{image.prompt}</p>
                     <p className="mt-3 text-xs font-bold uppercase tracking-wider text-green-400">approved</p>
                     <CategoryControls image={image} />
+                    <div className="mt-3 flex gap-2">
+                      {image.image_url && <a href={image.image_url} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-zinc-600 px-3 py-1 text-xs font-bold text-zinc-300 hover:border-amber-400">View Full ↗</a>}
+                      <button onClick={() => updateImageStatus(image.id, "rejected")} className="rounded-lg border border-zinc-700 px-3 py-1 text-xs font-bold text-red-400 hover:border-red-500">Reject</button>
+                    </div>
                   </div>
                 </div>
               ))}

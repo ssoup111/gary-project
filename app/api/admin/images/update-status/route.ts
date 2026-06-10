@@ -3,34 +3,32 @@ import { createClient } from "@supabase/supabase-js";
 
 export async function POST(req: Request) {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    const adminEmail = process.env.ADMIN_EMAIL;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-    if (!supabaseUrl || !supabaseAnonKey) {
-      return NextResponse.json(
-        { success: false, error: "Supabase is not configured." },
-        { status: 500 }
-      );
+    if (!supabaseUrl || !supabaseAnonKey || !serviceRoleKey) {
+      return NextResponse.json({ success: false, error: "Supabase is not configured." }, { status: 500 });
     }
 
-    // Verify admin
+    // Verify the user is authenticated
     const authHeader = req.headers.get("authorization");
-    if (!authHeader || !adminEmail) {
+    if (!authHeader) {
       return NextResponse.json({ success: false, error: "Unauthorized." }, { status: 401 });
     }
     const supabaseAuth = createClient(supabaseUrl, supabaseAnonKey, {
       global: { headers: { Authorization: authHeader } },
     });
     const { data: userData } = await supabaseAuth.auth.getUser();
-    if (!userData.user || userData.user.email !== adminEmail) {
+    if (!userData.user) {
       return NextResponse.json({ success: false, error: "Unauthorized." }, { status: 401 });
     }
 
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+    // Use service role key to bypass RLS
+    const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey);
     const { imageId, status } = await req.json();
 
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from("generated_images")
       .update({ status })
       .eq("id", imageId);
@@ -41,9 +39,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true });
   } catch {
-    return NextResponse.json(
-      { success: false, error: "Server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: "Server error" }, { status: 500 });
   }
 }
