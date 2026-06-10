@@ -243,7 +243,7 @@ export default function AdminPage() {
                     <p className="mt-3 text-xs font-bold uppercase tracking-wider text-amber-400">{image.status}</p>
                     <CategoryControls image={image} />
                     <div className="mt-5 flex flex-wrap gap-3">
-                      <button onClick={() => updateImageStatus(image.id, "approved")} className="rounded-lg bg-green-500 px-4 py-2 text-sm font-bold text-black cursor-pointer">Approve</button>
+                      <button onClick={() => { alert("clicked " + image.id); updateImageStatus(image.id, "approved"); }} className="rounded-lg bg-green-500 px-4 py-2 text-sm font-bold text-black cursor-pointer">Approve</button>
                       <button onClick={() => updateImageStatus(image.id, "rejected")} className="rounded-lg bg-red-500 px-4 py-2 text-sm font-bold text-white cursor-pointer">Reject</button>
                       {image.image_url && <a href={image.image_url} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-zinc-600 px-4 py-2 text-sm font-bold text-zinc-300 hover:border-amber-400">View Full ↗</a>}
                     </div>
