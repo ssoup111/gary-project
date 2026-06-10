@@ -43,6 +43,8 @@ export default function AdminPage() {
   const [importingId, setImportingId] = useState<string | null>(null);
   const [importedIds, setImportedIds] = useState<Set<string>>(new Set());
   const [stockCategoryId, setStockCategoryId] = useState("");
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [bulkWorking, setBulkWorking] = useState(false);
   const [stats, setStats] = useState([
     { label: "Pending Review", value: "...", color: "text-amber-400" },
     { label: "Approved Images", value: "...", color: "text-green-400" },
@@ -113,6 +115,43 @@ export default function AdminPage() {
     setSavingCategoryId(null);
     if (!result.success) { setStatus(result.error || "Category update failed."); return; }
     setStatus("Category updated.");
+    await loadData();
+  }
+
+  function toggleSelect(id: string) {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  }
+
+  function selectAll() {
+    setSelectedIds(new Set(pendingImages.map((img) => img.id)));
+  }
+
+  function deselectAll() {
+    setSelectedIds(new Set());
+  }
+
+  async function bulkUpdateStatus(newStatus: string) {
+    if (selectedIds.size === 0) return;
+    setBulkWorking(true);
+    setStatus(`Processing ${selectedIds.size} images...`);
+    const { data: { session } } = await supabase.auth.getSession();
+    const token = session?.access_token;
+    await Promise.all(
+      Array.from(selectedIds).map((imageId) =>
+        fetch("/api/admin/images/update-status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+          body: JSON.stringify({ imageId, status: newStatus }),
+        })
+      )
+    );
+    setSelectedIds(new Set());
+    setBulkWorking(false);
+    setStatus(`${selectedIds.size} images marked as ${newStatus}.`);
     await loadData();
   }
 
@@ -234,24 +273,50 @@ export default function AdminPage() {
           {pendingImages.length === 0 ? (
             <div className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-8"><p className="text-zinc-400">No pending images yet.</p></div>
           ) : (
-            <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {pendingImages.map((image) => (
-                <div key={image.id} className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
-                  {image.image_url && <a href={image.image_url} target="_blank" rel="noopener noreferrer"><img src={image.image_url} alt={image.prompt} className="h-72 w-full object-cover hover:opacity-80 transition" /></a>}
-                  <div className="p-5">
-                    <p className="text-sm leading-6 text-zinc-300">{image.prompt}</p>
-                    <p className="mt-3 text-xs font-bold uppercase tracking-wider text-amber-400">{image.status}</p>
-                    <CategoryControls image={image} />
-                    <div className="mt-5 flex flex-wrap gap-3">
-                      <button onClick={() => { alert("clicked " + image.id); updateImageStatus(image.id, "approved"); }} className="rounded-lg bg-green-500 px-4 py-2 text-sm font-bold text-black cursor-pointer">Approve</button>
-                      <button onClick={() => updateImageStatus(image.id, "rejected")} className="rounded-lg bg-red-500 px-4 py-2 text-sm font-bold text-white cursor-pointer">Reject</button>
-                      {image.image_url && <a href={image.image_url} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-zinc-600 px-4 py-2 text-sm font-bold text-zinc-300 hover:border-amber-400">View Full ↗</a>}
+            <>
+              {/* Bulk action bar */}
+              <div className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl border border-zinc-700 bg-zinc-900 px-5 py-4">
+                <button onClick={selectAll} className="rounded-lg border border-zinc-600 px-4 py-2 text-sm font-bold text-zinc-300 hover:border-amber-400">Select All ({pendingImages.length})</button>
+                <button onClick={deselectAll} className="rounded-lg border border-zinc-600 px-4 py-2 text-sm font-bold text-zinc-300 hover:border-zinc-400">Deselect All</button>
+                {selectedIds.size > 0 && (
+                  <>
+                    <span className="text-sm text-zinc-400">{selectedIds.size} selected</span>
+                    <button onClick={() => bulkUpdateStatus("approved")} disabled={bulkWorking} className="rounded-lg bg-green-500 px-5 py-2 text-sm font-black text-black disabled:opacity-60">
+                      {bulkWorking ? "Working..." : `✓ Approve Selected (${selectedIds.size})`}
+                    </button>
+                    <button onClick={() => bulkUpdateStatus("rejected")} disabled={bulkWorking} className="rounded-lg bg-red-500 px-5 py-2 text-sm font-black text-white disabled:opacity-60">
+                      {bulkWorking ? "Working..." : `✕ Reject Selected (${selectedIds.size})`}
+                    </button>
+                  </>
+                )}
+              </div>
+              <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {pendingImages.map((image) => {
+                  const isChecked = selectedIds.has(image.id);
+                  return (
+                    <div key={image.id} className={`overflow-hidden rounded-2xl border bg-zinc-900 transition ${isChecked ? "border-green-500" : "border-zinc-800"}`}>
+                      <div className="relative">
+                        {image.image_url && <a href={image.image_url} target="_blank" rel="noopener noreferrer"><img src={image.image_url} alt={image.prompt} className="h-72 w-full object-cover hover:opacity-80 transition" /></a>}
+                        <label className="absolute top-3 left-3 flex cursor-pointer items-center">
+                          <input type="checkbox" checked={isChecked} onChange={() => toggleSelect(image.id)} className="h-6 w-6 cursor-pointer accent-green-500" />
+                        </label>
+                      </div>
+                      <div className="p-5">
+                        <p className="text-sm leading-6 text-zinc-300">{image.prompt}</p>
+                        <p className="mt-3 text-xs font-bold uppercase tracking-wider text-amber-400">{image.status}</p>
+                        <CategoryControls image={image} />
+                        <div className="mt-5 flex flex-wrap gap-3">
+                          <button onClick={() => updateImageStatus(image.id, "approved")} className="rounded-lg bg-green-500 px-4 py-2 text-sm font-bold text-black cursor-pointer">Approve</button>
+                          <button onClick={() => updateImageStatus(image.id, "rejected")} className="rounded-lg bg-red-500 px-4 py-2 text-sm font-bold text-white cursor-pointer">Reject</button>
+                          {image.image_url && <a href={image.image_url} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-zinc-600 px-4 py-2 text-sm font-bold text-zinc-300 hover:border-amber-400">View Full ↗</a>}
+                        </div>
+                        {status && <p className="mt-3 text-sm font-bold text-amber-300">{status}</p>}
+                      </div>
                     </div>
-                    {status && <p className="mt-3 text-sm font-bold text-amber-300">{status}</p>}
-                  </div>
-                </div>
-              ))}
-            </div>
+                  );
+                })}
+              </div>
+            </>
           )}
         </section>
 

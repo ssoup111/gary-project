@@ -1,7 +1,19 @@
-// Bulk import images from Unsplash into Supabase generated_images
-// Fetches ~5 images per category, inserts as approved
+// Bulk import images from Pexels into Supabase generated_images
+import { readFileSync } from "fs";
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
 
-const UNSPLASH_KEY = "hBipcZk-pxDSFrQS5bLRA-xeaHh7eg07lBnIu296V0Q";
+// Load .env.local
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const envPath = resolve(__dirname, ".env.local");
+const env = Object.fromEntries(
+  readFileSync(envPath, "utf8")
+    .split("\n")
+    .filter((l) => l.includes("=") && !l.startsWith("#"))
+    .map((l) => [l.split("=")[0].trim(), l.split("=").slice(1).join("=").trim()])
+);
+
+const PEXELS_KEY = env.PEXELS_API_KEY;
 const SUPABASE_URL = "https://zgcqbvvvwbgpbgaofkmg.supabase.co";
 const SUPABASE_SERVICE_KEY = "sb_secret_f8T3RAMmcuuAJ2F99z68-w_2UiamJYy";
 
@@ -17,7 +29,7 @@ const CATEGORIES = [
   { slug: "costume",          query: "costume cosplay creative" },
   { slug: "faith",            query: "faith church spiritual" },
   { slug: "fantasy",          query: "fantasy dragon warrior magic" },
-  { slug: "female-models",    query: "female portrait fashion model" },
+  { slug: "female-models",    query: "female portrait fashion" },
   { slug: "food",             query: "delicious food photography" },
   { slug: "funny",            query: "funny humor comedy" },
   { slug: "hip-hop",          query: "hip hop rap urban street" },
@@ -41,19 +53,19 @@ const CATEGORIES = [
 ];
 
 const PER_CATEGORY = 10;
-const PAGE = 2; // page 1 already imported — use 2 for fresh results
+const PAGE = 1;
 
-async function fetchUnsplash(query, perPage = 10, page = 2) {
-  const url = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=${perPage}&page=${page}&orientation=portrait&content_filter=high`;
+async function fetchPexels(query, perPage = 10, page = 1) {
+  const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${perPage}&page=${page}&orientation=portrait`;
   const res = await fetch(url, {
-    headers: { Authorization: `Client-ID ${UNSPLASH_KEY}` },
+    headers: { Authorization: PEXELS_KEY },
   });
   if (!res.ok) {
-    console.error(`Unsplash error for "${query}":`, res.status, await res.text());
+    console.error(`Pexels error for "${query}":`, res.status, await res.text());
     return [];
   }
   const data = await res.json();
-  return data.results || [];
+  return data.photos || [];
 }
 
 async function insertImages(images) {
@@ -77,11 +89,16 @@ async function insertImages(images) {
 }
 
 async function main() {
+  if (!PEXELS_KEY) {
+    console.error("❌ PEXELS_API_KEY not found in .env.local!");
+    process.exit(1);
+  }
+
   let totalInserted = 0;
 
   for (const category of CATEGORIES) {
     console.log(`\nFetching "${category.query}" for [${category.slug}]...`);
-    const photos = await fetchUnsplash(category.query, PER_CATEGORY, PAGE);
+    const photos = await fetchPexels(category.query, PER_CATEGORY, PAGE);
 
     if (photos.length === 0) {
       console.log("  No photos found, skipping.");
@@ -89,8 +106,8 @@ async function main() {
     }
 
     const rows = photos.map((photo) => ({
-      prompt: photo.description || photo.alt_description || category.query,
-      image_url: photo.urls.regular,
+      prompt: photo.alt || category.query,
+      image_url: photo.src.large,
       status: "pending_review",
       category_slug: category.slug,
     }));
