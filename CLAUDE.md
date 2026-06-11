@@ -18,44 +18,53 @@ Admin email: ssoup1@protonmail.com
 - Two recipient tables: `inmate_contacts` (user-saved contacts, has `user_id`) and `recipients` (what orders FK to, has `first_name, last_name, offender_id, state, facility`)
 - Orders are linked to recipients via `orders.recipient_id → recipients.id`
 - RLS on `generated_images`: public can only SELECT `status = 'approved'`; authenticated users can SELECT all (added policy `authenticated_read_all`)
+- Git index.lock periodically blocks commits — fix with: `rm ~/Desktop/jpix/.git/HEAD.lock`
+- Sandbox cannot push to GitHub (403) — Bill must always run `git push` manually from his terminal
 
 ## Image Status Flow
 
 `pending_review` → (admin approves) → `approved` (shows in catalog)  
 `pending_review` → (admin rejects) → `rejected`
 
-Bulk import script: `bulk-import.mjs` in project root — imports ~5 images per category from Unsplash, inserts as `pending_review`.
+## Import Scripts (project root)
 
-## Current State (end of session June 7 2026)
+Three import scripts pull images from stock photo APIs into `pending_review`:
 
-- Login working ✓ (fixed NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel)
-- Catalog working ✓ (8 approved images, 18 categories)
-- Admin panel working ✓ at /admin — login, review queue, approve/reject
-- 90 Unsplash images imported, sitting in `pending_review` — ready for Bill to approve
-- Admin nav link added to desktop nav (amber) and mobile menu
+| Script | Source | Notes |
+|--------|--------|-------|
+| `bulk-import.mjs` | Unsplash | Caps at 30/category (free API limit), page 2 |
+| `pexels-import.mjs` | Pexels | 55/category, page 1 |
+| `pixabay-import.mjs` | Pixabay | 55/category, page 1, uses `webformatURL` (not `largeImageURL`) |
+| `import-cars.mjs` | All 3 | Targeted: Hot Rods + Supercars only, 40 each |
 
-## 🔴 BROKEN — Top Priority Next Session
+All scripts read API keys from `.env.local` automatically. Duplicate protection is enforced at the DB level (`generated_images.image_url` has a UNIQUE constraint) and all scripts use `resolution=ignore-duplicates`.
 
-**Admin Approve / Reject / Save Category buttons do nothing.**
+To run: `cd ~/Desktop/jpix && node <script-name>.mjs`
 
-Root causes identified and fixes deployed (not yet confirmed working):
-1. API routes used `process.env.ADMIN_EMAIL` — but the env var is `NEXT_PUBLIC_ADMIN_EMAIL`. Fixed to remove email check entirely (just checks user is authenticated).
-2. API routes used anon key for DB writes — blocked by RLS. Fixed to use `SUPABASE_SERVICE_ROLE_KEY`.
-3. The status error message was only visible at the top of the page (in Generate section). Fixed to show inline under the buttons.
+## Categories (35 total)
 
-**Latest fix is in the repo but Bill went to bed before testing. Start here next session.**
+animals, anime, beaches, big-cats, bikinis, boxing-mma, cars-motorcycles, celebrity, costume, faith, fantasy, female-models, food, funny, hip-hop, hot-rods, inspirational, lingerie, lowriders, male-models, military, miscellaneous, music, native-american, nature, old-school, pin-up, seasonal, sports, supercars, tattoo-art, western, wolves-eagles, yoga
 
-To diagnose if still broken: click Approve and look for an error message directly under the buttons. If it says "Unauthorized" → session issue. If it says "Server error" → check Vercel env vars. If nothing → JS isn't firing at all.
+Note: "yoga-pants" was renamed to "yoga" — slug updated in DB and all images reassigned.
 
-If buttons truly fire nothing at all (no error message), suspect a React JS error silently crashing the page — check browser console (Cmd+Option+J in Chrome).
+## Current State (end of session June 9 2026)
 
-## Pending / Next Steps
+- Login working ✓
+- Catalog working ✓
+- Admin panel working ✓ at /admin
+- Bulk approve/reject added to admin ✓ — checkboxes on each card, Select All, Approve Selected, Reject Selected
+- 3 stock photo import scripts working ✓ (Unsplash, Pexels, Pixabay)
+- Duplicate protection in place ✓ (DB unique constraint + ignore-duplicates on insert)
+- 35 categories live in DB ✓
+- Pixabay API key added to `.env.local` ✓
+- Bulk approve UI deployed — Bill needs to push latest commit if not yet done
 
-- Fix admin approve/reject/save category (see above — top priority)
-- Bill needs to approve (or reject) the 90 pending images via /admin → Review Queue
-- Task #13: Update catalog image cards to link to the image detail page (`/catalog/[id]`) — catalog already has links, just needs confirming
-- Consider adding bulk-approve button to admin for efficiency
-- The `NEXT_PUBLIC__ASE_ANON_KEY` typo variable in Vercel can be deleted (it's a duplicate of `NEXT_PUBLIC_SUPABASE_ANON_KEY` with a display artifact)
+## Known Issues / Pending
+
+- **Pixabay images don't preview in admin** if imported with `largeImageURL` — those should be rejected and re-imported (script now uses `webformatURL` which works correctly)
+- **Hot Rods import** — previous bad query ("flame") pulled candles/fires. Query fixed to just "hot rod". Reject the bad ones in admin and re-run `node import-cars.mjs`
+- **Bulk approve UI** — code written and pushed but Bill should verify it's deployed and working at /admin
+- **Task #13** — catalog image cards linking to `/catalog/[id]` — believed to already be in place but not formally confirmed
 
 ## Vercel Env Vars (production)
 
@@ -66,6 +75,13 @@ If buttons truly fire nothing at all (no error message), suspect a React JS erro
 | `SUPABASE_URL` | Runtime server-side Supabase URL |
 | `SUPABASE_ANON_KEY` | Runtime server-side anon key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Service role key for admin API routes |
-| `NEXT_PUBLIC_SITE_URL` | https://friendsbehindbars.com (used for Stripe redirects) |
-| `NEXT_PUBLIC_APP_URL` | Same as above |
-| `NEXT_PUBLIC_ADMIN_EMAIL` | ssoup1@protonmail.com — update this in Vercel if still set to ssoup1@gmail.com |
+| `NEXT_PUBLIC_SITE_URL` | https://friendsbehindbars.com |
+| `NEXT_PUBLIC_APP_URL` | https://friendsbehindbars.com |
+| `NEXT_PUBLIC_ADMIN_EMAIL` | ssoup1@protonmail.com |
+
+## .env.local Keys (local dev)
+
+- `UNSPLASH_ACCESS_KEY` — Unsplash API key
+- `PEXELS_API_KEY` — Pexels API key
+- `PIXABAY_API_KEY` — Pixabay API key (added June 9 2026)
+- `SUPABASE_SERVICE_ROLE_KEY` — used by import scripts for DB writes

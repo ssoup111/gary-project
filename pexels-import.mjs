@@ -33,6 +33,7 @@ const CATEGORIES = [
   { slug: "food",             query: "delicious food photography" },
   { slug: "funny",            query: "funny humor comedy" },
   { slug: "hip-hop",          query: "hip hop rap urban street" },
+  { slug: "classic-cars",     query: "classic car" },
   { slug: "inspirational",    query: "inspirational sunrise mountains" },
   { slug: "lingerie",         query: "lingerie fashion boudoir" },
   { slug: "lowriders",        query: "lowrider custom car chicano" },
@@ -46,13 +47,14 @@ const CATEGORIES = [
   { slug: "pin-up",           query: "pin-up retro glamour" },
   { slug: "seasonal",         query: "seasons autumn winter spring" },
   { slug: "sports",           query: "sports athlete action" },
+  { slug: "supercars",        query: "supercar ferrari lamborghini exotic car" },
   { slug: "tattoo-art",       query: "tattoo art flash design" },
   { slug: "western",          query: "cowboy western rodeo" },
   { slug: "wolves-eagles",    query: "wolf eagle power animal" },
   { slug: "yoga",             query: "yoga fitness wellness" },
 ];
 
-const PER_CATEGORY = 10;
+const PER_CATEGORY = 55;
 const PAGE = 1;
 
 async function fetchPexels(query, perPage = 10, page = 1) {
@@ -69,13 +71,13 @@ async function fetchPexels(query, perPage = 10, page = 1) {
 }
 
 async function insertImages(images) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/generated_images`, {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/generated_images?on_conflict=image_url`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "apikey": SUPABASE_SERVICE_KEY,
       "Authorization": `Bearer ${SUPABASE_SERVICE_KEY}`,
-      "Prefer": "return=representation",
+      "Prefer": "return=representation,resolution=ignore-duplicates",
     },
     body: JSON.stringify(images),
   });

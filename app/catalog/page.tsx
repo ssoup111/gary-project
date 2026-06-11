@@ -2,6 +2,7 @@ export const metadata = { title: "Catalog" };
 
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
+import CatalogImageCard from "@/components/catalog/CatalogImageCard";
 
 // Use server-only env vars (no NEXT_PUBLIC_ prefix) so the URL is read at
 // runtime rather than being baked into the bundle at build time.
@@ -160,18 +161,7 @@ export default async function CatalogPage({
                 key={image.id}
                 className="mb-7 break-inside-avoid overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900 shadow-2xl shadow-black/30"
               >
-                {image.image_url && (
-                  <Link
-                    href={`/catalog/${encodeURIComponent(image.id)}`}
-                    className="block cursor-pointer bg-black"
-                  >
-                    <img
-                      src={image.image_url}
-                      alt={image.prompt}
-                      className="w-full object-contain bg-black"
-                    />
-                  </Link>
-                )}
+                <CatalogImageCard id={image.id} image_url={image.image_url} prompt={image.prompt} />
 
                 <div className="p-5">
                   <p className="line-clamp-4 text-sm leading-6 text-zinc-400">
