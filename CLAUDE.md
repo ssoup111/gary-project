@@ -28,43 +28,42 @@ Admin email: ssoup1@protonmail.com
 
 ## Import Scripts (project root)
 
-Three import scripts pull images from stock photo APIs into `pending_review`:
-
 | Script | Source | Notes |
 |--------|--------|-------|
-| `bulk-import.mjs` | Unsplash | Caps at 30/category (free API limit), page 2 |
-| `pexels-import.mjs` | Pexels | 55/category, page 1 |
-| `pixabay-import.mjs` | Pixabay | 55/category, page 1, uses `webformatURL` (not `largeImageURL`) |
-| `import-cars.mjs` | All 3 | Targeted: Hot Rods + Supercars only, 40 each |
+| `bulk-import.mjs` | Unsplash | 55/category, page 2, reads `.env.local` |
+| `pexels-import.mjs` | Pexels | 55/category, page 1, reads `.env.local` |
+| `pixabay-import.mjs` | Pixabay | 55/category, page 1, uses `webformatURL` ✓ |
+| `import-cars.mjs` | All 3 | Classic Cars + Supercars only, 35 each, pages 1 & 2 |
 
-All scripts read API keys from `.env.local` automatically. Duplicate protection is enforced at the DB level (`generated_images.image_url` has a UNIQUE constraint) and all scripts use `resolution=ignore-duplicates`.
+All scripts use `?on_conflict=image_url` + `resolution=ignore-duplicates` — safe to run multiple times. DB has a UNIQUE constraint on `image_url`.
 
 To run: `cd ~/Desktop/jpix && node <script-name>.mjs`
 
 ## Categories (35 total)
 
-animals, anime, beaches, big-cats, bikinis, boxing-mma, cars-motorcycles, celebrity, costume, faith, fantasy, female-models, food, funny, hip-hop, hot-rods, inspirational, lingerie, lowriders, male-models, military, miscellaneous, music, native-american, nature, old-school, pin-up, seasonal, sports, supercars, tattoo-art, western, wolves-eagles, yoga
+animals, anime, beaches, big-cats, bikinis, boxing-mma, cars-motorcycles, classic-cars, celebrity, costume, faith, fantasy, female-models, food, funny, hip-hop, inspirational, lingerie, lowriders, male-models, military, miscellaneous, music, native-american, nature, old-school, pin-up, seasonal, sports, supercars, tattoo-art, western, wolves-eagles, yoga
 
-Note: "yoga-pants" was renamed to "yoga" — slug updated in DB and all images reassigned.
+Note: "yoga-pants" renamed to "yoga", "hot-rods" renamed to "classic-cars" — slugs updated in DB and images reassigned.
 
-## Current State (end of session June 9 2026)
+## Current State (end of session June 10 2026)
 
 - Login working ✓
-- Catalog working ✓
-- Admin panel working ✓ at /admin
-- Bulk approve/reject added to admin ✓ — checkboxes on each card, Select All, Approve Selected, Reject Selected
-- 3 stock photo import scripts working ✓ (Unsplash, Pexels, Pixabay)
-- Duplicate protection in place ✓ (DB unique constraint + ignore-duplicates on insert)
+- Catalog working ✓ — broken image fallback added (`components/catalog/CatalogImageCard.tsx`)
+- Admin panel working ✓ — bulk approve/reject with checkboxes, Select All, Approve/Reject Selected
+- Unsplash + Pexels images importing and displaying correctly ✓
+- Pixabay: ALL Pixabay images wiped from DB (both approved and rejected) — clean slate
+- Duplicate protection in place ✓ (DB UNIQUE constraint on `image_url` + `on_conflict` param)
 - 35 categories live in DB ✓
-- Pixabay API key added to `.env.local` ✓
-- Bulk approve UI deployed — Bill needs to push latest commit if not yet done
 
-## Known Issues / Pending
+## Pending / Next Steps
 
-- **Pixabay images don't preview in admin** if imported with `largeImageURL` — those should be rejected and re-imported (script now uses `webformatURL` which works correctly)
-- **Hot Rods import** — previous bad query ("flame") pulled candles/fires. Query fixed to just "hot rod". Reject the bad ones in admin and re-run `node import-cars.mjs`
-- **Bulk approve UI** — code written and pushed but Bill should verify it's deployed and working at /admin
-- **Task #13** — catalog image cards linking to `/catalog/[id]` — believed to already be in place but not formally confirmed
+1. **Run Pixabay import fresh** — `node pixabay-import.mjs` — will pull clean `webformatURL` images that actually display. Then approve in admin.
+2. **Push latest code to GitHub** — bulk approve UI + catalog image fallback need to be pushed and deployed
+3. **Run import-cars.mjs** — Classic Cars + Supercars are still light on images
+4. **Task #13** — confirm catalog image cards link to `/catalog/[id]` detail page (believed working, not confirmed)
+5. **Stripe / payments** — customers can't pay yet
+6. **Facility/recipient management** — customers need to find and add inmate info
+7. **Order fulfillment workflow** — what happens after a paid order
 
 ## Vercel Env Vars (production)
 
@@ -83,5 +82,5 @@ Note: "yoga-pants" was renamed to "yoga" — slug updated in DB and all images r
 
 - `UNSPLASH_ACCESS_KEY` — Unsplash API key
 - `PEXELS_API_KEY` — Pexels API key
-- `PIXABAY_API_KEY` — Pixabay API key (added June 9 2026)
+- `PIXABAY_API_KEY` — Pixabay API key
 - `SUPABASE_SERVICE_ROLE_KEY` — used by import scripts for DB writes
