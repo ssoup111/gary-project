@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import FacilityTypeahead from "@/components/order/FacilityTypeahead";
 
 type CatalogImage = {
   id: string;
@@ -215,14 +216,12 @@ export default function OrderPage() {
                 <label className="block text-sm font-bold text-zinc-300">Inmate / Offender Number <span className="text-amber-400">*</span></label>
                 <input value={inmateNumber} onChange={(e) => setInmateNumber(e.target.value)} placeholder="e.g. 123456" className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white placeholder:text-zinc-600" />
               </div>
-              <div>
-                <label className="block text-sm font-bold text-zinc-300">Facility Name</label>
-                <input value={facilityName} onChange={(e) => setFacilityName(e.target.value)} placeholder="e.g. Stateville Correctional Center" className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white placeholder:text-zinc-600" />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-zinc-300">State</label>
-                <input value={state} onChange={(e) => setState(e.target.value)} placeholder="e.g. Illinois" className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white placeholder:text-zinc-600" />
-              </div>
+              <FacilityTypeahead
+                onSelect={(name, stateCode) => {
+                  setFacilityName(name);
+                  setState(stateCode);
+                }}
+              />
               <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
                 <p className="text-sm uppercase tracking-widest text-zinc-500">Single Image Price</p>
                 <p className="mt-2 text-4xl font-black">$1.99</p>

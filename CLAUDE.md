@@ -45,25 +45,55 @@ animals, anime, beaches, big-cats, bikinis, boxing-mma, cars-motorcycles, classi
 
 Note: "yoga-pants" renamed to "yoga", "hot-rods" renamed to "classic-cars" — slugs updated in DB and images reassigned.
 
-## Current State (end of session June 10 2026)
+## Current State (end of session June 16 2026)
 
 - Login working ✓
 - Catalog working ✓ — broken image fallback added (`components/catalog/CatalogImageCard.tsx`)
 - Admin panel working ✓ — bulk approve/reject with checkboxes, Select All, Approve/Reject Selected
 - Unsplash + Pexels images importing and displaying correctly ✓
-- Pixabay: ALL Pixabay images wiped from DB (both approved and rejected) — clean slate
+- ~400 anime illustrations pending review in admin (Pixabay illustration-only import, `import-pixabay-anime.mjs`)
 - Duplicate protection in place ✓ (DB UNIQUE constraint on `image_url` + `on_conflict` param)
 - 35 categories live in DB ✓
+- Stripe payments working ✓ — live mode, $1.99 per image, tested and confirmed paid ($0.36 goes to Stripe fees, $1.63 deposited)
+- Live Stripe webhook registered: `empowering-voyage` → `https://friendsbehindbars.com/api/stripe-webhook` → `checkout.session.completed`
+- STRIPE_WEBHOOK_SECRET updated in Vercel with live webhook signing secret ✓
+- Fulfillment queue built ✓ — `/admin/delivery` shows image + JPay recipient info + download button + "Mark as Sent" → emails customer
+- Stripe business verification: COMPLETE ✓ (charges_enabled, payouts_enabled, details_submitted all true)
+- Customer confirmation email: WORKING ✓ (GMAIL_USER + GMAIL_APP_PASSWORD set in Vercel)
+- facilities table: unique constraint added on (name, state) ✓
+- JPay/Securus facility scraper: IN PROGRESS — `scrape-jpay-playwright.mjs` written but silent error on last run; `jpay-test.mjs` diagnostic ready to run
 
-## Pending / Next Steps
+## Fulfillment Workflow — Phase 1 (Manual)
 
-1. **Run Pixabay import fresh** — `node pixabay-import.mjs` — will pull clean `webformatURL` images that actually display. Then approve in admin.
-2. **Push latest code to GitHub** — bulk approve UI + catalog image fallback need to be pushed and deployed
-3. **Run import-cars.mjs** — Classic Cars + Supercars are still light on images
-4. **Task #13** — confirm catalog image cards link to `/catalog/[id]` detail page (believed working, not confirmed)
-5. **Stripe / payments** — customers can't pay yet
-6. **Facility/recipient management** — customers need to find and add inmate info
-7. **Order fulfillment workflow** — what happens after a paid order
+1. Customer pays $1.99 → order appears in `/admin/delivery` under "Queued For Delivery"
+2. Bill logs into friendsbehindbars Securus account, clicks Download JPEG for the ordered image
+3. Bill manually enters inmate name, inmate number, and facility in Securus, attaches the image, sends
+4. Bill clicks "Mark as Sent to JPay" in admin → order marked completed → customer gets confirmation email
+5. Repeat for each unfulfilled order row
+
+## Facility Typeahead UI (designed, not yet built)
+
+Customer flow: pick state → type facility name → autocomplete filters as they type → hit enter to confirm.
+Uses `facilities` table (state + name + facility_type columns). Two-step: state first, then typeahead search within that state.
+
+## Stripe Test Mode
+
+- Test card: `4242 4242 4242 4242` | any future expiry | any CVC | any ZIP
+- To switch app to test mode: get `pk_test_...` + `sk_test_...` from Stripe dashboard (Test mode toggle, top right) → update Vercel env vars → redeploy
+
+## Priority List for Next Session
+
+1. **Run JPay diagnostic** — `cd ~/Desktop/jpix && node jpay-test.mjs` — paste output so scraper can be fixed
+2. **Fix scraper + import facilities** — once diagnostic shows what's wrong, fix `scrape-jpay-playwright.mjs`, run it, then run `import-facilities.mjs`
+3. **Switch Stripe to test mode** — get test keys from Stripe dashboard, update Vercel env vars
+4. **Build facility typeahead UI** — state dropdown + type-to-search, wire into checkout/order flow
+5. **Approve the ~400 anime images** — use bulk checkboxes in admin panel
+6. **Fix RLS security** — 10 tables have RLS disabled, needs fixing before public launch
+
+## Pending / Backlog
+
+- Run import-cars.mjs — Classic Cars + Supercars still light on images
+- Task #13 — confirm catalog image cards link to `/catalog/[id]` detail page
 
 ## Vercel Env Vars (production)
 

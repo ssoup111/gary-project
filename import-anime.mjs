@@ -1,5 +1,4 @@
-// Import classic hot rod images (1950s-70s) from Unsplash + Pexels only
-// No Pixabay — those URLs expire
+// Import anime images from Unsplash + Pexels only (no Pixabay — URLs expire)
 import { readFileSync } from "fs";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
@@ -18,13 +17,11 @@ const PEXELS_KEY   = env.PEXELS_API_KEY;
 const SUPABASE_URL = "https://zgcqbvvvwbgpbgaofkmg.supabase.co";
 const SUPABASE_SERVICE_KEY = env.SUPABASE_SERVICE_ROLE_KEY;
 
-// Multiple queries to get variety of 50s/60s/70s hot rods
-const HOT_ROD_QUERIES = [
-  "1950s classic hot rod car",
-  "1960s muscle car hot rod",
-  "vintage american hot rod custom car",
-  "classic car show big engine",
-  "1970s muscle car american classic",
+const ANIME_QUERIES = [
+  "anime art illustration",
+  "anime character digital art",
+  "manga anime style artwork",
+  "japanese anime fantasy",
 ];
 
 async function fetchUnsplash(query, page = 1) {
@@ -60,10 +57,10 @@ async function insertImages(rows) {
 }
 
 async function main() {
-  console.log("Importing 1950s-70s classic hot rods from Unsplash + Pexels...\n");
+  console.log("Importing anime images from Unsplash + Pexels...\n");
   let total = 0;
 
-  for (const query of HOT_ROD_QUERIES) {
+  for (const query of ANIME_QUERIES) {
     console.log(`Query: "${query}"`);
 
     const [u1, u2, p1] = await Promise.all([
@@ -77,7 +74,7 @@ async function main() {
       prompt: p.prompt,
       image_url: p.url,
       status: "pending_review",
-      category_slug: "classic-cars",
+      category_slug: "anime",
     }));
 
     console.log(`  Unsplash: ${u1.length + u2.length} | Pexels: ${p1.length}`);
@@ -90,7 +87,7 @@ async function main() {
     await new Promise((r) => setTimeout(r, 400));
   }
 
-  console.log(`\nDone! Total new images inserted: ${total}`);
+  console.log(`\nDone! Total new anime images inserted: ${total}`);
 }
 
 main().catch(console.error);

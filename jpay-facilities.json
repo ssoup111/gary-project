@@ -1,0 +1,3716 @@
+[
+  {
+    "name": "Chilton County Jail",
+    "state": "AL",
+    "facility_type": "Chilton County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Cochise Regional Parole Office",
+    "state": "AZ",
+    "facility_type": "Community Supervision",
+    "is_active": true
+  },
+  {
+    "name": "Electronic Monitoring Unit",
+    "state": "AZ",
+    "facility_type": "Community Supervision",
+    "is_active": true
+  },
+  {
+    "name": "Flagstaff Parole Office",
+    "state": "AZ",
+    "facility_type": "Community Supervision",
+    "is_active": true
+  },
+  {
+    "name": "Kingman Parole Office",
+    "state": "AZ",
+    "facility_type": "Community Supervision",
+    "is_active": true
+  },
+  {
+    "name": "Mesa Regional Parole Office",
+    "state": "AZ",
+    "facility_type": "Community Supervision",
+    "is_active": true
+  },
+  {
+    "name": "Northeastern Maricopa Parole Office",
+    "state": "AZ",
+    "facility_type": "Community Supervision",
+    "is_active": true
+  },
+  {
+    "name": "Pinal Regional Parole Office",
+    "state": "AZ",
+    "facility_type": "Community Supervision",
+    "is_active": true
+  },
+  {
+    "name": "Prescott Valley Parole Office",
+    "state": "AZ",
+    "facility_type": "Community Supervision",
+    "is_active": true
+  },
+  {
+    "name": "Safford Parole Office",
+    "state": "AZ",
+    "facility_type": "Community Supervision",
+    "is_active": true
+  },
+  {
+    "name": "Snowflake Parole Office",
+    "state": "AZ",
+    "facility_type": "Community Supervision",
+    "is_active": true
+  },
+  {
+    "name": "Tucson Regional Parole Office",
+    "state": "AZ",
+    "facility_type": "Community Supervision",
+    "is_active": true
+  },
+  {
+    "name": "Western Regional Parole Office",
+    "state": "AZ",
+    "facility_type": "Community Supervision",
+    "is_active": true
+  },
+  {
+    "name": "Yuma Parole Office",
+    "state": "AZ",
+    "facility_type": "Community Supervision",
+    "is_active": true
+  },
+  {
+    "name": "A33-ASPC-E Browning CDU (A33)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "A89-ASPC-E Meadows MHMT (A89)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "A91-ASPC-E Cook Medical (A91)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "A92-ASPC-E Browning (A92)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "ASPC-E BROWNING RMHPII (A86)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "ASPC-E BROWNING UNIT II (A87)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "ASPC-E BROWNING UNIT III (A88)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "ASPC-E Rynning Unit -A13 (A13)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "ASPC-E-RYNNING UNIT (A37)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "ASPC-L BARCHEY (L72)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "ASPC-L BUCKLEY TMHP (L71)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "ASPC-L Eagle Point MH (L73)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "ASPC-L Eagle Point MHW (L74)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "ASPC-L RAST L76 (L76)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "ASPC-L STINER UNIT MDM I (L68)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "ASPC-L STINER UNIT MDM II (L69)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "ASPC-L STINER UNIT MHWT (L70)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "ASPC-L SUNRISE MINORS INTAKE I (L66)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "ASPC-L Sunrise Minors MHW Close  Mental Health (L75)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "ASPC-PV Complex MHW (B82)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "B64 - Phoenix - Quiet MHW (B64)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "B78- ASPC-PV LUMLEY PC (B78)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "B79 - ASPC-PHX GEORGE MHW (B79)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "B81 -ASPC-PHX JOHN MHW (B81)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "B86-ASPC-PV San Pedro (B86)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "C63- Tucson - Rincon (C63)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "C64- Tucson - Rincon (C64)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Central Arizona Correctional Facility (M70)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Central Arizona Correctional Facility",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Central Arizona Correctional Facility - Detention (M71)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Douglas - Eggers - D17 (D17)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Douglas - Eggers - D21 (D21)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Douglas - Gila - D18 (D18)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Douglas - Gila Unit - D08 (D08)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Douglas - Mohave - D06 (D06)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Douglas - Mohave - D19 (D19)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Douglas - Mohave CDU - D11 (D11)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman (A65)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Browning (A21)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Browning 805 (A55)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Browning BMU (A79)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Browning Close Management (A71)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Browning Death Row (A27)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Browning Intake (A50)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Browning Mental Health (A32)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Browning Restrictive Housing (A73)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Browning STG (A52)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Browning Temp Complex Detention Center (A68)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Cook (A14)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Meadows Complex Detention Unit (A19)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Meadows D/ROW (A82)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Meadows MASH (A83)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Meadows Medium (A44)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Pinal / Kingman Overflow (P01)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Restricted Housing (A51)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Rynning CLS MGM (A56)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Rynning Complex Detention Unit (A60)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Rynning East (A12)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Rynning Max (A46)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Rynning Medical (A42)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Rynning Medical (A62)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Rynning Mixed (A64)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - Rynning West (A69)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - SMU 1 (A08)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - SMU 1 Detention (A34)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - SMU 1 Protected Segregation (A30)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - SMU BMU (A43)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - SMU Close (A70)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - SMU East (A38)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - SMU Mental Health Watch (A40)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - SMU Temp Complex Detention Unit (A67)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman - South (A84)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman-Browning D/RW II (A75)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Eyman-Browning OCM (A81)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Florence",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Florence - Central / U Medical (A23)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Florence - Central Close Mental Health (A58)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Florence - CU Death Row Close (A72)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Florence - East (A03)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Florence - North (A04)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Florence - South (A02)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Florence -North Yard II (A77)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Florence West",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Florence West (M65)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Florence West - M55 (M55)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Florence West - M57 (M57)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Florence West - RTC (M54)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Florence West II (M66)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Fort Grant (S04)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Fort Grant - Mile Detention (S05)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Globe (B19)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Globe - Detention (B23)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "IPC Unit (L11)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Kingman (M60)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Kingman",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Kingman  - Medical Hualapai (M59)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Kingman - Cerbat (M61)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Kingman - Complex Detention Unit 1 (M62)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Kingman - Complex Detention Unit 2 (M58)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Kingman - MTC Otero (New Mexico) (M30)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "L05 - ASPC-L Morey CDU (L05)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "L77-ASPC-L Rast Max (L77)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "L78-ASPC-L Rast Max (L78)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "L79-ASPC-L Morey (L79)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "L80-ASPC-L (L80)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "L81-ASPC-L (L81)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "L82-ASPC-L (L82)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "L83-ASPC-L (L83)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "L84-ASPC-L (L84)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "L85-ASPC-L (L85)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "La Palma (J11)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "La Palma (J12)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "LA PALMA CDU (J17)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "LA PALMA CLS I (J15)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "LA PALMA CLS II (J16)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "LA PALMA MDM I - J13 (J13)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "LA PALMA MDM II - J14 (J14)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis  - Barchey MDM III (L47)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Bachman (L08)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Bachman Complex Detention Unit (L09)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Bachman Medical PC (L35)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Bachman Medium (L44)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Bachman Minimum PC (L34)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Bachman RSAT (L65)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Bachman Transitory (L16)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Barchey Medical PS (L31)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Barchey MHW Transition (L43)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Barchey PS (L25)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Buckley PS (L29)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Buckley PS / SU (L14)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Eagle Point General Population (L45)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Eagle Point Minimum / General Population (L36)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Eagle Point Transitory (L41)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Minor Females (L51)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Morey Close (L23)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Morey I (L04)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Morey II (L56)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Morey Mash Unit (L50)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Rast Close (L32)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Rast Close 2 (L42)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Rast Close IV (L64)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Rast Close Management (L37)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Rast CLS III (L46)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Rast Max (L21)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Rast Mental Health Watch (L39)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Stiner Complex Detention Unit (L03)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Stiner II (L52)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Stiner L3 (L02)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Stiner Transfer Unit (L49)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Sunrise (L24)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Sunrise Employment Center (L40)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Sunrise MINORS CDU (L59)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Sunrise MINORS FEMALES (L60)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Sunrise MINORS MALES I (L57)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Sunrise MINORS MALES II (L58)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Sunrise PC (L38)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis - Transitory Unit (L17)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis -Minors Males (L53)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis – Rast  TMHP - L63 (L63)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis- Buckley II (L48)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Lewis- Minors CDU (L54)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Marana - CCTF",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Marana - Detention (M51)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Marana - South (M52)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - ASPC-PV RECEPTION (B27)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Complex (B00)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Hickman Beds (B73)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Lumley 1 (B02)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Lumley 2 (B53)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Lumley 3 (B60)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Lumley 4 (B63)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Lumley CC SMI - B83 (B83)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Lumley Close Management (B59)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Lumley Death Row (B50)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Lumley Long Term Care (B56)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Lumley Medium (B62)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Lumley Mental Health (B58)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Lumley Mental Health (B30)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Lumley Mental Health Watch (B57)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - MH (B69)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Piestewa (B36)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Piestewa Employment Center (B61)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "PERRYVILLE - PV LUMLEY (B77)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - San Carlos - B42 (B42)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - San Pedro 1 (B01)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Santa Cruz (B03)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Santa Maria II (B66)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Santa Maria Medium (B51)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Santa Maria Reception (B67)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Santa Rosa (B35)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Special Management (B28)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville - Special Needs (B41)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Perryville- Santa Cruz 2 (B65)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Phoenix",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Phoenix - Alhambra (B06)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Phoenix - Aspen / SPU (B22)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Phoenix - Baker - ASPC-PHX BAKER IPC (B76)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Phoenix - Flamenco Female (B13)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Phoenix - Flamenco IDA Watch (B45)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Phoenix - Flamenco John Ward (B43)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Phoenix - Flamenco King Ward (B44)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Phoenix - Flamenco Male (B08)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Phoenix - Inmate Worker (B11)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Phoenix West (M53)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Phoenix West - 2nd Chance (M49)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Red Rock Correctional Center (M80)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Red Rock Correctional Center (M90)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Rynning CLS Unit (A85)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Safford",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Safford - Detention (S03)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Safford - Globe (S07)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Safford - Globe CDU (S08)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Safford - Graham (S01)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Safford - Tonto (S02)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Safford - Tonto PC (S06)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson (C00)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Catalina (C35)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Catalina - C58 (C58)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Catalina - C59 (C59)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Cimarron C62 (C62)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Cimarron Detention (C13)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Cimarron L3 (C23)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Complex Detention (CDU) (C04)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - ICE Trans (C43)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Manzanita (C14)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Manzanita Detention (C15)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Manzanita MIRC (C55)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Manzanita RMH (C44)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Manzanita S.N.U.GP (C19)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Minors (C09)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Minors 2 (C46)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Minors Female (C51)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Minors GP II (C40)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Rincon (C01)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Rincon - C57 (C57)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Rincon - C61 (C61)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Rincon BHU (C34)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Rincon II (C50)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Rincon Mental Health (C29)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Rincon MH Program MH MH (C53)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Rincon MHW II MH MH (C54)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Rincon SNU / General Population (C42)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Santa Cruz County Jail (D36)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Santa Rita (C02)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Transitory - C22 (C22)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Whetstone (C37)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Whetstone-C56 (C56)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson - Winchester (C41)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson -St Marys Hsp - C60 (C60)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tucson Rincon Reception (C52)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Tuscon - Manzanita MHW Transition (C48)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Winslow",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Winslow - Apache (W05)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Winslow - Apache County Jail (W16)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Winslow - Apache Detention (W06)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Winslow - Complex Detention Unit (W03)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Winslow - Coronado (W01)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Winslow - Kaibab (W02)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Winslow - Kaibab North (W12)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Winslow - Kaibab W19 (W19)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Winslow - Navajo County Jail (W15)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Winslow- Kaibab - W18 (W18)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Winslow- Kaibab WRKR (W17)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Yuma",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Yuma - Dakota II (Y13)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "Yuma - Dakota MHW (Y12)",
+    "state": "AZ",
+    "facility_type": "DOC Inmate Services",
+    "is_active": true
+  },
+  {
+    "name": "AZ Visitor Background Fee (AZVB)",
+    "state": "AZ",
+    "facility_type": "Visitor background",
+    "is_active": true
+  },
+  {
+    "name": "Apache County Jail",
+    "state": "AZ",
+    "facility_type": "Apache County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Yavapai County Sheriff's Office",
+    "state": "AZ",
+    "facility_type": "Yavapai County Sheriffs Office",
+    "is_active": true
+  },
+  {
+    "name": "Mississippi County Detention Center",
+    "state": "AR",
+    "facility_type": "MISSISSIPPI COUNTY DETENTION CENTER",
+    "is_active": true
+  },
+  {
+    "name": "Osceola Criminal Justice Center",
+    "state": "AR",
+    "facility_type": "Osceola Criminal Justice Center",
+    "is_active": true
+  },
+  {
+    "name": "AMADOR COUNTY JAIL",
+    "state": "CA",
+    "facility_type": "AMADOR COUNTY JAIL",
+    "is_active": true
+  },
+  {
+    "name": "DEL NORTE COUNTY SHERIFF'S OFFICE",
+    "state": "CA",
+    "facility_type": "DEL NORTE COUNTY SHERIFFS OFFICE",
+    "is_active": true
+  },
+  {
+    "name": "Kern County Lerdo Justice Facility",
+    "state": "CA",
+    "facility_type": "Kern County",
+    "is_active": true
+  },
+  {
+    "name": "Kern County Lerdo Pretrial Facility",
+    "state": "CA",
+    "facility_type": "Kern County",
+    "is_active": true
+  },
+  {
+    "name": "Mesa Verde Detention Facility",
+    "state": "CA",
+    "facility_type": "Mesa Verde Detention Facility",
+    "is_active": true
+  },
+  {
+    "name": "Sacramento Co Main Jail",
+    "state": "CA",
+    "facility_type": "Sacramento Co",
+    "is_active": true
+  },
+  {
+    "name": "Sacramento Co Rio Cosumnes Corr Ctr",
+    "state": "CA",
+    "facility_type": "Sacramento Co",
+    "is_active": true
+  },
+  {
+    "name": "Sacramento County Youth Detention Facility YDF",
+    "state": "CA",
+    "facility_type": "Sacramento Co",
+    "is_active": true
+  },
+  {
+    "name": "Sacramento Youth DF",
+    "state": "DF",
+    "facility_type": "Sacramento Youth",
+    "is_active": true
+  },
+  {
+    "name": "San Joaquin Co Jail",
+    "state": "CA",
+    "facility_type": "San Joaquin Co Jail",
+    "is_active": true
+  },
+  {
+    "name": "Taft Community Correctional Facility",
+    "state": "CA",
+    "facility_type": "Taft Community Correctional Facility",
+    "is_active": true
+  },
+  {
+    "name": "East Valley Jail",
+    "state": "CA",
+    "facility_type": "Ventura County",
+    "is_active": true
+  },
+  {
+    "name": "Todd Road Jail Facility",
+    "state": "CA",
+    "facility_type": "Ventura County",
+    "is_active": true
+  },
+  {
+    "name": "Ventura County Pretrial Detention Facility",
+    "state": "CA",
+    "facility_type": "Ventura County",
+    "is_active": true
+  },
+  {
+    "name": "Denver County Jail",
+    "state": "CO",
+    "facility_type": "Denver County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Denver Downtown Det Ctr",
+    "state": "CO",
+    "facility_type": "Denver County Jail",
+    "is_active": true
+  },
+  {
+    "name": "LINCOLN COUNTY SHERIFF'S OFFICE",
+    "state": "CO",
+    "facility_type": "LINCOLN COUNTY SHERIFFS OFFICE",
+    "is_active": true
+  },
+  {
+    "name": "Summit County Jail",
+    "state": "CO",
+    "facility_type": "Summit County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Apalachee Correctional Institution, East Unit",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Apalachee Correctional Institution, West Unit",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "ATLANTIC W.R.C.",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Avon Park Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Avon Park Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Baker Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Baker Re- Entry",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Baker Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Bay Correctional and Rehabilitation Facility",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Blackwater River Correctional Facility",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Calhoun Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Calhoun Correctional Institution, Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Central Florida Reception Center",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Central Florida Reception Center (East)",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Central Florida Reception Center -South",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Century Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Century Correctional Institution, Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Charlotte Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Cocoa WRC",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Columbia Annex",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Columbia Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Columbia Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Cross City Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Cross City East Unit",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Cross City Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Dade Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Daytona WRC",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "DeSoto Annex",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "DeSoto Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Everglades Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Everglades Re – Entry",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Florida State Prison",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Florida State Prison West Unit",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Florida Women's Reception Center",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Fort Myers Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Fort Pierce WRC",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Franklin Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Franklin Correctional Institution, Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Gadsden Correctional Facility Media Services",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Gadsden Re-Entry Center",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Gainesville Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Gainesville Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Graceville Correctional Facility",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Graceville Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "GULF C.I.- ANNEX",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Gulf Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Gulf Forestry Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Hamilton Annex",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Hamilton Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Hamilton Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Hardee Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Hardee Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Hernando Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Hollywood WRC",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Holmes Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Holmes Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Homestead Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Jackson Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Jackson Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Jefferson Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Kissimmee WRC",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Lake City Correctional Facility",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Lake City WRC",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Lake Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Lancaster Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Lancaster Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Largo Road Prison",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Lawtey Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Liberty Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Liberty South",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Liberty Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Lowell Annex",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Lowell Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Lowell Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Loxahatchee R.P.",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Madison Correctional Institution - FL",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Madison Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Marion Correctional Institution - FL",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Marion Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Martin Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Martin Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Mayo Annex",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Mayo Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Miami North WRC (Male)",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Moore Haven Correctional Facility",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "New River Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "New River East Correctional Institution (NAFL3)",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "New River West Correctional Institution (NAFL4)",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Northwest Florida Reception Center (Annex)",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Northwest Florida Reception Center- Main Unit",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Okaloosa Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Okaloosa Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Okeechobee Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Okeechobee Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Opa Locka WRC",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Orlando WRC (Female)",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Panama City WRC",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Pensacola WRC",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Pinellas WRC",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Polk Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Polk Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Putnam Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Quincy Annex",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Reception and Medical Center-West Unit",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "River Junction Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "RMC Main Unit",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "RMC Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "SAGO PALM RE-ENTRY C",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Santa Fe WRC",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Santa Rosa (Annex)",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Santa Rosa Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Santa Rosa Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "South Bay Correctional Facility",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "South Florida Reception Center",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "South Florida Reception Center (South Unit)",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "St. Petersburg WRC",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Sumter Annex",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Sumter B.T.U",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Sumter Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Sumter Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "SUWANNEE C.I",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "SUWANNEE C.I. ANNEX",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Suwannee Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Tallahassee W.R.C.",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Tarpon Springs WRC",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Taylor ANNEX",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Taylor Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Taylor Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Tomoka Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Tomoka Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Union Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Union Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "W. Palm Beach WRC",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Wakulla Annex",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Wakulla Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Wakulla Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Walton Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Walton Work Camp",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Zephyrhills Correctional Institution",
+    "state": "FL",
+    "facility_type": "Florida Department of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Citrus County Detention Facility",
+    "state": "FL",
+    "facility_type": "Citrus County Detention Facility",
+    "is_active": true
+  },
+  {
+    "name": "Leon county Jail",
+    "state": "FL",
+    "facility_type": "Leon County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Madison Co Jail",
+    "state": "FL",
+    "facility_type": "Madison Co Jail",
+    "is_active": true
+  },
+  {
+    "name": "Palm Beach Bell Glade Det",
+    "state": "FL",
+    "facility_type": "Palm Beach Co Sheriffs Office",
+    "is_active": true
+  },
+  {
+    "name": "Palm Beach Main Det",
+    "state": "FL",
+    "facility_type": "Palm Beach Co Sheriffs Office",
+    "is_active": true
+  },
+  {
+    "name": "Pinellas County Jail",
+    "state": "FL",
+    "facility_type": "Pinellas County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Bulloch County Sheriff's Office",
+    "state": "GA",
+    "facility_type": "Bulloch County Sheriffs Office",
+    "is_active": true
+  },
+  {
+    "name": "Grady County Jail",
+    "state": "GA",
+    "facility_type": "Grady County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Muscogee County Prison, GA (MUSCOGEE CO. PRISON)",
+    "state": "GA",
+    "facility_type": "Muscogee County Prison",
+    "is_active": true
+  },
+  {
+    "name": "Bannock County Jail",
+    "state": "ID",
+    "facility_type": "Bannock County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Saline County Jail",
+    "state": "IL",
+    "facility_type": "Saline Co Jail",
+    "is_active": true
+  },
+  {
+    "name": "VERMILION COUNTY JAIL",
+    "state": "IL",
+    "facility_type": "Vermilion County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Washington County Jail",
+    "state": "IL",
+    "facility_type": "Washington County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Elkhart Co Jail IN",
+    "state": "IN",
+    "facility_type": "Elkhart Co Jail",
+    "is_active": true
+  },
+  {
+    "name": "HARRISON COUNTY SHERIFF'S DEPT",
+    "state": "IN",
+    "facility_type": "HARRISON CO SHERIFFS DEPT",
+    "is_active": true
+  },
+  {
+    "name": "Kosciusko County Jail",
+    "state": "IN",
+    "facility_type": "Kosciusko County Jail",
+    "is_active": true
+  },
+  {
+    "name": "KOSCIUSKO COUNTY WORK RELEASE",
+    "state": "IN",
+    "facility_type": "Kosciusko County Work Release",
+    "is_active": true
+  },
+  {
+    "name": "LaPorte County Jail",
+    "state": "IN",
+    "facility_type": "LaPorte County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Lawrence County Sheriff's Office",
+    "state": "IN",
+    "facility_type": "Lawrence County Sheriffs Office",
+    "is_active": true
+  },
+  {
+    "name": "Madison Co Sheriff Dept",
+    "state": "IN",
+    "facility_type": "Madison Co Sheriff Dept",
+    "is_active": true
+  },
+  {
+    "name": "Madison County Correctional Complex",
+    "state": "IN",
+    "facility_type": "Madison County Correctional Complex",
+    "is_active": true
+  },
+  {
+    "name": "Madison County Work Release",
+    "state": "IN",
+    "facility_type": "Madison County Correctional Complex",
+    "is_active": true
+  },
+  {
+    "name": "Marion County Juvenile Detention Center",
+    "state": "IN",
+    "facility_type": "Marion County Juvenile Detention Center",
+    "is_active": true
+  },
+  {
+    "name": "Montgomery Co Sheriffs Dept",
+    "state": "IN",
+    "facility_type": "Montgomery Co Sheriffs Dept",
+    "is_active": true
+  },
+  {
+    "name": "STORY COUNTY JAIL",
+    "state": "IA",
+    "facility_type": "STORY COUNTY JAIL",
+    "is_active": true
+  },
+  {
+    "name": "McPherson Co Jail",
+    "state": "KS",
+    "facility_type": "McPherson Co Jail",
+    "is_active": true
+  },
+  {
+    "name": "OTTAWA COUNTY JAIL",
+    "state": "KS",
+    "facility_type": "Ottawa Co Jail",
+    "is_active": true
+  },
+  {
+    "name": "Clay County Detention Center",
+    "state": "KY",
+    "facility_type": "Clay County Detention Ctr",
+    "is_active": true
+  },
+  {
+    "name": "HART COUNTY JAIL",
+    "state": "KY",
+    "facility_type": "Hart County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Henderson County Detention Center (HENDERSONKY)",
+    "state": "KY",
+    "facility_type": "Henderson County Detention Center",
+    "is_active": true
+  },
+  {
+    "name": "Meade County Jail",
+    "state": "KY",
+    "facility_type": "Meade County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Scott Co Det Ctr",
+    "state": "KY",
+    "facility_type": "Scott Co Det Ctr",
+    "is_active": true
+  },
+  {
+    "name": "Warren County Regional Jail, KY (WARRENKY)",
+    "state": "KY",
+    "facility_type": "Warren County Regional Jail",
+    "is_active": true
+  },
+  {
+    "name": "Aroostook County Jail",
+    "state": "ME",
+    "facility_type": "Aroostook County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Oxford County Jail",
+    "state": "ME",
+    "facility_type": "Oxford County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Waldo County Jail",
+    "state": "ME",
+    "facility_type": "Waldo County Jail",
+    "is_active": true
+  },
+  {
+    "name": "WASHINGTON COUNTY JAIL",
+    "state": "ME",
+    "facility_type": "Washington County Jail",
+    "is_active": true
+  },
+  {
+    "name": "York County Jail",
+    "state": "ME",
+    "facility_type": "York County Jail",
+    "is_active": true
+  },
+  {
+    "name": "QUEEN ANNE'S COUNTY DETENTION CENTER",
+    "state": "MD",
+    "facility_type": "QUEEN ANNES COUNTY DETENTION CENTER",
+    "is_active": true
+  },
+  {
+    "name": "Washington County Detention Center, MD (WAS)",
+    "state": "MD",
+    "facility_type": "Washington County Detention Center",
+    "is_active": true
+  },
+  {
+    "name": "NORFOLK COUNTY CORRECTIONAL CENTER",
+    "state": "MA",
+    "facility_type": "NORFOLK COUNTY CORRECTIONAL CENTER",
+    "is_active": true
+  },
+  {
+    "name": "Money Kiosk Berkshire",
+    "state": "MA",
+    "facility_type": "Berkshire County House of Corrections",
+    "is_active": true
+  },
+  {
+    "name": "Ash Street Jail & Regional Lock Up",
+    "state": "MA",
+    "facility_type": "Bristol County",
+    "is_active": true
+  },
+  {
+    "name": "Bristol County Faunce Corner",
+    "state": "MA",
+    "facility_type": "Bristol County",
+    "is_active": true
+  },
+  {
+    "name": "Essex County Middleton Jail",
+    "state": "MA",
+    "facility_type": "Essex County Middleton Jail",
+    "is_active": true
+  },
+  {
+    "name": "Essex County Women in Transit",
+    "state": "MA",
+    "facility_type": "Essex County Middleton Jail",
+    "is_active": true
+  },
+  {
+    "name": "Middlesex county MA",
+    "state": "MA",
+    "facility_type": "Middlesex Co",
+    "is_active": true
+  },
+  {
+    "name": "PLYMOUTH COUNTY CORRECTIONAL FACILITY",
+    "state": "MA",
+    "facility_type": "Plymouth County Correctional Facility",
+    "is_active": true
+  },
+  {
+    "name": "Suffolk County Jail",
+    "state": "MA",
+    "facility_type": "Suffolk Co Sheriffs Dept",
+    "is_active": true
+  },
+  {
+    "name": "St. Joseph County Jail",
+    "state": "MI",
+    "facility_type": "St Joseph Co Jail",
+    "is_active": true
+  },
+  {
+    "name": "ALGER COUNTY SHERIFF'S DEPT",
+    "state": "MI",
+    "facility_type": "Alger County Sheriffs Dept",
+    "is_active": true
+  },
+  {
+    "name": "Chippewa County Jail",
+    "state": "MI",
+    "facility_type": "Chippewa County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Clinton Co Jail",
+    "state": "MI",
+    "facility_type": "Clinton Co Jail",
+    "is_active": true
+  },
+  {
+    "name": "Gogebic Co Sheriff's Dept",
+    "state": "MI",
+    "facility_type": "Gogebic Co Sheriffs Dept",
+    "is_active": true
+  },
+  {
+    "name": "Midland County Jail",
+    "state": "MI",
+    "facility_type": "Midland County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Muskegon Co Jail",
+    "state": "MI",
+    "facility_type": "Muskegon Co Jail",
+    "is_active": true
+  },
+  {
+    "name": "NORTHWEST REGIONAL CORRECTIONS CENT",
+    "state": "MN",
+    "facility_type": "Northwest Regional Corr Ctr",
+    "is_active": true
+  },
+  {
+    "name": "Dakota Co Sheriffs Dept",
+    "state": "MN",
+    "facility_type": "Dakota Co Sheriffs Dept",
+    "is_active": true
+  },
+  {
+    "name": "Mille Lacs County Jail",
+    "state": "MN",
+    "facility_type": "Mille Lacs County Jail",
+    "is_active": true
+  },
+  {
+    "name": "WASHINGTON COUNTY JAIL",
+    "state": "MN",
+    "facility_type": "WASHINGTON COUNTY JAIL",
+    "is_active": true
+  },
+  {
+    "name": "CHICKASAW COUNTY JAIL (CHICKASAW COUNTY JAIL)",
+    "state": "MS",
+    "facility_type": "Chickasaw County Jail",
+    "is_active": true
+  },
+  {
+    "name": "CHICKASAW COUNTY REGIONAL CORRECTIONAL FACILITY (CHICKASAW COUNTY REGIONAL CORRECTIONAL FACILITY)",
+    "state": "MS",
+    "facility_type": "Chickasaw County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Issaquena County Correctional",
+    "state": "MS",
+    "facility_type": "Issaquena County Correctional",
+    "is_active": true
+  },
+  {
+    "name": "Issaquena County Correctional State",
+    "state": "MS",
+    "facility_type": "Issaquena County Correctional",
+    "is_active": true
+  },
+  {
+    "name": "CAPE GIRARDEAU COUNTY JAIL",
+    "state": "MO",
+    "facility_type": "CAPE GIRARDEAU COUNTY JAIL",
+    "is_active": true
+  },
+  {
+    "name": "Pettis Co Jail",
+    "state": "MO",
+    "facility_type": "Pettis Co Jail",
+    "is_active": true
+  },
+  {
+    "name": "St Louis Co Jail",
+    "state": "MO",
+    "facility_type": "St Louis Co Jail",
+    "is_active": true
+  },
+  {
+    "name": "Lincoln County Sheriffs Dept",
+    "state": "MT",
+    "facility_type": "Lincoln County Sheriffs Dept",
+    "is_active": true
+  },
+  {
+    "name": "Sarpy Co Jail",
+    "state": "NE",
+    "facility_type": "Sarpy Co",
+    "is_active": true
+  },
+  {
+    "name": "Sarpy Co Juvy Justice Ctr",
+    "state": "NE",
+    "facility_type": "Sarpy Co",
+    "is_active": true
+  },
+  {
+    "name": "Churchill County Sheriff's Office NV",
+    "state": "NV",
+    "facility_type": "Churchill County Sheriffs Office",
+    "is_active": true
+  },
+  {
+    "name": "Henderson Detention Center",
+    "state": "NV",
+    "facility_type": "Henderson Detention Center",
+    "is_active": true
+  },
+  {
+    "name": "Humboldt County",
+    "state": "NV",
+    "facility_type": "Humboldt County",
+    "is_active": true
+  },
+  {
+    "name": "Belknap County HOC",
+    "state": "NH",
+    "facility_type": "Belknap County HOC",
+    "is_active": true
+  },
+  {
+    "name": "Rockingham DOC",
+    "state": "NH",
+    "facility_type": "Rockingham County DOC",
+    "is_active": true
+  },
+  {
+    "name": "LUNA COUNTY DETENTION FACILITY",
+    "state": "NM",
+    "facility_type": "LUNA COUNTY DETENTION FACILITY",
+    "is_active": true
+  },
+  {
+    "name": "Eddy County Adult Detention",
+    "state": "NM",
+    "facility_type": "Eddy County Adult Detention",
+    "is_active": true
+  },
+  {
+    "name": "Eddy County Bldg 2 NM",
+    "state": "NM",
+    "facility_type": "Eddy County Adult Detention",
+    "is_active": true
+  },
+  {
+    "name": "HIDALGO COUNTY DETENTION CENTER",
+    "state": "NM",
+    "facility_type": "HIDALGO COUNTY DETENTION CENTER",
+    "is_active": true
+  },
+  {
+    "name": "Roosevelt County Adult Detention Center",
+    "state": "NM",
+    "facility_type": "Roosevelt County Adult Detention Center",
+    "is_active": true
+  },
+  {
+    "name": "San Miguel County Detention Center",
+    "state": "NM",
+    "facility_type": "San Miguel County Detention Center",
+    "is_active": true
+  },
+  {
+    "name": "Cattaraugus County Jail",
+    "state": "NY",
+    "facility_type": "Cattaraugus County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Franklin County Sheriff's Dept",
+    "state": "NY",
+    "facility_type": "FRANKLIN COUNTY SHERIFF DEPT",
+    "is_active": true
+  },
+  {
+    "name": "Fulton County Correctional Facility",
+    "state": "NY",
+    "facility_type": "Fulton County Correctional Facility",
+    "is_active": true
+  },
+  {
+    "name": "Jefferson County Correctional Facility",
+    "state": "NY",
+    "facility_type": "Jefferson County Correctional Facility",
+    "is_active": true
+  },
+  {
+    "name": "Suffolk County Riverhead",
+    "state": "NY",
+    "facility_type": "Suffolk County",
+    "is_active": true
+  },
+  {
+    "name": "Suffolk County Yaphank",
+    "state": "NY",
+    "facility_type": "Suffolk County",
+    "is_active": true
+  },
+  {
+    "name": "Tompkins County Jail",
+    "state": "NY",
+    "facility_type": "Tompkins County Jail",
+    "is_active": true
+  },
+  {
+    "name": "CLEVELAND COUNTY DETENTION FACILITY",
+    "state": "NC",
+    "facility_type": "CLEVELAND COUNTY DETENTION FACILITY",
+    "is_active": true
+  },
+  {
+    "name": "CLEVELAND COUNTY JAIL ANNEX",
+    "state": "NC",
+    "facility_type": "CLEVELAND COUNTY DETENTION FACILITY",
+    "is_active": true
+  },
+  {
+    "name": "STANLY COUNTY JAIL",
+    "state": "NC",
+    "facility_type": "Stanly County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Brunswick Co Jail",
+    "state": "NC",
+    "facility_type": "Brunswick Co Jail",
+    "is_active": true
+  },
+  {
+    "name": "Franklin County Detention Center",
+    "state": "NC",
+    "facility_type": "Franklin County Detention Center",
+    "is_active": true
+  },
+  {
+    "name": "Johnston Co Det Ctr",
+    "state": "NC",
+    "facility_type": "Johnston Co Det Ctr",
+    "is_active": true
+  },
+  {
+    "name": "Johnston Co Jail",
+    "state": "NC",
+    "facility_type": "Johnston Co Det Ctr",
+    "is_active": true
+  },
+  {
+    "name": "ONSLOW COUNTY JAIL",
+    "state": "NC",
+    "facility_type": "ONSLOW COUNTY JAIL",
+    "is_active": true
+  },
+  {
+    "name": "Pamlico Co Det Fac",
+    "state": "NC",
+    "facility_type": "Pamlico Co Det Fac",
+    "is_active": true
+  },
+  {
+    "name": "Rutherford County Detention Center",
+    "state": "NC",
+    "facility_type": "Rutherford County Detention Center",
+    "is_active": true
+  },
+  {
+    "name": "Heart of America Correctional",
+    "state": "ND",
+    "facility_type": "Heart of America Correctional  Treatment Cntr",
+    "is_active": true
+  },
+  {
+    "name": "HOA DOC",
+    "state": "ND",
+    "facility_type": "Heart of America Correctional  Treatment Cntr",
+    "is_active": true
+  },
+  {
+    "name": "Butler County Adult Probation (824MLK)",
+    "state": "OH",
+    "facility_type": "Butler County Adult Probation",
+    "is_active": true
+  },
+  {
+    "name": "Clinton County Adult Detention",
+    "state": "OH",
+    "facility_type": "Clinton County Adult Detention",
+    "is_active": true
+  },
+  {
+    "name": "Cuyahoga County Juvenile Detention",
+    "state": "OH",
+    "facility_type": "Cuyahoga County Justice Center",
+    "is_active": true
+  },
+  {
+    "name": "East Ohio Correctional Center Annex",
+    "state": "OH",
+    "facility_type": "East Ohio Correctional Center",
+    "is_active": true
+  },
+  {
+    "name": "East Ohio Correctional Center",
+    "state": "OH",
+    "facility_type": "East Ohio Correctional Center",
+    "is_active": true
+  },
+  {
+    "name": "Hancock County Sheriff's Office (HANCOCKOH)",
+    "state": "OH",
+    "facility_type": "Hancock County Sheriffs Office",
+    "is_active": true
+  },
+  {
+    "name": "Washington CCC",
+    "state": "OR",
+    "facility_type": "Washington County",
+    "is_active": true
+  },
+  {
+    "name": "Washington County",
+    "state": "OR",
+    "facility_type": "Washington County",
+    "is_active": true
+  },
+  {
+    "name": "Adams County Clerk Of Courts",
+    "state": "PA",
+    "facility_type": "Adams County Clerk of Courts",
+    "is_active": true
+  },
+  {
+    "name": "Monroe County Correctional Facility",
+    "state": "PA",
+    "facility_type": "Monroe Co Corr Fac",
+    "is_active": true
+  },
+  {
+    "name": "Wyoming County Correctional",
+    "state": "PA",
+    "facility_type": "Wyoming County Corr Facility",
+    "is_active": true
+  },
+  {
+    "name": "Anderson City Jail",
+    "state": "SC",
+    "facility_type": "Anderson City Jail",
+    "is_active": true
+  },
+  {
+    "name": "Charleston Co Det Ctr",
+    "state": "SC",
+    "facility_type": "Charleston Co Det Ctr",
+    "is_active": true
+  },
+  {
+    "name": "Charleston Co Juvy Det Ctr",
+    "state": "SC",
+    "facility_type": "Charleston Co Det Ctr",
+    "is_active": true
+  },
+  {
+    "name": "Dillon County Jail",
+    "state": "SC",
+    "facility_type": "Dillon County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Fairfield Co Det Ctr",
+    "state": "SC",
+    "facility_type": "Fairfield Co Det Ctr",
+    "is_active": true
+  },
+  {
+    "name": "Pickens County Detention Facility",
+    "state": "SC",
+    "facility_type": "Pickens County Detention Facility",
+    "is_active": true
+  },
+  {
+    "name": "SUMTER COUNTY DETENTION CENTER",
+    "state": "SC",
+    "facility_type": "SUMTER COUNTY DETENTION CENTER",
+    "is_active": true
+  },
+  {
+    "name": "Bedford County Sheriffs Department",
+    "state": "TN",
+    "facility_type": "Bedford County Sheriffs Department",
+    "is_active": true
+  },
+  {
+    "name": "Bradley County Jail",
+    "state": "TN",
+    "facility_type": "Bradley County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Carter County Jail",
+    "state": "TN",
+    "facility_type": "Carter County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Dekalb County Jail",
+    "state": "TN",
+    "facility_type": "DEKALB COUNTY JAIL",
+    "is_active": true
+  },
+  {
+    "name": "Hamilton County Alternative Sentencing (HCC)",
+    "state": "TN",
+    "facility_type": "Hamilton County Alternative Sentencing",
+    "is_active": true
+  },
+  {
+    "name": "Johnson County Jail",
+    "state": "TN",
+    "facility_type": "Johnson County Jail",
+    "is_active": true
+  },
+  {
+    "name": "MARION COUNTY JAIL",
+    "state": "TN",
+    "facility_type": "Marion County Jail",
+    "is_active": true
+  },
+  {
+    "name": "MCMINN COUNTY JUSTICE CENTER",
+    "state": "TN",
+    "facility_type": "MCMINN COUNTY JUSTICE CENTER",
+    "is_active": true
+  },
+  {
+    "name": "Montgomery Co Jail",
+    "state": "TN",
+    "facility_type": "Montgomery Co Jail",
+    "is_active": true
+  },
+  {
+    "name": "Montgomery Co WH",
+    "state": "TN",
+    "facility_type": "Montgomery Co Jail",
+    "is_active": true
+  },
+  {
+    "name": "Rhea County Jail",
+    "state": "TN",
+    "facility_type": "Rhea County Jail",
+    "is_active": true
+  },
+  {
+    "name": "WARREN COUNTY JAIL (WRN)",
+    "state": "TN",
+    "facility_type": "WARREN COUNTY JAIL",
+    "is_active": true
+  },
+  {
+    "name": "Dallas County CSCD",
+    "state": "TX",
+    "facility_type": "Dallas County CSCD",
+    "is_active": true
+  },
+  {
+    "name": "Dallas Co Lew Sterrett North Tower",
+    "state": "TX",
+    "facility_type": "Dallas County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Dallas Co Lew Sterrett West Tower",
+    "state": "TX",
+    "facility_type": "Dallas County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Dallas Co Suzanne Kays Det Ctr",
+    "state": "TX",
+    "facility_type": "Dallas County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Dallas County Jail (DCJ)",
+    "state": "TX",
+    "facility_type": "Dallas County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Fannin County Detention",
+    "state": "TX",
+    "facility_type": "Fannin County Detention",
+    "is_active": true
+  },
+  {
+    "name": "FANNIN COUNTY JAIL ANNEX",
+    "state": "TX",
+    "facility_type": "Fannin County Detention",
+    "is_active": true
+  },
+  {
+    "name": "FORT BEND COUNTY CORRECTIONAL FACILITY",
+    "state": "TX",
+    "facility_type": "Fort Bend County Correctional Facility",
+    "is_active": true
+  },
+  {
+    "name": "Gateway Foundation - Atascocita Men's Facility",
+    "state": "TX",
+    "facility_type": "Gateway Foundation   Atascocita Mens Facility",
+    "is_active": true
+  },
+  {
+    "name": "GRAND PRAIRIE POLICE DEPT",
+    "state": "TX",
+    "facility_type": "Grand Prairie Police Dept",
+    "is_active": true
+  },
+  {
+    "name": "Harris County Sheriff’s Office",
+    "state": "TX",
+    "facility_type": "Harris County Sheriffs Office",
+    "is_active": true
+  },
+  {
+    "name": "Hays Co Law Enforcement Ctr",
+    "state": "TX",
+    "facility_type": "Hays Co Law Enforcement Ctr",
+    "is_active": true
+  },
+  {
+    "name": "MONTGOMERY COUNTY JAIL",
+    "state": "TX",
+    "facility_type": "Montgomery County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Rockwall County Jail",
+    "state": "TX",
+    "facility_type": "Rockwall County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Box Elder County Jail",
+    "state": "UT",
+    "facility_type": "Box Elder County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Sanpete County Jail",
+    "state": "UT",
+    "facility_type": "SANPETE COUNTY JAIL",
+    "is_active": true
+  },
+  {
+    "name": "UTAH COUNTY JAIL",
+    "state": "UT",
+    "facility_type": "UTAH COUNTY JAIL",
+    "is_active": true
+  },
+  {
+    "name": "Weber County Correctional Facility",
+    "state": "UT",
+    "facility_type": "Weber County Correctional Facility",
+    "is_active": true
+  },
+  {
+    "name": "Accomack County Jail",
+    "state": "VA",
+    "facility_type": "Accomack County Jail",
+    "is_active": true
+  },
+  {
+    "name": "Arlington County Det Ctr",
+    "state": "VA",
+    "facility_type": "Arlington County Detention Center",
+    "is_active": true
+  },
+  {
+    "name": "Chesapeake Correctional Center",
+    "state": "VA",
+    "facility_type": "Chesapeake Correctional Center",
+    "is_active": true
+  },
+  {
+    "name": "Lancaster County Jail",
+    "state": "VA",
+    "facility_type": "Lancaster County Corrections Center",
+    "is_active": true
+  },
+  {
+    "name": "Middle Peninsula Reg Jail",
+    "state": "VA",
+    "facility_type": "Middle Peninsula Reg Jail",
+    "is_active": true
+  },
+  {
+    "name": "Northern Neck Reg Jail",
+    "state": "VA",
+    "facility_type": "Northern Neck Reg Jail",
+    "is_active": true
+  },
+  {
+    "name": "SUSSEX COUNTY JAIL",
+    "state": "VA",
+    "facility_type": "SUSSEX COUNTY JAIL",
+    "is_active": true
+  },
+  {
+    "name": "CITY OF KENT",
+    "state": "WA",
+    "facility_type": "City of Kent",
+    "is_active": true
+  },
+  {
+    "name": "King County Correctional Facility",
+    "state": "WA",
+    "facility_type": "King County",
+    "is_active": true
+  },
+  {
+    "name": "King County Maleng Regional Justice Center",
+    "state": "WA",
+    "facility_type": "King County",
+    "is_active": true
+  },
+  {
+    "name": "Lynnwood Police Department",
+    "state": "WA",
+    "facility_type": "Lynnwood Police Department",
+    "is_active": true
+  },
+  {
+    "name": "Score-South Correctional Entity",
+    "state": "WA",
+    "facility_type": "Score South Correctional Entity",
+    "is_active": true
+  },
+  {
+    "name": "Spokane County Geiger Corrections Center",
+    "state": "WA",
+    "facility_type": "Spokane County Detention Services",
+    "is_active": true
+  },
+  {
+    "name": "Spokane County Jail",
+    "state": "WA",
+    "facility_type": "Spokane County Detention Services",
+    "is_active": true
+  },
+  {
+    "name": "Yakima County Jail Main and Annex",
+    "state": "WA",
+    "facility_type": "Yakima County Jail Main and Annex",
+    "is_active": true
+  },
+  {
+    "name": "Brown Co Jail",
+    "state": "WI",
+    "facility_type": "Brown Co Jail",
+    "is_active": true
+  },
+  {
+    "name": "Brown County Work Release",
+    "state": "WI",
+    "facility_type": "Brown Co Jail",
+    "is_active": true
+  },
+  {
+    "name": "Eau Claire County Jail - Main",
+    "state": "WI",
+    "facility_type": "Eau Claire County Sheriffs Office",
+    "is_active": true
+  },
+  {
+    "name": "Juneau Co Justice Ctr",
+    "state": "WI",
+    "facility_type": "Juneau Co Justice Ctr",
+    "is_active": true
+  },
+  {
+    "name": "La Crosse County Jail",
+    "state": "LA",
+    "facility_type": "CROSSE COUNTY JAIL",
+    "is_active": true
+  },
+  {
+    "name": "Monroe County Sheriffs Office",
+    "state": "WI",
+    "facility_type": "Monroe Co",
+    "is_active": true
+  },
+  {
+    "name": "Racine County Jail - Doc Inmates",
+    "state": "WI",
+    "facility_type": "RACINE COUNTY JAIL",
+    "is_active": true
+  },
+  {
+    "name": "RACINE COUNTY JAIL",
+    "state": "WI",
+    "facility_type": "RACINE COUNTY JAIL",
+    "is_active": true
+  },
+  {
+    "name": "Sheboygan County Detention Center",
+    "state": "WI",
+    "facility_type": "Sheboygan Co Det Ctr",
+    "is_active": true
+  },
+  {
+    "name": "Sheboygan County Jail",
+    "state": "WI",
+    "facility_type": "Sheboygan Co Det Ctr",
+    "is_active": true
+  }
+]
