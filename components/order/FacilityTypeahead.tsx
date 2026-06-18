@@ -65,12 +65,12 @@ export default function FacilityTypeahead({ onSelect }: Props) {
     onSelect("", selectedState);
   }, [selectedState]);
 
-  // Filter as user types — show up to 10 results
+  // Show all when no text typed; filter as user types (cap at 25 matches)
   const filtered = searchText.length === 0
-    ? facilities.slice(0, 10)
+    ? facilities
     : facilities
         .filter((f) => f.name.toLowerCase().includes(searchText.toLowerCase()))
-        .slice(0, 10);
+        .slice(0, 25);
 
   function handleSelect(facility: Facility) {
     setSearchText(facility.name);
