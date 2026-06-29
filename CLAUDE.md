@@ -45,7 +45,7 @@ animals, anime, beaches, big-cats, bikinis, boxing-mma, cars-motorcycles, classi
 
 Note: "yoga-pants" renamed to "yoga", "hot-rods" renamed to "classic-cars" — slugs updated in DB and images reassigned.
 
-## Current State (end of session June 28 2026 — evening)
+## Current State (end of session June 28 2026 — night)
 
 - Login working ✓ — Enter key now submits, forgot password flow added, reset-password page built
 - Signup working ✓ — Enter key now submits
@@ -63,7 +63,7 @@ Note: "yoga-pants" renamed to "yoga", "hot-rods" renamed to "classic-cars" — s
 - Stripe business verification: COMPLETE ✓ (charges_enabled, payouts_enabled, details_submitted all true)
 - Customer confirmation email: WORKING ✓ — CTA links to /my-orders (was /dashboard)
 - facilities table: unique constraint added on (name, state) ✓
-- JPay/Securus facility scraper: IN PROGRESS — `scrape-jpay-playwright.mjs` written but silent error on last run; `jpay-test.mjs` diagnostic ready to run
+- JPay/Securus facility scraper: COMPLETE ✓ — 619 facilities across 40 states imported (`scrape-jpay-playwright.mjs` + `import-facilities.mjs`)
 - Missouri DOC prisons: 19 state prisons added manually → Missouri now has 22 facilities ✓
 - Facility typeahead: shows all facilities for state (no cap), filters to 25 as user types ✓
 - RLS fixes applied: orders/order_items restricted to owner; recipients SELECT/INSERT open to authenticated ✓
@@ -141,11 +141,10 @@ There are TWO separate webhooks needed — one for live mode, one for test mode.
 
 ## Priority List for Next Session
 
-1. **Run JPay diagnostic** — `cd ~/Desktop/jpix && node jpay-test.mjs` — paste output so scraper can be fixed
-2. **Fix scraper + import facilities** — once diagnostic shows what's wrong, fix `scrape-jpay-playwright.mjs`, run it, then run `import-facilities.mjs`
-3. **Fill empty categories** — `node fill-empty-categories.mjs` → approve in admin → `node reactivate-filled-categories.mjs`
-4. **Call Securus to add email to account** — needed before Snap & Send UI walkthrough + automation can proceed
-5. **Add CRON_SECRET to Vercel** — daily report email won't send without it; set any random string in Vercel env vars + redeploy
+1. **Review 2,746 new images in admin** — from `fill-empty-categories.mjs` run (June 28 night) — approve good ones, then `node reactivate-filled-categories.mjs`
+2. **Add CRON_SECRET to Vercel** — daily report email won't send without it; set any random string in Vercel env vars + redeploy
+3. **Call Securus to add email to account** — needed before Snap & Send UI walkthrough + automation can proceed
+4. **Build facility typeahead UI** — customer flow: pick state → type facility name → autocomplete (uses `facilities` table, 619 facilities across 40 states now loaded)
 
 ## Fulfillment — Phase 2: Securus Snap & Send Automation (Playwright)
 
