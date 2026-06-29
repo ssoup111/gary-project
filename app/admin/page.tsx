@@ -51,6 +51,12 @@ export default function AdminPage() {
     { label: "Total Orders", value: "...", color: "text-white" },
     { label: "Pending Delivery", value: "...", color: "text-blue-400" },
   ]);
+  const [botStats, setBotStats] = useState<{
+    queued: number;
+    completedToday: number;
+    problems: number;
+    lastCompletedAt: string | null;
+  }>({ queued: 0, completedToday: 0, problems: 0, lastCompletedAt: null });
 
   async function loadData() {
     const { data: categoryData } = await supabase.from("categories").select("id,name,slug").eq("is_active", true).order("name");
@@ -79,6 +85,27 @@ export default function AdminPage() {
     setPendingImages(pendingData || []);
     const { data: approvedData } = await supabase.from("generated_images").select("id,prompt,image_url,status,created_at,category_slug").eq("status", "approved").order("created_at", { ascending: false }).limit(24);
     setApprovedImages(approvedData || []);
+
+    // Bot / fulfillment stats
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const [
+      { count: queuedCount },
+      { count: completedTodayCount },
+      { count: problemCount },
+      { data: lastCompleted },
+    ] = await Promise.all([
+      supabase.from("delivery_queue").select("*", { count: "exact", head: true }).eq("status", "queued_for_delivery"),
+      supabase.from("delivery_queue").select("*", { count: "exact", head: true }).eq("status", "completed").gte("updated_at", todayStart.toISOString()),
+      supabase.from("delivery_queue").select("*", { count: "exact", head: true }).eq("status", "problem"),
+      supabase.from("delivery_queue").select("updated_at").eq("status", "completed").order("updated_at", { ascending: false }).limit(1),
+    ]);
+    setBotStats({
+      queued: queuedCount || 0,
+      completedToday: completedTodayCount || 0,
+      problems: problemCount || 0,
+      lastCompletedAt: lastCompleted?.[0]?.updated_at || null,
+    });
   }
 
   useEffect(() => { loadData(); }, []);
@@ -208,6 +235,63 @@ export default function AdminPage() {
             </div>
           ))}
         </div>
+
+        {/* ── Automation Status Panel ─────────────────────────────────────── */}
+        <section className="mb-10 rounded-2xl border border-zinc-700 bg-zinc-900 p-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-black tracking-tight">🤖 Securus Automation</h2>
+            <span className="rounded-full border border-zinc-600 px-3 py-1 text-xs font-bold text-zinc-400">Phase 1 — Manual</span>
+          </div>
+
+          {/* Stats row */}
+          <div className="mt-5 grid gap-4 sm:grid-cols-3">
+            <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
+              <p className="text-xs font-bold uppercase tracking-wider text-zinc-500">Queued for Delivery</p>
+              <p className={`mt-1 text-3xl font-black ${botStats.queued > 0 ? "text-amber-400" : "text-zinc-400"}`}>{botStats.queued}</p>
+            </div>
+            <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
+              <p className="text-xs font-bold uppercase tracking-wider text-zinc-500">Completed Today</p>
+              <p className={`mt-1 text-3xl font-black ${botStats.completedToday > 0 ? "text-green-400" : "text-zinc-400"}`}>{botStats.completedToday}</p>
+            </div>
+            <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
+              <p className="text-xs font-bold uppercase tracking-wider text-zinc-500">Problem Orders</p>
+              <p className={`mt-1 text-3xl font-black ${botStats.problems > 0 ? "text-red-400" : "text-zinc-400"}`}>{botStats.problems}</p>
+            </div>
+          </div>
+
+          {/* Last delivery */}
+          <p className="mt-4 text-sm text-zinc-500">
+            {botStats.lastCompletedAt
+              ? `Last delivery: ${new Date(botStats.lastCompletedAt).toLocaleString()}`
+              : "No deliveries completed yet."}
+          </p>
+
+          {/* Run instructions */}
+          {botStats.queued > 0 && (
+            <div className="mt-5 rounded-xl border border-amber-400/30 bg-amber-400/10 p-4">
+              <p className="text-sm font-bold text-amber-300">
+                {botStats.queued} order{botStats.queued !== 1 ? "s" : ""} waiting — run the bot to process:
+              </p>
+              <code className="mt-2 block rounded-lg bg-zinc-950 px-4 py-3 text-sm text-green-400">
+                cd ~/Desktop/jpix &amp;&amp; node securus-automation.mjs
+              </code>
+              <p className="mt-2 text-xs text-zinc-500">
+                Requires: <code className="text-zinc-400">SECURUS_PASSWORD</code> + <code className="text-zinc-400">ALERT_EMAIL</code> in <code className="text-zinc-400">.env.local</code>, and Securus UI selectors filled in.
+              </p>
+            </div>
+          )}
+          {botStats.queued === 0 && (
+            <p className="mt-4 text-sm font-bold text-green-400">✓ Queue is clear — no orders waiting.</p>
+          )}
+          {botStats.problems > 0 && (
+            <div className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 p-4">
+              <p className="text-sm font-bold text-red-400">
+                ⚠️ {botStats.problems} order{botStats.problems !== 1 ? "s" : ""} marked as "problem" — check the{" "}
+                <a href="/admin/delivery" className="underline hover:text-red-300">delivery queue</a> for details.
+              </p>
+            </div>
+          )}
+        </section>
 
         <h1 className="text-5xl font-black">Admin Review Queue</h1>
         <p className="mt-4 max-w-2xl text-zinc-400">Generate AI images or import stock photos, then approve them into the catalog.</p>

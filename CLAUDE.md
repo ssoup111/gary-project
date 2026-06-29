@@ -45,7 +45,7 @@ animals, anime, beaches, big-cats, bikinis, boxing-mma, cars-motorcycles, classi
 
 Note: "yoga-pants" renamed to "yoga", "hot-rods" renamed to "classic-cars" — slugs updated in DB and images reassigned.
 
-## Current State (end of session June 16 2026)
+## Current State (end of session June 28 2026)
 
 - Login working ✓
 - Catalog working ✓ — broken image fallback added (`components/catalog/CatalogImageCard.tsx`)
@@ -62,6 +62,12 @@ Note: "yoga-pants" renamed to "yoga", "hot-rods" renamed to "classic-cars" — s
 - Customer confirmation email: WORKING ✓ (GMAIL_USER + GMAIL_APP_PASSWORD set in Vercel)
 - facilities table: unique constraint added on (name, state) ✓
 - JPay/Securus facility scraper: IN PROGRESS — `scrape-jpay-playwright.mjs` written but silent error on last run; `jpay-test.mjs` diagnostic ready to run
+- Missouri DOC prisons: 19 state prisons added manually → Missouri now has 22 facilities ✓
+- Facility typeahead: shows all facilities for state (no cap), filters to 25 as user types ✓
+- RLS fixes applied: orders/order_items restricted to owner; recipients SELECT open to authenticated ✓
+- Stripe test webhook registered + working ✓
+- Playwright automation framework written: `securus-automation.mjs` — needs UI selectors filled in after manual Snap & Send walkthrough
+- RLS policies hardened ✓ — orders/order_items/delivery_queue INSERT now enforce ownership via WITH CHECK; favorite_images/inmate_contacts tightened from public → authenticated role
 
 ## Fulfillment Workflow — Phase 1 (Manual)
 
@@ -81,6 +87,27 @@ Uses `facilities` table (state + name + facility_type columns). Two-step: state 
 - Test card: `4242 4242 4242 4242` | any future expiry | any CVC | any ZIP
 - To switch app to test mode: get `pk_test_...` + `sk_test_...` from Stripe dashboard (Test mode toggle, top right) → update Vercel env vars → redeploy
 
+### Stripe Webhook — Test vs Live
+
+There are TWO separate webhooks needed — one for live mode, one for test mode. Each has its own signing secret.
+
+**Live webhook** (named `empowering-voyage`):
+- URL: `https://friendsbehindbars.com/api/stripe-webhook`
+- Event: `checkout.session.completed`
+- Signing secret: stored in Vercel as `STRIPE_WEBHOOK_SECRET` (live value)
+
+**Test webhook** (needs to be registered separately in Stripe test mode):
+- URL: `https://friendsbehindbars.com/api/stripe-webhook` (same URL)
+- Event: `checkout.session.completed`
+- To register: Stripe dashboard → toggle Test mode ON → Developers → Webhooks → Add endpoint
+- After registering, copy the `whsec_test_...` signing secret → update `STRIPE_WEBHOOK_SECRET` in Vercel → Redeploy
+
+**IMPORTANT when switching back to live mode:**
+- Restore `STRIPE_WEBHOOK_SECRET` in Vercel to the live webhook signing secret (from `empowering-voyage` webhook)
+- Update `STRIPE_SECRET_KEY` back to `sk_live_...`
+- Update `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` back to `pk_live_...`
+- Redeploy
+
 ## Priority List for Next Session
 
 1. **Run JPay diagnostic** — `cd ~/Desktop/jpix && node jpay-test.mjs` — paste output so scraper can be fixed
@@ -89,6 +116,100 @@ Uses `facilities` table (state + name + facility_type columns). Two-step: state 
 4. **Build facility typeahead UI** — state dropdown + type-to-search, wire into checkout/order flow
 5. **Approve the ~400 anime images** — use bulk checkboxes in admin panel
 6. **Fix RLS security** — 10 tables have RLS disabled, needs fixing before public launch
+
+## Fulfillment — Phase 2: Securus Snap & Send Automation (Playwright)
+
+### Overview
+Build a Playwright bot that automates the manual Securus Snap & Send workflow. This runs on demand or on a loop, processes each queued order, and updates the DB when complete.
+
+### Workflow (step by step)
+1. Query DB for next order with `status = 'queued_for_delivery'`
+2. Pull inmate info: name, inmate number, facility, state, and image URL
+3. Log into Securus website (friendsbehindbars account) — reuse session if still active
+4. Check Securus contact list — does this inmate already exist?
+   - **YES** → select the contact
+   - **NO** → add them as a new contact (name, inmate number, facility), then select them
+5. Go to Snap & Send, upload the image, submit
+6. Mark order as `completed` in DB → customer confirmation email fires automatically
+7. Repeat for next queued order
+
+### Alerts to Build In
+- **Low stamp alert**: If Securus account has fewer than 10 stamps remaining, email admin before continuing. Bill will provide the alert email address when ready to build this step.
+- **UI change detection**: If Playwright can't find an expected element (button/form/page), treat it as a possible Securus UI update — alert admin, stop processing orders, wait for human to confirm script still works.
+
+### Admin Dashboard additions
+Add an automation status panel to `/admin` showing:
+- Bot status: running / idle / paused / error
+- Orders processed today
+- Stamps remaining
+- Last run timestamp
+- Active alerts (low stamps, UI change detected)
+- Manual pause/resume button
+
+### Important Notes
+- Snap & Send requires stamp credits on the Securus account — not the same as eMessaging photo attachments (those cost 3 cents per stamp separately)
+- Bill will walk through the Snap & Send UI manually so we can map every click/field before writing the script
+- Securus uses Cloudflare anti-bot — session management and realistic timing will be important
+- If Securus updates their UI, the script will break — UI change detection alert handles this
+- Long-term goal: once volume is proven, approach Aventiv Technologies (Securus/JPay parent) for official API access
+
+### Status
+- [ ] Bill to walk through Snap & Send flow manually on screen
+- [ ] Map every step, form field, and button
+- [x] Write Playwright automation script framework (`securus-automation.mjs`) ✓
+- [ ] Fill in actual Securus UI selectors (login, contacts, Snap & Send) after UI mapping
+- [ ] Add `SECURUS_PASSWORD` + `ALERT_EMAIL` to `.env.local`
+- [ ] Build low-stamp + UI-change alert system (need alert email from Bill)
+- [ ] Add automation status panel to admin dashboard
+
+### Running the Script
+```bash
+cd ~/Desktop/jpix && node securus-automation.mjs
+```
+Before running:
+1. Add to `.env.local`: `SECURUS_PASSWORD=yourpassword` and `ALERT_EMAIL=youremail@example.com`
+2. Make sure playwright is installed: `npx playwright install chromium`
+3. Walk through Securus Snap & Send UI manually and fill in TODO selectors in `securus-automation.mjs`
+
+## Fulfillment — Phase 3 Research (Print-to-Scan)
+
+### Why No Direct API Exists
+- Securus/JPay have ZERO public API endpoints for third-party developers
+- Their "stamp" economy (charging families credits per photo) is their primary revenue model — allowing third-party uploads would bypass it
+- Facility firewalls require all inbound media to pass AI filters + staff approval within Securus's internal admin network
+- Browser automation (Playwright/Puppeteer) explicitly violates Securus/JPay ToS and will get the account banned
+
+### How Other Inmate Photo Apps Actually Work
+**Method 1 — Print-to-Scan (most common, safest):**
+- App prints the photo and mails it physically to the facility
+- Facility's Securus Digital Mail Center scans it and routes it electronically to the inmate's tablet
+- Feels fully digital to the inmate, but backend is physical
+- Examples: Pigeonly ($5/month unlimited), others
+
+**Method 2 — Browser automation (risky):**
+- Bot logs into Securus consumer site, purchases a stamp, attaches image
+- Violates ToS, anti-bot protection (Cloudflare/reCAPTCHA) breaks it constantly
+- Accounts can be permanently banned
+
+### Print-to-Scan Cost Analysis
+Using **Lob.com** print-mail API:
+- ~$0.48–$0.75 per 4x6 postcard (print + USPS postage included)
+- For photo in envelope (letter): print ~$0.30 + postage $0.73 = ~$1.00–$1.25 total
+- At $1.99/order: Stripe takes $0.36 → $1.63 gross → minus ~$1.00–$1.25 print/mail = $0.38–$0.63 profit
+- **Current price point ($1.99) is too thin for print-to-scan — would need $3.99–$4.99/order**
+
+Competitor pricing: Pigeonly charges $5/month for unlimited photos (they use print-to-scan)
+
+### Strategic Options
+1. **Keep Phase 1 manual** — Bill logs into Securus, uploads image manually, marks as sent (current)
+2. **Pivot to print-to-scan** — integrate Lob.com API, raise price to ~$3.99–$4.99, fully automated
+3. **Aventiv partnership** — pitch to Aventiv Technologies (Securus/JPay parent) for white-label content integration on their tablet ecosystem (long shot, but real pipe)
+
+### Next Steps if Pursuing Print-to-Scan
+- Add mailing addresses to `facilities` table (currently only has name + state)
+- Integrate Lob.com API (`lob` npm package)
+- Update order flow to trigger print job automatically after Stripe payment
+- Raise per-image price to $3.99–$4.99 to cover print+mail costs
 
 ## Pending / Backlog
 
