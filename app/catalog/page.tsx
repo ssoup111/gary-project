@@ -1,4 +1,7 @@
-export const metadata = { title: "Catalog" };
+export const metadata = {
+  title: "Catalog",
+  description: "Browse thousands of approved images across 35 categories — animals, anime, classic cars, sports, and more. Each image $1.99, delivered to your recipient's facility.",
+};
 
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";

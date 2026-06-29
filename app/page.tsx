@@ -1,3 +1,8 @@
+export const metadata = {
+  title: "Friends Behind Bars — Send Photos to Incarcerated Loved Ones",
+  description: "Browse approved image collections and send photos directly to incarcerated recipients for $1.99. 35 categories, reviewed and safe.",
+};
+
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 
