@@ -88,7 +88,8 @@ async function fetchPexels(query, perPage, page) {
   const res = await fetch(url, { headers: { Authorization: PEXELS_KEY } });
   if (!res.ok) { console.error(`  Pexels error: ${res.status}`); return []; }
   const data = await res.json();
-  return (data.photos || []).map((p) => ({ url: p.src?.large || p.src?.original, tags: query }));
+  // Strip query params so the same photo at different sizes isn't inserted twice
+  return (data.photos || []).map((p) => ({ url: (p.src?.large || p.src?.original || "").split("?")[0], tags: query }));
 }
 
 async function insertImages(rows) {

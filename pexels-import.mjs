@@ -109,7 +109,8 @@ async function main() {
 
     const rows = photos.map((photo) => ({
       prompt: photo.alt || category.query,
-      image_url: photo.src.large,
+      // Strip query params so the same photo at different sizes isn't inserted twice
+      image_url: (photo.src.large || "").split("?")[0],
       status: "pending_review",
       category_slug: category.slug,
     }));
