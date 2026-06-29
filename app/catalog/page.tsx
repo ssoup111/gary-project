@@ -7,8 +7,8 @@ import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 import CatalogImageCard from "@/components/catalog/CatalogImageCard";
 
-// Use server-only env vars (no NEXT_PUBLIC_ prefix) so the URL is read at
-// runtime rather than being baked into the bundle at build time.
+const PAGE_SIZE = 96;
+
 function getServerSupabase() {
   const url =
     process.env.SUPABASE_URL ||
@@ -38,10 +38,12 @@ type Category = {
 export default async function CatalogPage({
   searchParams,
 }: {
-  searchParams?: Promise<{ category?: string }>;
+  searchParams?: Promise<{ category?: string; page?: string }>;
 }) {
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const selectedCategory = resolvedSearchParams?.category || "";
+  const page = Math.max(1, parseInt(resolvedSearchParams?.page || "1", 10));
+  const offset = (page - 1) * PAGE_SIZE;
 
   const supabase = getServerSupabase();
 
@@ -55,17 +57,40 @@ export default async function CatalogPage({
     (category: Category) => category.slug === selectedCategory
   );
 
-  let query = supabase
+  // Build base query for count + paged fetch
+  let countQuery = supabase
+    .from("generated_images")
+    .select("id", { count: "exact", head: true })
+    .eq("status", "approved");
+
+  let dataQuery = supabase
     .from("generated_images")
     .select("id,prompt,image_url,created_at,category_slug")
     .eq("status", "approved")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .range(offset, offset + PAGE_SIZE - 1);
 
   if (selectedCategory) {
-    query = query.eq("category_slug", selectedCategory);
+    countQuery = countQuery.eq("category_slug", selectedCategory);
+    dataQuery = dataQuery.eq("category_slug", selectedCategory);
   }
 
-  const { data: images, error } = await query;
+  const [{ count: totalCount }, { data: images, error }] = await Promise.all([
+    countQuery,
+    dataQuery,
+  ]);
+
+  const total = totalCount || 0;
+  const totalPages = Math.ceil(total / PAGE_SIZE);
+
+  // Build pagination href helper — preserves category param
+  function pageHref(p: number) {
+    const params = new URLSearchParams();
+    if (selectedCategory) params.set("category", selectedCategory);
+    if (p > 1) params.set("page", String(p));
+    const qs = params.toString();
+    return `/catalog${qs ? `?${qs}` : ""}`;
+  }
 
   return (
     <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
@@ -86,8 +111,8 @@ export default async function CatalogPage({
 
             <p className="mt-4 max-w-2xl text-lg leading-8 text-zinc-400">
               {selectedCategory
-                ? "Browse approved AI-generated images assigned to this category."
-                : "Browse approved AI-generated catalog images available for subscriptions, packages, and incarcerated-recipient delivery."}
+                ? "Browse approved images in this category."
+                : "Browse approved catalog images — $1.99 each, delivered to your recipient's facility."}
             </p>
 
             {selectedCategory && (
@@ -98,7 +123,6 @@ export default async function CatalogPage({
                 >
                   Clear Category
                 </Link>
-
                 <Link
                   href="/categories"
                   className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-bold text-zinc-200 hover:border-amber-400 hover:text-amber-300"
@@ -111,13 +135,13 @@ export default async function CatalogPage({
 
           <div className="rounded-2xl border border-zinc-800 bg-zinc-900 px-6 py-4">
             <p className="text-sm uppercase tracking-widest text-zinc-500">
-              Approved Images
+              {selectedCategory ? "In Category" : "Approved Images"}
             </p>
-
-            <p className="mt-2 text-4xl font-black">{images?.length || 0}</p>
+            <p className="mt-2 text-4xl font-black">{total.toLocaleString()}</p>
           </div>
         </div>
 
+        {/* Category filter pills */}
         {!selectedCategory && categories && categories.length > 0 && (
           <div className="mt-10 flex flex-wrap gap-3">
             <Link
@@ -126,7 +150,6 @@ export default async function CatalogPage({
             >
               All
             </Link>
-
             {categories.map((category: Category) => (
               <Link
                 key={category.id}
@@ -137,6 +160,13 @@ export default async function CatalogPage({
               </Link>
             ))}
           </div>
+        )}
+
+        {/* Pagination context */}
+        {totalPages > 1 && (
+          <p className="mt-6 text-sm text-zinc-500">
+            Page {page} of {totalPages} · {offset + 1}–{Math.min(offset + PAGE_SIZE, total)} of {total.toLocaleString()} images
+          </p>
         )}
 
         {error && (
@@ -150,7 +180,6 @@ export default async function CatalogPage({
             <h2 className="text-2xl font-bold">
               {selectedCategory ? "No images in this category yet" : "No approved images yet"}
             </h2>
-
             <p className="mt-3 max-w-xl text-zinc-400">
               {selectedCategory
                 ? "Approved images will appear here after they are assigned to this category."
@@ -165,20 +194,17 @@ export default async function CatalogPage({
                 className="mb-7 break-inside-avoid overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900 shadow-2xl shadow-black/30"
               >
                 <CatalogImageCard id={image.id} image_url={image.image_url} prompt={image.prompt} />
-
                 <div className="p-5">
                   <p className="line-clamp-4 text-sm leading-6 text-zinc-400">
                     {image.prompt}
                   </p>
-
                   <div className="mt-5 flex items-center justify-between gap-3">
                     <span className="rounded-full bg-green-500/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-green-400">
                       Approved
                     </span>
-
                     <Link
                       href={`/order?imageId=${encodeURIComponent(image.id)}`}
-                      className="rounded-xl bg-white px-4 py-2 text-sm font-bold text-black"
+                      className="rounded-xl bg-white px-4 py-2 text-sm font-bold text-black hover:bg-amber-300"
                     >
                       Select
                     </Link>
@@ -186,6 +212,60 @@ export default async function CatalogPage({
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Pagination controls */}
+        {totalPages > 1 && (
+          <div className="mt-14 flex flex-wrap items-center justify-center gap-3">
+            {page > 1 && (
+              <Link
+                href={pageHref(page - 1)}
+                className="rounded-xl border border-zinc-700 px-5 py-3 text-sm font-bold text-zinc-200 hover:border-amber-400 hover:text-amber-300"
+              >
+                ← Previous
+              </Link>
+            )}
+
+            {/* Page number buttons — show at most 7: first, last, current ±2, and ellipsis */}
+            {Array.from({ length: totalPages }, (_, i) => i + 1)
+              .filter((p) => {
+                if (totalPages <= 7) return true;
+                return p === 1 || p === totalPages || Math.abs(p - page) <= 2;
+              })
+              .reduce<(number | "...")[]>((acc, p, i, arr) => {
+                if (i > 0 && typeof arr[i - 1] === "number" && (p as number) - (arr[i - 1] as number) > 1) {
+                  acc.push("...");
+                }
+                acc.push(p);
+                return acc;
+              }, [])
+              .map((p, i) =>
+                p === "..." ? (
+                  <span key={`ellipsis-${i}`} className="px-2 text-zinc-600">…</span>
+                ) : (
+                  <Link
+                    key={p}
+                    href={pageHref(p as number)}
+                    className={`rounded-xl px-4 py-3 text-sm font-bold ${
+                      p === page
+                        ? "bg-amber-400 text-black"
+                        : "border border-zinc-700 text-zinc-200 hover:border-amber-400 hover:text-amber-300"
+                    }`}
+                  >
+                    {p}
+                  </Link>
+                )
+              )}
+
+            {page < totalPages && (
+              <Link
+                href={pageHref(page + 1)}
+                className="rounded-xl border border-zinc-700 px-5 py-3 text-sm font-bold text-zinc-200 hover:border-amber-400 hover:text-amber-300"
+              >
+                Next →
+              </Link>
+            )}
           </div>
         )}
       </div>
