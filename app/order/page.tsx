@@ -41,7 +41,6 @@ export default function OrderPage() {
   const [loading, setLoading] = useState(true);
 
   const selectedImage = useMemo(() => images.find((i) => i.id === selectedImageId) || null, [images, selectedImageId]);
-  const filteredImages = useMemo(() => !selectedCategory ? images : images.filter((i) => i.category_slug === selectedCategory), [images, selectedCategory]);
 
   async function loadRecipients() {
     const { data: userData } = await supabase.auth.getUser();
@@ -50,19 +49,50 @@ export default function OrderPage() {
     setSavedRecipients(data || []);
   }
 
-  async function loadImages() {
+  async function loadCategories() {
     const { data: categoryData } = await supabase.from("categories").select("id,name,slug").eq("is_active", true).order("name");
     setCategories(categoryData || []);
-    const { data, error } = await supabase.from("generated_images").select("id,prompt,image_url,category_slug").eq("status", "approved").order("created_at", { ascending: false });
-    if (error) { setStatus("Failed to load images."); setLoading(false); return; }
-    setImages(data || []);
-    setLoading(false);
+
+    // Pre-select image from URL if present — no need to load the full grid
     const params = new URLSearchParams(window.location.search);
     const imageIdFromUrl = params.get("imageId");
-    if (imageIdFromUrl) { setSelectedImageId(imageIdFromUrl); setStatus("Image selected from catalog."); }
+    if (imageIdFromUrl) {
+      const { data: imgData } = await supabase
+        .from("generated_images")
+        .select("id,prompt,image_url,category_slug")
+        .eq("id", imageIdFromUrl)
+        .eq("status", "approved")
+        .single();
+      if (imgData) {
+        setImages([imgData]);
+        setSelectedImageId(imgData.id);
+      }
+    }
+    setLoading(false);
   }
 
-  useEffect(() => { loadImages(); loadRecipients(); }, []);
+  async function loadImagesForCategory(categorySlug: string) {
+    if (!categorySlug) { setImages([]); return; }
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("generated_images")
+      .select("id,prompt,image_url,category_slug")
+      .eq("status", "approved")
+      .eq("category_slug", categorySlug)
+      .order("created_at", { ascending: false });
+    if (error) { setStatus("Failed to load images."); }
+    setImages(data || []);
+    setLoading(false);
+  }
+
+  useEffect(() => { loadCategories(); loadRecipients(); }, []);
+
+  useEffect(() => {
+    // Only load category images when user picks a category AND no image is pre-selected
+    if (selectedCategory && !selectedImageId) {
+      loadImagesForCategory(selectedCategory);
+    }
+  }, [selectedCategory]);
 
   async function createOrder() {
     if (!selectedImageId) { setStatus("Select an image."); return; }
@@ -151,26 +181,42 @@ export default function OrderPage() {
         <div className="mt-12 grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
           <section>
             <div className="flex flex-wrap items-center justify-between gap-4">
-              <h2 className="text-2xl font-bold">Approved Catalog</h2>
-              {!loading && <span className="text-sm text-zinc-500">{filteredImages.length} image{filteredImages.length !== 1 ? "s" : ""}</span>}
+              <h2 className="text-2xl font-bold">
+                {selectedImageId ? "Image Selected" : "Choose an Image"}
+              </h2>
+              {selectedImageId && (
+                <button onClick={() => { setSelectedImageId(""); setSelectedCategory(""); setImages([]); }} className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-bold text-zinc-300 hover:border-amber-400">
+                  Change Image
+                </button>
+              )}
             </div>
 
-            {!loading && categories.length > 0 && (
+            {/* Category filter — only shown when no image is pre-selected */}
+            {!selectedImageId && categories.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-2">
-                <button onClick={() => setSelectedCategory("")} className={"rounded-full px-4 py-2 text-sm font-bold transition " + (!selectedCategory ? "bg-white text-black" : "border border-zinc-700 text-zinc-300 hover:border-amber-400")}>All</button>
                 {categories.map((cat) => (
                   <button key={cat.id} onClick={() => setSelectedCategory(selectedCategory === cat.slug ? "" : cat.slug)} className={"rounded-full px-4 py-2 text-sm font-bold transition " + (selectedCategory === cat.slug ? "bg-amber-400 text-black" : "border border-zinc-700 text-zinc-300 hover:border-amber-400")}>{cat.name}</button>
                 ))}
               </div>
             )}
 
-            {loading ? (
-              <div className="mt-6"><LoadingSpinner message="Loading catalog..." /></div>
-            ) : (
+            {!selectedImageId && !selectedCategory && (
+              <div className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-8 text-center">
+                <p className="text-zinc-400">Pick a category above to browse images, or{" "}
+                  <a href="/catalog" className="text-amber-400 underline hover:text-amber-300">browse the full catalog</a> and click <strong>Select</strong> on any image.
+                </p>
+              </div>
+            )}
+
+            {!selectedImageId && selectedCategory && loading && (
+              <div className="mt-6"><LoadingSpinner message="Loading images..." /></div>
+            )}
+
+            {!selectedImageId && selectedCategory && !loading && (
               <div className="mt-6 grid gap-6 sm:grid-cols-2">
-                {filteredImages.length === 0 ? (
+                {images.length === 0 ? (
                   <div className="col-span-2 rounded-2xl border border-zinc-800 bg-zinc-900 p-8"><p className="text-zinc-400">No images in this category yet.</p></div>
-                ) : filteredImages.map((image) => {
+                ) : images.map((image) => {
                   const isSelected = selectedImageId === image.id;
                   return (
                     <div key={image.id} role="button" tabIndex={0} onClick={() => { setSelectedImageId(image.id); setStatus("Image selected."); }} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setSelectedImageId(image.id); }} className={"cursor-pointer overflow-hidden rounded-3xl border text-left transition " + (isSelected ? "border-green-400 bg-zinc-800 ring-4 ring-green-400/30" : "border-zinc-800 bg-zinc-900 hover:border-zinc-500")}>
