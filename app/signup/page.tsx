@@ -13,7 +13,8 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [status, setStatus] = useState("");
 
-  async function handleSignup() {
+  async function handleSignup(e?: React.FormEvent) {
+    e?.preventDefault();
     if (!email.trim() || !password.trim() || !confirmPassword.trim()) {
       setStatus("Please fill in all fields.");
       return;
@@ -40,7 +41,7 @@ export default function SignupPage() {
         <h1 className="mt-4 text-4xl font-black">Create Account</h1>
         <p className="mt-4 text-zinc-400">Sign up to browse approved images and send them to incarcerated recipients.</p>
 
-        <div className="mt-8 space-y-5">
+        <form onSubmit={handleSignup} className="mt-8 space-y-5">
           <div>
             <label className="block text-sm font-bold text-zinc-300">Email</label>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
@@ -68,12 +69,12 @@ export default function SignupPage() {
               placeholder="Re-enter your password" />
           </div>
 
-          <button type="button" onClick={handleSignup}
-            className="w-full rounded-xl bg-white px-6 py-3 font-black text-black">
+          <button type="submit"
+            className="w-full rounded-xl bg-white px-6 py-3 font-black text-black hover:bg-amber-300">
             Create Account
           </button>
           {status && <p className="text-sm font-bold text-amber-300">{status}</p>}
-        </div>
+        </form>
 
         <p className="mt-6 text-sm text-zinc-400">
           Already have an account?{" "}

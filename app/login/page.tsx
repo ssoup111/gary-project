@@ -12,7 +12,7 @@ export default function LoginPage() {
         <h1 className="mt-4 text-4xl font-black">Customer Login</h1>
 
         <p className="mt-4 text-zinc-400">
-          Sign in to manage image orders, saved recipients, and subscriptions.
+          Sign in to browse images, place orders, and track deliveries.
         </p>
 
         <LoginForm />

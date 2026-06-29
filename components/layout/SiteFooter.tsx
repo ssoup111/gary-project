@@ -14,12 +14,11 @@ export default function SiteFooter() {
         <div>
           <p className="font-bold">Browse</p>
           <div className="mt-3 grid gap-2 text-sm text-zinc-400">
-            <Link href="/about" className="hover:text-amber-300">About</Link>
             <Link href="/how-it-works" className="hover:text-amber-300">How It Works</Link>
             <Link href="/catalog" className="hover:text-amber-300">Catalog</Link>
             <Link href="/categories" className="hover:text-amber-300">Categories</Link>
-            <Link href="/subscriptions" className="hover:text-amber-300">Subscriptions</Link>
-            <Link href="/facilities" className="hover:text-amber-300">Facilities</Link>
+            <Link href="/faq" className="hover:text-amber-300">FAQ</Link>
+            <Link href="/contact" className="hover:text-amber-300">Contact</Link>
           </div>
         </div>
 
