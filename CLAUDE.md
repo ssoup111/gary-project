@@ -45,11 +45,13 @@ animals, anime, beaches, big-cats, bikinis, boxing-mma, cars-motorcycles, classi
 
 Note: "yoga-pants" renamed to "yoga", "hot-rods" renamed to "classic-cars" — slugs updated in DB and images reassigned.
 
-## Current State (end of session June 28 2026)
+## Current State (end of session June 28 2026 — evening)
 
-- Login working ✓
+- Login working ✓ — Enter key now submits, forgot password flow added, reset-password page built
+- Signup working ✓ — Enter key now submits
 - Catalog working ✓ — broken image fallback added (`components/catalog/CatalogImageCard.tsx`)
 - Admin panel working ✓ — bulk approve/reject with checkboxes, Select All, Approve/Reject Selected
+- Admin orders page fixed ✓ — now uses service-role API (`/api/admin/orders/list`) so all customer orders show (was only showing admin's own orders due to RLS)
 - Unsplash + Pexels images importing and displaying correctly ✓
 - ~400 anime illustrations pending review in admin (Pixabay illustration-only import, `import-pixabay-anime.mjs`)
 - Duplicate protection in place ✓ (DB UNIQUE constraint on `image_url` + `on_conflict` param)
@@ -59,15 +61,18 @@ Note: "yoga-pants" renamed to "yoga", "hot-rods" renamed to "classic-cars" — s
 - STRIPE_WEBHOOK_SECRET updated in Vercel with live webhook signing secret ✓
 - Fulfillment queue built ✓ — `/admin/delivery` shows image + JPay recipient info + download button + "Mark as Sent" → emails customer
 - Stripe business verification: COMPLETE ✓ (charges_enabled, payouts_enabled, details_submitted all true)
-- Customer confirmation email: WORKING ✓ (GMAIL_USER + GMAIL_APP_PASSWORD set in Vercel)
+- Customer confirmation email: WORKING ✓ — CTA links to /my-orders (was /dashboard)
 - facilities table: unique constraint added on (name, state) ✓
 - JPay/Securus facility scraper: IN PROGRESS — `scrape-jpay-playwright.mjs` written but silent error on last run; `jpay-test.mjs` diagnostic ready to run
 - Missouri DOC prisons: 19 state prisons added manually → Missouri now has 22 facilities ✓
 - Facility typeahead: shows all facilities for state (no cap), filters to 25 as user types ✓
-- RLS fixes applied: orders/order_items restricted to owner; recipients SELECT open to authenticated ✓
+- RLS fixes applied: orders/order_items restricted to owner; recipients SELECT/INSERT open to authenticated ✓
 - Stripe test webhook registered + working ✓
 - Playwright automation framework written: `securus-automation.mjs` — needs UI selectors filled in after manual Snap & Send walkthrough
 - RLS policies hardened ✓ — orders/order_items/delivery_queue INSERT now enforce ownership via WITH CHECK; favorite_images/inmate_contacts tightened from public → authenticated role
+- Dashboard: Subscriptions card removed (feature doesn't exist)
+- Nav/footer/menu/sitemap: cleaned up (dead links removed, auth-aware nav) ✓
+- All public pages have real content ✓ — privacy policy, terms, FAQ, How It Works, content rules
 
 ## Fulfillment Workflow — Phase 1 (Manual)
 
@@ -108,14 +113,39 @@ There are TWO separate webhooks needed — one for live mode, one for test mode.
 - Update `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` back to `pk_live_...`
 - Redeploy
 
+## Catalog Content Status
+
+| Category | Approved | Active |
+|----------|----------|--------|
+| Classic Cars | 525 | ✓ |
+| Anime | 317 | ✓ |
+| Supercars | 39 | ✓ |
+| Bikinis | 32 | ✓ |
+| Cars & Motorcycles | 17 | ✓ |
+| Female Models | 15 | ✓ |
+| Military | 15 | ✓ |
+| Celebrity | 14 | ✓ |
+| Animals | 11 | ✓ |
+| Costume | 11 | ✓ |
+| Lingerie | 11 | ✓ |
+| Old School | 9 | ✓ |
+| Faith | 9 | ✓ |
+| Yoga | 8 | ✓ |
+| Miscellaneous | 6 | ✓ |
+| Inspirational/Sports/Nature/Seasonal | 5 each | ✓ |
+| Male Models | 3 | ✓ |
+| Music | 1 | ✓ |
+| Beaches, Pin-Up, Lowriders, Funny, Boxing-MMA, Wolves-Eagles, Hip-Hop, Big-Cats, Fantasy, Food, Western, Tattoo-Art, Native-American | 0 | hidden |
+
+**To fill empty categories:** `cd ~/Desktop/jpix && node fill-empty-categories.mjs` → review in admin → `node reactivate-filled-categories.mjs`
+
 ## Priority List for Next Session
 
 1. **Run JPay diagnostic** — `cd ~/Desktop/jpix && node jpay-test.mjs` — paste output so scraper can be fixed
 2. **Fix scraper + import facilities** — once diagnostic shows what's wrong, fix `scrape-jpay-playwright.mjs`, run it, then run `import-facilities.mjs`
-3. **Switch Stripe to test mode** — get test keys from Stripe dashboard, update Vercel env vars
-4. **Build facility typeahead UI** — state dropdown + type-to-search, wire into checkout/order flow
-5. **Approve the ~400 anime images** — use bulk checkboxes in admin panel
-6. **Fix RLS security** — 10 tables have RLS disabled, needs fixing before public launch
+3. **Fill empty categories** — `node fill-empty-categories.mjs` → approve in admin → `node reactivate-filled-categories.mjs`
+4. **Call Securus to add email to account** — needed before Snap & Send UI walkthrough + automation can proceed
+5. **Add CRON_SECRET to Vercel** — daily report email won't send without it; set any random string in Vercel env vars + redeploy
 
 ## Fulfillment — Phase 2: Securus Snap & Send Automation (Playwright)
 

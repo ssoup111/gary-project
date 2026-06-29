@@ -21,21 +21,22 @@ export async function GET(req: Request) {
 
   const [
     { count: newOrders },
-    { count: paidOrders },
     { count: pendingImages },
     { count: pendingDelivery },
-    { count: totalImages },
-    { count: totalUsers },
-    { data: recentOrders },
+    { count: totalApprovedImages },
+    { count: totalOrdersAllTime },
+    { data: revenueRows },
   ] = await Promise.all([
     supabase.from("orders").select("*", { count: "exact", head: true }).gte("created_at", since),
-    supabase.from("orders").select("*", { count: "exact", head: true }).eq("payment_status", "paid").gte("created_at", since),
     supabase.from("generated_images").select("*", { count: "exact", head: true }).eq("status", "pending_review"),
     supabase.from("delivery_queue").select("*", { count: "exact", head: true }).eq("status", "queued_for_delivery"),
     supabase.from("generated_images").select("*", { count: "exact", head: true }).eq("status", "approved"),
     supabase.from("orders").select("*", { count: "exact", head: true }),
-    supabase.from("orders").select("id,status,payment_status,total_cents,created_at").gte("created_at", since).order("created_at", { ascending: false }).limit(10),
+    supabase.from("orders").select("total_cents").eq("payment_status", "paid").gte("created_at", since),
   ]);
+
+  const revenue = ((revenueRows || []).reduce((sum, o) => sum + (o.total_cents || 0), 0) / 100).toFixed(2);
+  const paidOrders = (revenueRows || []).length;
 
   const dateStr = new Date().toLocaleDateString("en-US", {
     weekday: "long",
@@ -43,8 +44,6 @@ export async function GET(req: Request) {
     month: "long",
     day: "numeric",
   });
-
-  const revenue = (((paidOrders || 0) * 199) / 100).toFixed(2);
 
   const html = `
 <!DOCTYPE html>
@@ -75,11 +74,11 @@ body{font-family:Arial,sans-serif;background:#f4f4f4;padding:20px}
   </div>
   <div class="stats">
     <div class="stat"><p class="stat-value">${newOrders || 0}</p><p class="stat-label">New Orders (24h)</p></div>
-    <div class="stat"><p class="stat-value">$${revenue}</p><p class="stat-label">Revenue (24h)</p></div>
+    <div class="stat"><p class="stat-value">$${revenue}</p><p class="stat-label">Revenue (24h) · ${paidOrders} paid orders</p></div>
     <div class="stat"><p class="stat-value">${pendingImages || 0}</p><p class="stat-label">Images Pending Review</p></div>
-    <div class="stat"><p class="stat-value">${pendingDelivery || 0}</p><p class="stat-label">Deliveries Pending</p></div>
-    <div class="stat"><p class="stat-value">${totalImages || 0}</p><p class="stat-label">Approved Catalog Images</p></div>
-    <div class="stat"><p class="stat-value">${totalUsers || 0}</p><p class="stat-label">Total Orders (All Time)</p></div>
+    <div class="stat"><p class="stat-value">${pendingDelivery || 0}</p><p class="stat-label">Deliveries Queued</p></div>
+    <div class="stat"><p class="stat-value">${totalApprovedImages || 0}</p><p class="stat-label">Approved Catalog Images</p></div>
+    <div class="stat"><p class="stat-value">${totalOrdersAllTime || 0}</p><p class="stat-label">Total Orders (All Time)</p></div>
   </div>
   <div class="section">
     <h2>Action Items</h2>
@@ -89,8 +88,8 @@ body{font-family:Arial,sans-serif;background:#f4f4f4;padding:20px}
     ${(pendingDelivery || 0) > 0
       ? `<div class="alert">⚠️ ${pendingDelivery} delivery item(s) waiting to be sent.</div>`
       : `<div class="alert good">✅ No pending deliveries.</div>`}
-    ${(totalImages || 0) < 10
-      ? `<div class="alert">⚠️ Only ${totalImages} approved images in catalog. Add more!</div>`
+    ${(totalApprovedImages || 0) < 10
+      ? `<div class="alert">⚠️ Only ${totalApprovedImages} approved images in catalog. Add more!</div>`
       : ""}
   </div>
   <div class="footer">
