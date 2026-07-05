@@ -45,34 +45,52 @@ animals, anime, beaches, big-cats, bikinis, boxing-mma, cars-motorcycles, classi
 
 Note: "yoga-pants" renamed to "yoga", "hot-rods" renamed to "classic-cars" — slugs updated in DB and images reassigned.
 
-## Current State (end of session June 28 2026 — night)
+## Current State (end of session June 30 2026)
 
 - Login working ✓ — Enter key now submits, forgot password flow added, reset-password page built
 - Signup working ✓ — Enter key now submits
-- Catalog working ✓ — broken image fallback added (`components/catalog/CatalogImageCard.tsx`)
-- Admin panel working ✓ — bulk approve/reject with checkboxes, Select All, Approve/Reject Selected
-- Admin orders page fixed ✓ — now uses service-role API (`/api/admin/orders/list`) so all customer orders show (was only showing admin's own orders due to RLS)
-- Unsplash + Pexels images importing and displaying correctly ✓
-- ~400 anime illustrations pending review in admin (Pixabay illustration-only import, `import-pixabay-anime.mjs`)
-- Duplicate protection in place ✓ (DB UNIQUE constraint on `image_url` + `on_conflict` param)
+- Catalog working ✓ — infinite scroll implemented (replaces pagination) using IntersectionObserver; 96 images load server-side, rest load automatically as user scrolls
+- Admin panel working ✓ — bulk approve/reject, Select All, category filter pills with pending counts, approved count badge on every image card (green/amber/red)
+- Admin orders page fixed ✓ — service-role API bypasses RLS, shows all customer orders
+- Duplicate protection hardened ✓ — Pexels/Unsplash URLs now stripped of query params before insert; `deduplicate-images.mjs` cleaned 1,664 existing duplicates
 - 35 categories live in DB ✓
-- Stripe payments working ✓ — live mode, $1.99 per image, tested and confirmed paid ($0.36 goes to Stripe fees, $1.63 deposited)
-- Live Stripe webhook registered: `empowering-voyage` → `https://friendsbehindbars.com/api/stripe-webhook` → `checkout.session.completed`
-- STRIPE_WEBHOOK_SECRET updated in Vercel with live webhook signing secret ✓
-- Fulfillment queue built ✓ — `/admin/delivery` shows image + JPay recipient info + download button + "Mark as Sent" → emails customer
-- Stripe business verification: COMPLETE ✓ (charges_enabled, payouts_enabled, details_submitted all true)
-- Customer confirmation email: WORKING ✓ — CTA links to /my-orders (was /dashboard)
-- facilities table: unique constraint added on (name, state) ✓
-- JPay/Securus facility scraper: COMPLETE ✓ — 619 facilities across 40 states imported (`scrape-jpay-playwright.mjs` + `import-facilities.mjs`)
-- Missouri DOC prisons: 19 state prisons added manually → Missouri now has 22 facilities ✓
-- Facility typeahead: shows all facilities for state (no cap), filters to 25 as user types ✓
-- RLS fixes applied: orders/order_items restricted to owner; recipients SELECT/INSERT open to authenticated ✓
-- Stripe test webhook registered + working ✓
-- Playwright automation framework written: `securus-automation.mjs` — needs UI selectors filled in after manual Snap & Send walkthrough
-- RLS policies hardened ✓ — orders/order_items/delivery_queue INSERT now enforce ownership via WITH CHECK; favorite_images/inmate_contacts tightened from public → authenticated role
-- Dashboard: Subscriptions card removed (feature doesn't exist)
-- Nav/footer/menu/sitemap: cleaned up (dead links removed, auth-aware nav) ✓
-- All public pages have real content ✓ — privacy policy, terms, FAQ, How It Works, content rules
+- Stripe payments working ✓ — live mode, $1.99 per image
+- Fulfillment queue built ✓ — `/admin/delivery` shows image + recipient info + download + "Mark as Sent"
+- Stripe business verification: COMPLETE ✓
+- Customer confirmation email: WORKING ✓ — CTA links to /my-orders
+- JPay/Securus facility scraper: COMPLETE ✓ — 619 facilities across 40 states
+- Facility typeahead: shows all facilities for state, filters to 25 as user types ✓
+- RLS policies hardened ✓
+- Nav/footer/sitemap cleaned up ✓
+- All public pages have real content ✓
+
+## Image Quality Initiative (session June 30)
+
+Goal: higher-quality professional glamour/lingerie photography — moving away from amateur stock shots.
+
+### What was tried
+- Uploaded reference images (professional lingerie/boudoir editorial style) to analyze quality markers
+- Wrote `test-import-glamour.mjs` — targeted test importer for female-models category
+- Problem: Pixabay was returning irrelevant images (lions, horses) because "editorial/model" matched animal photography
+- Fix applied: added `category=fashion` to Pixabay API calls + all search terms now include "woman" explicitly
+- Fix applied: removed `orientation=portrait` restriction from Pexels (was limiting result pool)
+- Still working on getting clean fresh results — page cycling caused 0 new inserts on some runs
+
+### Search terms in test-import-glamour.mjs (current)
+- "woman lingerie bedroom"
+- "glamour woman portrait blonde"
+- "boudoir woman studio"
+- "woman lingerie stockings heels"
+- "woman black lingerie interior"
+- "woman lingerie back pose stockings"
+- "woman lingerie fashion portrait"
+- "boudoir woman black lingerie"
+- "woman lingerie editorial"
+
+### Next step for image quality
+Run: `cd ~/Desktop/jpix && node test-import-glamour.mjs`
+Review results in admin → female-models filter
+If quality is good → scale up to full import for female-models + lingerie categories
 
 ## Fulfillment Workflow — Phase 1 (Manual)
 
@@ -141,10 +159,11 @@ There are TWO separate webhooks needed — one for live mode, one for test mode.
 
 ## Priority List for Next Session
 
-1. **Review 2,746 new images in admin** — from `fill-empty-categories.mjs` run (June 28 night) — approve good ones, then `node reactivate-filled-categories.mjs`
-2. **Add CRON_SECRET to Vercel** — daily report email won't send without it; set any random string in Vercel env vars + redeploy
-3. **Call Securus to add email to account** — needed before Snap & Send UI walkthrough + automation can proceed
-4. **Build facility typeahead UI** — customer flow: pick state → type facility name → autocomplete (uses `facilities` table, 619 facilities across 40 states now loaded)
+1. **Finish image quality test** — run `node test-import-glamour.mjs`, review in admin under female-models, if good scale up to full lingerie + female-models import
+2. **Review 2,746 pending images** — use category filter in admin, approve good ones, then `node reactivate-filled-categories.mjs` to re-enable hidden categories
+3. **Add CRON_SECRET to Vercel** — daily report email won't fire without it; any random string → Vercel env vars → Redeploy
+4. **Call Securus to add email to account** — blocks all Snap & Send automation work
+5. **Build facility typeahead UI** — customer picks state → types facility name → autocomplete (619 facilities ready in DB)
 
 ## Fulfillment — Phase 2: Securus Snap & Send Automation (Playwright)
 

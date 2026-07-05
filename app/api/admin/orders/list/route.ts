@@ -42,7 +42,7 @@ export async function GET(req: Request) {
         recipient_id,
         order_items (
           id,
-          image_id,
+          generated_image_id,
           generated_images ( image_url, prompt )
         )
       `)
