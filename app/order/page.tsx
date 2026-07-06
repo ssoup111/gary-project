@@ -4,29 +4,28 @@ import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import FacilityTypeahead from "@/components/order/FacilityTypeahead";
+import Link from "next/link";
 
-type CatalogImage = {
-  id: string;
-  prompt: string;
-  image_url: string | null;
-  category_slug: string | null;
-};
-
-type Recipient = {
-  id: string;
-  full_name: string;
-  inmate_number: string | null;
-  facility_name: string | null;
-  state: string | null;
-};
-
-type Category = {
+type Plan = {
   id: string;
   name: string;
   slug: string;
+  plan_type: string;
+  description: string;
+  image_count: number;
+  price_cents: number;
+  duration_days: number | null;
+  badge: string | null;
+  savings_pct: number | null;
 };
 
+type CatalogImage = { id: string; prompt: string; image_url: string | null; category_slug: string | null; };
+type Category = { id: string; name: string; slug: string; };
+type Recipient = { id: string; full_name: string; inmate_number: string | null; facility_name: string | null; state: string | null; };
+
 export default function OrderPage() {
+  const [plans, setPlans] = useState<Plan[]>([]);
+  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [images, setImages] = useState<CatalogImage[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -39,65 +38,67 @@ export default function OrderPage() {
   const [savedRecipients, setSavedRecipients] = useState<Recipient[]>([]);
   const [selectedRecipientId, setSelectedRecipientId] = useState("");
   const [loading, setLoading] = useState(true);
+  const [step, setStep] = useState<"plan" | "details">("plan");
 
   const selectedImage = useMemo(() => images.find((i) => i.id === selectedImageId) || null, [images, selectedImageId]);
-
-  async function loadRecipients() {
-    const { data: userData } = await supabase.auth.getUser();
-    if (!userData.user) return;
-    const { data } = await supabase.from("inmate_contacts").select("id,full_name,inmate_number,facility_name,state").eq("user_id", userData.user.id).order("created_at", { ascending: false });
-    setSavedRecipients(data || []);
-  }
-
-  async function loadCategories() {
-    const { data: categoryData } = await supabase.from("categories").select("id,name,slug").eq("is_active", true).order("name");
-    setCategories(categoryData || []);
-
-    // Pre-select image from URL if present — no need to load the full grid
-    const params = new URLSearchParams(window.location.search);
-    const imageIdFromUrl = params.get("imageId");
-    if (imageIdFromUrl) {
-      const { data: imgData } = await supabase
-        .from("generated_images")
-        .select("id,prompt,image_url,category_slug")
-        .eq("id", imageIdFromUrl)
-        .eq("status", "approved")
-        .single();
-      if (imgData) {
-        setImages([imgData]);
-        setSelectedImageId(imgData.id);
-      }
-    }
-    setLoading(false);
-  }
-
-  async function loadImagesForCategory(categorySlug: string) {
-    if (!categorySlug) { setImages([]); return; }
-    setLoading(true);
-    const { data, error } = await supabase
-      .from("generated_images")
-      .select("id,prompt,image_url,category_slug")
-      .eq("status", "approved")
-      .eq("category_slug", categorySlug)
-      .order("created_at", { ascending: false });
-    if (error) { setStatus("Failed to load images."); }
-    setImages(data || []);
-    setLoading(false);
-  }
-
-  useEffect(() => { loadCategories(); loadRecipients(); }, []);
+  const individual = useMemo(() => plans.filter((p) => p.plan_type === "individual"), [plans]);
+  const packages   = useMemo(() => plans.filter((p) => p.plan_type === "package"), [plans]);
+  const subs       = useMemo(() => plans.filter((p) => p.plan_type === "subscription"), [plans]);
 
   useEffect(() => {
-    // Only load category images when user picks a category AND no image is pre-selected
+    async function init() {
+      // Load plans
+      const { data: planData } = await supabase.from("product_plans").select("*").eq("is_active", true).order("sort_order");
+      setPlans(planData || []);
+
+      // Load categories
+      const { data: catData } = await supabase.from("categories").select("id,name,slug").eq("is_active", true).order("name");
+      setCategories(catData || []);
+
+      // Load saved recipients
+      const { data: userData } = await supabase.auth.getUser();
+      if (userData.user) {
+        const { data: recData } = await supabase.from("inmate_contacts").select("id,full_name,inmate_number,facility_name,state").eq("user_id", userData.user.id).order("created_at", { ascending: false });
+        setSavedRecipients(recData || []);
+      }
+
+      // Pre-select image + plan from URL
+      const params = new URLSearchParams(window.location.search);
+      const imageIdFromUrl = params.get("imageId");
+      const planSlugFromUrl = params.get("plan");
+
+      if (imageIdFromUrl) {
+        const { data: imgData } = await supabase.from("generated_images").select("id,prompt,image_url,category_slug").eq("id", imageIdFromUrl).eq("status", "approved").single();
+        if (imgData) { setImages([imgData]); setSelectedImageId(imgData.id); }
+      }
+
+      if (planSlugFromUrl && planData) {
+        const found = planData.find((p: Plan) => p.slug === planSlugFromUrl);
+        if (found) { setSelectedPlan(found); setStep("details"); }
+      }
+
+      setLoading(false);
+    }
+    init();
+  }, []);
+
+  useEffect(() => {
     if (selectedCategory && !selectedImageId) {
-      loadImagesForCategory(selectedCategory);
+      setLoading(true);
+      supabase.from("generated_images").select("id,prompt,image_url,category_slug").eq("status", "approved").eq("category_slug", selectedCategory).order("created_at", { ascending: false })
+        .then(({ data }) => { setImages(data || []); setLoading(false); });
     }
   }, [selectedCategory]);
 
-  async function createOrder() {
-    if (!selectedImageId) { setStatus("Select an image."); return; }
+  async function handleCheckout() {
+    if (!selectedPlan) { setStatus("Please select a plan."); return; }
 
-    // Resolve recipient data — from saved contact or form inputs
+    // Single image plans need an image selected
+    if (selectedPlan.plan_type === "individual" && selectedPlan.image_count === 1 && !selectedImageId) {
+      setStatus("Please select an image from the catalog first."); return;
+    }
+
+    // Resolve recipient
     let rName = fullName.trim();
     let rInmate = inmateNumber.trim();
     let rFacility = facilityName.trim();
@@ -105,178 +106,242 @@ export default function OrderPage() {
 
     if (selectedRecipientId) {
       const saved = savedRecipients.find((r) => r.id === selectedRecipientId);
-      if (!saved) { setStatus("Selected recipient not found."); return; }
-      rName = saved.full_name;
-      rInmate = saved.inmate_number || "";
-      rFacility = saved.facility_name || "";
-      rState = saved.state || "";
+      if (saved) { rName = saved.full_name; rInmate = saved.inmate_number || ""; rFacility = saved.facility_name || ""; rState = saved.state || ""; }
     }
 
     if (!rName) { setStatus("Please provide the recipient's full name."); return; }
     if (!rInmate) { setStatus("Please provide the inmate / offender number."); return; }
-    if (!rState) { setStatus("Please provide the recipient's state."); return; }
+    if (!rState) { setStatus("Please select the recipient's state/facility."); return; }
 
-    setStatus("Creating order...");
     const { data: userData } = await supabase.auth.getUser();
     if (!userData.user) { setStatus("Please sign in to place an order."); return; }
 
-    // Split full name into first / last for the recipients table
-    const nameParts = rName.split(" ");
-    const firstName = nameParts[0] || "";
-    const lastName = nameParts.slice(1).join(" ") || "";
-
-    // Insert into `recipients` — this is what orders and delivery_queue FK to
-    const { data: recipientRow, error: recipientError } = await supabase
-      .from("recipients")
-      .insert({ first_name: firstName, last_name: lastName, offender_id: rInmate, state: rState, facility: rFacility || null })
-      .select("id")
-      .single();
-    if (recipientError || !recipientRow) { setStatus("Failed to save recipient: " + (recipientError?.message || "unknown error")); return; }
-
-    // Also save to inmate_contacts for future use (if entering manually and not a duplicate)
+    // Save to inmate_contacts for future use
     if (!selectedRecipientId) {
-      const duplicate = savedRecipients.find((r) => r.inmate_number?.trim().toLowerCase() === rInmate.toLowerCase());
-      if (!duplicate) {
+      const dup = savedRecipients.find((r) => r.inmate_number?.toLowerCase() === rInmate.toLowerCase());
+      if (!dup) {
         await supabase.from("inmate_contacts").insert({ user_id: userData.user.id, full_name: rName, inmate_number: rInmate, facility_name: rFacility || null, state: rState || null });
       }
     }
 
-    // Create the order using the recipients.id
-    const { data: orderData, error: orderError } = await supabase
-      .from("orders")
-      .insert({ recipient_id: recipientRow.id, purchase_type: "single_image", status: "pending", total_cents: 199, customer_email: userData.user.email })
-      .select()
-      .single();
-    if (orderError || !orderData) { setStatus("Failed to create order: " + (orderError?.message || "unknown error")); return; }
+    const nameParts = rName.split(" ");
+    setStatus("Redirecting to checkout...");
 
-    await supabase.from("order_items").insert({ order_id: orderData.id, generated_image_id: selectedImageId, quantity: 1 });
-    await supabase.from("delivery_queue").insert({ order_id: orderData.id, recipient_id: recipientRow.id, status: "pending", platform: "Securus/JPay" });
+    const res = await fetch("/api/checkout/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        planSlug: selectedPlan.slug,
+        imageId: selectedImageId || null,
+        customerEmail: userData.user.email,
+        recipientData: { firstName: nameParts[0] || "", lastName: nameParts.slice(1).join(" ") || "", offenderId: rInmate, facility: rFacility, state: rState },
+      }),
+    });
 
-    setStatus("Redirecting to Stripe checkout...");
-    const checkoutResponse = await fetch("/api/create-checkout-session", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ orderId: orderData.id }) });
-    const checkoutResult = await checkoutResponse.json();
-    if (!checkoutResult.success || !checkoutResult.url) { setStatus(checkoutResult.error || "Stripe checkout failed."); return; }
-    window.location.href = checkoutResult.url;
+    const result = await res.json();
+    if (!result.success || !result.url) { setStatus(result.error || "Checkout failed."); return; }
+    window.location.href = result.url;
   }
+
+  if (loading && plans.length === 0) return (
+    <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
+      <div className="mx-auto max-w-6xl"><LoadingSpinner message="Loading..." /></div>
+    </main>
+  );
 
   return (
     <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
       <div className="mx-auto max-w-6xl">
-        <h1 className="text-5xl font-black">Create Order</h1>
-        <p className="mt-4 max-w-2xl text-zinc-400">Select an approved catalog image and assign it to an incarcerated recipient.</p>
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">Friends Behind Bars</p>
+        <h1 className="mt-4 text-5xl font-black">Place an Order</h1>
+        <p className="mt-3 text-zinc-400">Choose a plan, enter your recipient, and check out.</p>
 
-        {selectedImage && (
-          <section className="mt-8 rounded-3xl border border-green-500/40 bg-green-500/10 p-6">
-            <p className="text-sm font-bold uppercase tracking-[0.25em] text-green-300">Selected Image</p>
-            <div className="mt-5 grid gap-6 md:grid-cols-[240px_1fr]">
-              {selectedImage.image_url && <img src={selectedImage.image_url} alt={selectedImage.prompt} className="max-h-[420px] w-full rounded-2xl object-contain bg-black" />}
-              <div>
-                <p className="text-sm leading-6 text-zinc-300">{selectedImage.prompt}</p>
-                <a href="/catalog" className="mt-5 inline-block rounded-xl border border-zinc-700 px-4 py-2 text-sm font-bold text-zinc-200 hover:border-amber-400">Choose Different Image</a>
-              </div>
+        {/* Step indicator */}
+        <div className="mt-8 flex items-center gap-4">
+          <button onClick={() => setStep("plan")} className={"flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold " + (step === "plan" ? "bg-amber-400 text-black" : "border border-zinc-700 text-zinc-400 hover:border-amber-400")}>
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-black/20 text-xs font-black">1</span> Choose Plan
+          </button>
+          <div className="h-px w-8 bg-zinc-700" />
+          <button onClick={() => selectedPlan && setStep("details")} className={"flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold " + (step === "details" ? "bg-amber-400 text-black" : "border border-zinc-700 text-zinc-400")}>
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-black/20 text-xs font-black">2</span> Recipient & Checkout
+          </button>
+        </div>
+
+        {/* ── STEP 1: Plan Selection ── */}
+        {step === "plan" && (
+          <div className="mt-10">
+
+            {/* Individual */}
+            <h2 className="text-xl font-black text-zinc-200">Individual Images</h2>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              {individual.map((plan) => (
+                <button key={plan.id} onClick={() => { setSelectedPlan(plan); setStep("details"); }}
+                  className={"relative rounded-2xl border p-6 text-left transition " + (selectedPlan?.id === plan.id ? "border-amber-400 bg-amber-400/10" : "border-zinc-800 bg-zinc-900 hover:border-zinc-600")}>
+                  {plan.badge && <span className="absolute right-4 top-4 rounded-full bg-amber-400 px-2 py-0.5 text-xs font-black text-black">{plan.badge}</span>}
+                  <p className="font-black">{plan.name}</p>
+                  <p className="mt-1 text-xs text-zinc-400">{plan.description}</p>
+                  <p className="mt-4 text-2xl font-black">${(plan.price_cents / 100).toFixed(2)}</p>
+                  {plan.savings_pct && <p className="text-xs font-bold text-green-400">Save {plan.savings_pct}%</p>}
+                </button>
+              ))}
             </div>
-          </section>
+
+            {/* Packages */}
+            <h2 className="mt-10 text-xl font-black text-zinc-200">Image Packages <span className="text-sm font-normal text-zinc-500">— credits never expire</span></h2>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {packages.map((plan) => (
+                <button key={plan.id} onClick={() => { setSelectedPlan(plan); setStep("details"); }}
+                  className={"relative rounded-2xl border p-5 text-left transition " + (selectedPlan?.id === plan.id ? "border-amber-400 bg-amber-400/10" : plan.badge === "Popular" ? "border-amber-400/40 bg-zinc-800 hover:border-amber-400" : plan.badge === "Best Value" ? "border-green-400/40 bg-zinc-800 hover:border-green-400" : "border-zinc-800 bg-zinc-900 hover:border-zinc-600")}>
+                  {plan.badge && <span className={"absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full px-3 py-0.5 text-xs font-black " + (plan.badge === "Best Value" ? "bg-green-400 text-black" : "bg-amber-400 text-black")}>{plan.badge}</span>}
+                  <p className="font-black">{plan.name}</p>
+                  <p className="mt-3 text-2xl font-black">${(plan.price_cents / 100).toFixed(2)}</p>
+                  <p className="text-xs text-zinc-500">${(plan.price_cents / plan.image_count / 100).toFixed(2)}/image</p>
+                  {plan.savings_pct && <p className="text-xs font-bold text-green-400">Save {plan.savings_pct}%</p>}
+                </button>
+              ))}
+            </div>
+
+            {/* Subscriptions */}
+            <h2 className="mt-10 text-xl font-black text-zinc-200">Daily Subscriptions <span className="text-sm font-normal text-zinc-500">— 1 image/day, auto-delivered</span></h2>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {subs.map((plan) => (
+                <button key={plan.id} onClick={() => { setSelectedPlan(plan); setStep("details"); }}
+                  className={"relative rounded-2xl border p-5 text-left transition " + (selectedPlan?.id === plan.id ? "border-amber-400 bg-amber-400/10" : plan.badge === "Popular" ? "border-amber-400/40 bg-zinc-800 hover:border-amber-400" : plan.badge === "Best Value" ? "border-green-400/40 bg-zinc-800 hover:border-green-400" : "border-zinc-800 bg-zinc-900 hover:border-zinc-600")}>
+                  {plan.badge && <span className={"absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full px-3 py-0.5 text-xs font-black " + (plan.badge === "Best Value" ? "bg-green-400 text-black" : "bg-amber-400 text-black")}>{plan.badge}</span>}
+                  <p className="font-black">{plan.name}</p>
+                  <p className="mt-1 text-xs text-zinc-400">{plan.image_count} images total</p>
+                  <p className="mt-3 text-2xl font-black">${(plan.price_cents / 100).toFixed(2)}</p>
+                  <p className="text-xs text-zinc-500">${((plan.price_cents / (plan.duration_days || 30)) / 100).toFixed(2)}/day</p>
+                </button>
+              ))}
+            </div>
+
+            <Link href="/pricing" className="mt-8 inline-block text-sm text-amber-400 underline hover:text-amber-300">
+              View full pricing details →
+            </Link>
+          </div>
         )}
 
-        <div className="mt-12 grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
-          <section>
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <h2 className="text-2xl font-bold">
-                {selectedImageId ? "Image Selected" : "Choose an Image"}
-              </h2>
-              {selectedImageId && (
-                <button onClick={() => { setSelectedImageId(""); setSelectedCategory(""); setImages([]); }} className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-bold text-zinc-300 hover:border-amber-400">
-                  Change Image
-                </button>
-              )}
-            </div>
+        {/* ── STEP 2: Recipient + Checkout ── */}
+        {step === "details" && selectedPlan && (
+          <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_420px]">
 
-            {/* Category filter — only shown when no image is pre-selected */}
-            {!selectedImageId && categories.length > 0 && (
-              <div className="mt-4 flex flex-wrap gap-2">
-                {categories.map((cat) => (
-                  <button key={cat.id} onClick={() => setSelectedCategory(selectedCategory === cat.slug ? "" : cat.slug)} className={"rounded-full px-4 py-2 text-sm font-bold transition " + (selectedCategory === cat.slug ? "bg-amber-400 text-black" : "border border-zinc-700 text-zinc-300 hover:border-amber-400")}>{cat.name}</button>
-                ))}
-              </div>
-            )}
-
-            {!selectedImageId && !selectedCategory && (
-              <div className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-8 text-center">
-                <p className="text-zinc-400">Pick a category above to browse images, or{" "}
-                  <a href="/catalog" className="text-amber-400 underline hover:text-amber-300">browse the full catalog</a> and click <strong>Select</strong> on any image.
-                </p>
-              </div>
-            )}
-
-            {!selectedImageId && selectedCategory && loading && (
-              <div className="mt-6"><LoadingSpinner message="Loading images..." /></div>
-            )}
-
-            {!selectedImageId && selectedCategory && !loading && (
-              <div className="mt-6 grid gap-6 sm:grid-cols-2">
-                {images.length === 0 ? (
-                  <div className="col-span-2 rounded-2xl border border-zinc-800 bg-zinc-900 p-8"><p className="text-zinc-400">No images in this category yet.</p></div>
-                ) : images.map((image) => {
-                  const isSelected = selectedImageId === image.id;
-                  return (
-                    <div key={image.id} role="button" tabIndex={0} onClick={() => { setSelectedImageId(image.id); setStatus("Image selected."); }} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setSelectedImageId(image.id); }} className={"cursor-pointer overflow-hidden rounded-3xl border text-left transition " + (isSelected ? "border-green-400 bg-zinc-800 ring-4 ring-green-400/30" : "border-zinc-800 bg-zinc-900 hover:border-zinc-500")}>
-                      {image.image_url && <a href={image.image_url} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="block cursor-zoom-in bg-black"><img src={image.image_url} alt={image.prompt} className="w-full object-contain bg-black" /></a>}
-                      <div className="p-5">
-                        <p className="line-clamp-4 text-sm leading-6 text-zinc-400">{image.prompt}</p>
-                        <button type="button" onClick={(e) => { e.stopPropagation(); setSelectedImageId(image.id); setStatus("Image selected."); }} className={"mt-5 w-full rounded-xl px-4 py-3 text-sm font-black " + (isSelected ? "bg-green-400 text-black" : "bg-white text-black")}>{isSelected ? "Selected" : "Select This Image"}</button>
+            {/* Left: image picker (only for single image) */}
+            {selectedPlan.plan_type === "individual" && selectedPlan.image_count === 1 && (
+              <section>
+                <h2 className="text-2xl font-bold">
+                  {selectedImageId ? "Image Selected" : "Choose an Image"}
+                </h2>
+                {selectedImage ? (
+                  <div className="mt-4 rounded-3xl border border-green-500/40 bg-green-500/10 p-5">
+                    <div className="grid gap-4 sm:grid-cols-[180px_1fr]">
+                      {selectedImage.image_url && <img src={selectedImage.image_url} alt={selectedImage.prompt} className="max-h-56 w-full rounded-2xl object-contain bg-black" />}
+                      <div>
+                        <p className="text-sm text-zinc-300 line-clamp-4">{selectedImage.prompt}</p>
+                        <button onClick={() => { setSelectedImageId(""); setSelectedCategory(""); setImages([]); }} className="mt-4 rounded-xl border border-zinc-700 px-4 py-2 text-sm font-bold hover:border-amber-400">Change Image</button>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
+                  </div>
+                ) : (
+                  <>
+                    <p className="mt-2 text-sm text-zinc-400">Pick a category, or <Link href="/catalog" className="text-amber-400 underline">browse the full catalog</Link> and click Select on any image.</p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {categories.map((cat) => (
+                        <button key={cat.id} onClick={() => setSelectedCategory(selectedCategory === cat.slug ? "" : cat.slug)}
+                          className={"rounded-full px-3 py-1.5 text-xs font-bold transition " + (selectedCategory === cat.slug ? "bg-amber-400 text-black" : "border border-zinc-700 text-zinc-300 hover:border-amber-400")}>
+                          {cat.name}
+                        </button>
+                      ))}
+                    </div>
+                    {selectedCategory && loading && <div className="mt-4"><LoadingSpinner message="Loading images..." /></div>}
+                    {selectedCategory && !loading && (
+                      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                        {images.map((img) => (
+                          <div key={img.id} role="button" tabIndex={0} onClick={() => setSelectedImageId(img.id)}
+                            className={"cursor-pointer overflow-hidden rounded-2xl border transition " + (selectedImageId === img.id ? "border-green-400 ring-2 ring-green-400/30" : "border-zinc-800 hover:border-zinc-600")}>
+                            {img.image_url && <img src={img.image_url} alt={img.prompt} className="w-full object-contain bg-black max-h-48" />}
+                            <div className="p-3">
+                              <p className="line-clamp-2 text-xs text-zinc-400">{img.prompt}</p>
+                              <button className={"mt-2 w-full rounded-lg py-1.5 text-xs font-black " + (selectedImageId === img.id ? "bg-green-400 text-black" : "bg-white text-black")}>
+                                {selectedImageId === img.id ? "Selected ✓" : "Select"}
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                )}
+              </section>
             )}
-          </section>
 
-          <section className="rounded-3xl border border-zinc-800 bg-zinc-900 p-8">
-            <h2 className="text-2xl font-bold">Recipient Information</h2>
-            {savedRecipients.length > 0 && (
-              <div className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
-                <p className="text-sm font-bold uppercase tracking-[0.2em] text-amber-300">Saved Recipients</p>
-                <div className="mt-4 grid gap-3">
-                  {savedRecipients.map((recipient) => (
-                    <button key={recipient.id} type="button" onClick={() => setSelectedRecipientId(selectedRecipientId === recipient.id ? "" : recipient.id)} className={"rounded-2xl border p-4 text-left transition " + (selectedRecipientId === recipient.id ? "border-green-400 bg-green-400/10" : "border-zinc-800 bg-zinc-900 hover:border-zinc-600")}>
-                      <p className="font-black">{recipient.full_name}</p>
-                      <p className="mt-1 text-sm text-zinc-400">{recipient.inmate_number || "No inmate number"}</p>
-                      <p className="text-sm text-zinc-400">{recipient.facility_name || "No facility"} - {recipient.state || "No state"}</p>
-                    </button>
-                  ))}
+            {/* For packages/subs — just show what they bought */}
+            {(selectedPlan.plan_type === "package" || selectedPlan.plan_type === "subscription") && (
+              <section>
+                <h2 className="text-2xl font-bold">What You're Getting</h2>
+                <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+                  <p className="text-lg font-black">{selectedPlan.name}</p>
+                  <p className="mt-2 text-zinc-400">{selectedPlan.description}</p>
+                  <div className="mt-6 space-y-3 text-sm text-zinc-300">
+                    <p>✓ {selectedPlan.image_count} images total</p>
+                    {selectedPlan.plan_type === "subscription" && <p>✓ 1 new image delivered to your recipient every day</p>}
+                    {selectedPlan.plan_type === "package" && <p>✓ Credits never expire — use at your own pace</p>}
+                    <p>✓ All images reviewed and approved</p>
+                    <p>✓ Delivered to your recipient's facility account</p>
+                  </div>
+                  <p className="mt-6 text-3xl font-black">${(selectedPlan.price_cents / 100).toFixed(2)}</p>
                 </div>
-              </div>
+                <button onClick={() => setStep("plan")} className="mt-4 text-sm text-amber-400 underline hover:text-amber-300">← Change plan</button>
+              </section>
             )}
-            <div className="mt-6 flex items-center gap-3">
-              <div className="h-px flex-1 bg-zinc-800" />
-              <p className="text-xs font-bold uppercase tracking-widest text-zinc-500">{savedRecipients.length > 0 ? "Or enter manually" : "Enter recipient"}</p>
-              <div className="h-px flex-1 bg-zinc-800" />
-            </div>
-            <div className="mt-6 space-y-5">
-              <div>
-                <label className="block text-sm font-bold text-zinc-300">Full Name <span className="text-amber-400">*</span></label>
-                <input value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="e.g. John Smith" className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white placeholder:text-zinc-600" />
+
+            {/* Right: Recipient info + checkout */}
+            <section className="rounded-3xl border border-zinc-800 bg-zinc-900 p-8">
+              {/* Selected plan summary */}
+              <div className="mb-6 rounded-2xl border border-amber-400/30 bg-amber-400/10 p-4">
+                <p className="text-xs font-bold uppercase tracking-wider text-amber-300">Selected Plan</p>
+                <p className="mt-1 font-black">{selectedPlan.name}</p>
+                <p className="text-sm text-zinc-400">${(selectedPlan.price_cents / 100).toFixed(2)} · {selectedPlan.image_count} image{selectedPlan.image_count !== 1 ? "s" : ""}</p>
+                <button onClick={() => setStep("plan")} className="mt-2 text-xs text-amber-400 underline">Change</button>
               </div>
-              <div>
-                <label className="block text-sm font-bold text-zinc-300">Inmate / Offender Number <span className="text-amber-400">*</span></label>
-                <input value={inmateNumber} onChange={(e) => setInmateNumber(e.target.value)} placeholder="e.g. 123456" className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white placeholder:text-zinc-600" />
+
+              <h2 className="text-xl font-bold">Recipient Information</h2>
+
+              {savedRecipients.length > 0 && (
+                <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
+                  <p className="text-xs font-bold uppercase tracking-wider text-amber-300">Saved Recipients</p>
+                  <div className="mt-3 grid gap-2">
+                    {savedRecipients.map((r) => (
+                      <button key={r.id} onClick={() => setSelectedRecipientId(selectedRecipientId === r.id ? "" : r.id)}
+                        className={"rounded-xl border p-3 text-left transition " + (selectedRecipientId === r.id ? "border-green-400 bg-green-400/10" : "border-zinc-800 hover:border-zinc-600")}>
+                        <p className="font-black text-sm">{r.full_name}</p>
+                        <p className="text-xs text-zinc-400">{r.inmate_number} · {r.facility_name} · {r.state}</p>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mt-4 flex items-center gap-3"><div className="h-px flex-1 bg-zinc-800" /><p className="text-xs text-zinc-600">or enter manually</p><div className="h-px flex-1 bg-zinc-800" /></div>
+                </div>
+              )}
+
+              <div className="mt-4 space-y-4">
+                <div>
+                  <label className="block text-sm font-bold text-zinc-300">Full Name <span className="text-amber-400">*</span></label>
+                  <input value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="e.g. John Smith" className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white placeholder:text-zinc-600" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-zinc-300">Inmate / Offender Number <span className="text-amber-400">*</span></label>
+                  <input value={inmateNumber} onChange={(e) => setInmateNumber(e.target.value)} placeholder="e.g. 123456" className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white placeholder:text-zinc-600" />
+                </div>
+                <FacilityTypeahead onSelect={(name, stateCode) => { setFacilityName(name); setState(stateCode); }} />
               </div>
-              <FacilityTypeahead
-                onSelect={(name, stateCode) => {
-                  setFacilityName(name);
-                  setState(stateCode);
-                }}
-              />
-              <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
-                <p className="text-sm uppercase tracking-widest text-zinc-500">Single Image Price</p>
-                <p className="mt-2 text-4xl font-black">$1.99</p>
-              </div>
-              <button onClick={createOrder} className="w-full rounded-2xl bg-white px-6 py-4 text-lg font-black text-black">Create Order</button>
-              {status && <div className={"rounded-2xl border p-4 text-sm font-bold " + (status.startsWith("Inmate number") ? "border-amber-500 bg-amber-500/10 text-amber-300" : "border-zinc-800 bg-zinc-950 text-zinc-300")}>{status}</div>}
-            </div>
-          </section>
-        </div>
+
+              <button onClick={handleCheckout} className="mt-6 w-full rounded-2xl bg-white px-6 py-4 text-lg font-black text-black hover:bg-amber-300">
+                Proceed to Checkout →
+              </button>
+              {status && <p className="mt-3 text-sm font-bold text-amber-300">{status}</p>}
+            </section>
+          </div>
+        )}
       </div>
     </main>
   );

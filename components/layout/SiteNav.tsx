@@ -36,6 +36,7 @@ export default function SiteNav() {
         <nav className="hidden items-center gap-4 text-sm font-bold md:flex">
           <Link href="/catalog" className="hover:text-amber-300">Catalog</Link>
           <Link href="/categories" className="hover:text-amber-300">Categories</Link>
+          <Link href="/pricing" className="hover:text-amber-300">Pricing</Link>
           <Link href="/how-it-works" className="hover:text-amber-300">How It Works</Link>
           <Link href="/faq" className="hover:text-amber-300">FAQ</Link>
 
