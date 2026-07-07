@@ -45,7 +45,7 @@ animals, anime, beaches, big-cats, bikinis, boxing-mma, cars-motorcycles, classi
 
 Note: "yoga-pants" renamed to "yoga", "hot-rods" renamed to "classic-cars" — slugs updated in DB and images reassigned.
 
-## Current State (end of session June 30 2026)
+## Current State (end of session July 6 2026)
 
 - Login working ✓ — Enter key now submits, forgot password flow added, reset-password page built
 - Signup working ✓ — Enter key now submits
@@ -54,7 +54,7 @@ Note: "yoga-pants" renamed to "yoga", "hot-rods" renamed to "classic-cars" — s
 - Admin orders page fixed ✓ — service-role API bypasses RLS, shows all customer orders
 - Duplicate protection hardened ✓ — Pexels/Unsplash URLs now stripped of query params before insert; `deduplicate-images.mjs` cleaned 1,664 existing duplicates
 - 35 categories live in DB ✓
-- Stripe payments working ✓ — live mode, $1.99 per image
+- Stripe payments working ✓ — live mode, tiered pricing
 - Fulfillment queue built ✓ — `/admin/delivery` shows image + recipient info + download + "Mark as Sent"
 - Stripe business verification: COMPLETE ✓
 - Customer confirmation email: WORKING ✓ — CTA links to /my-orders
@@ -63,6 +63,35 @@ Note: "yoga-pants" renamed to "yoga", "hot-rods" renamed to "classic-cars" — s
 - RLS policies hardened ✓
 - Nav/footer/sitemap cleaned up ✓
 - All public pages have real content ✓
+- **Tiered pricing COMPLETE ✓** — 10 pricing tiers (individual, packages, subscriptions) in DB + UI
+
+## Tiered Pricing System (session July 6 2026)
+
+### Architecture
+- `product_plans` table: 10 tiers with `plan_type` (individual/package/subscription), `image_count`, `price_cents`, `duration_days`, `badge`, `savings_pct`, `sort_order`
+- `subscriptions` table: tracks active package credits and daily delivery subscriptions (`images_remaining`, `images_total`, `start_date`, `end_date`, `next_delivery_date`)
+- Subscriptions are one-time Stripe payments (not recurring billing) — avoids dependency on unbuilt Securus automation
+- `orders` table: has `plan_id` and `subscription_id` columns
+
+### Pages & API
+- `/pricing` — marketing page showing all 3 plan types with badges, savings %, per-image cost, FAQ
+- `/order` — two-step flow: (1) pick plan, (2) enter recipient → calls `/api/checkout/create`
+- `/api/checkout/create` — unified checkout: loads plan from DB, creates order + optional order_items, creates Stripe session
+- `/api/stripe-webhook` — routes by `planType` metadata: individual queues delivery, package/subscription creates `subscriptions` record
+- `/my-orders` — two tabs: "Images" (individual orders) and "Plans & Packages" (credit/sub tracker with progress bar)
+- `/admin/subscriptions` — table view of all customer subscriptions with credits remaining, progress bar, dates
+
+### Pricing Tiers Seeded
+- Single image: $0.99
+- 5-pack: $4.49 (saves 10%)
+- 10-image package: $7.99 (saves 20%)
+- 20-image package: $14.99 (saves 25%, Popular)
+- 50-image package: $34.99 (saves 30%)
+- 100-image package: $59.99 (saves 40%, Best Value)
+- 30-day subscription: $19.99 (30 images)
+- 90-day subscription: $44.99 (90 images, Popular)
+- 180-day subscription: $74.99 (180 images)
+- 365-day subscription: $119.99 (365 images, Best Value)
 
 ## Image Quality Initiative (session June 30)
 
@@ -159,9 +188,9 @@ There are TWO separate webhooks needed — one for live mode, one for test mode.
 
 ## Priority List for Next Session
 
-1. **Finish image quality test** — run `node test-import-glamour.mjs`, review in admin under female-models, if good scale up to full lingerie + female-models import
-2. **Review 2,746 pending images** — use category filter in admin, approve good ones, then `node reactivate-filled-categories.mjs` to re-enable hidden categories
-3. **Add CRON_SECRET to Vercel** — daily report email won't fire without it; any random string → Vercel env vars → Redeploy
+1. **Add CRON_SECRET to Vercel** — daily report email won't fire without it; any random string → Vercel env vars → Redeploy
+2. **Test tiered checkout end-to-end** — buy a single image, buy a package, confirm webhook fires correctly and subscriptions table gets populated
+3. **Fill empty categories** — `node fill-empty-categories.mjs` → review in admin → `node reactivate-filled-categories.mjs`
 4. **Call Securus to add email to account** — blocks all Snap & Send automation work
 5. **Build facility typeahead UI** — customer picks state → types facility name → autocomplete (619 facilities ready in DB)
 
