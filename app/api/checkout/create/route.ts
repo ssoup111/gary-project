@@ -42,6 +42,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: "imageId is required for single image orders." }, { status: 400 });
     }
 
+    if ((plan.plan_type === "package" || plan.plan_type === "subscription") && (!Array.isArray(categorySlugs) || categorySlugs.length === 0)) {
+      return NextResponse.json({ success: false, error: "Please select at least one category." }, { status: 400 });
+    }
+
     // For packages/subscriptions — categories are required
     if ((plan.plan_type === "package" || plan.plan_type === "subscription") && (!Array.isArray(categorySlugs) || categorySlugs.length === 0)) {
       return NextResponse.json({ success: false, error: "Please select at least one category." }, { status: 400 });

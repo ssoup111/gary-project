@@ -29,6 +29,7 @@ export default function OrderPage() {
   const [images, setImages] = useState<CatalogImage[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategorySlugs, setSelectedCategorySlugs] = useState<string[]>([]);
   const [selectedImageId, setSelectedImageId] = useState("");
   const [fullName, setFullName] = useState("");
   const [inmateNumber, setInmateNumber] = useState("");
@@ -98,6 +99,11 @@ export default function OrderPage() {
       setStatus("Please select an image from the catalog first."); return;
     }
 
+    if ((selectedPlan.plan_type === "package" || selectedPlan.plan_type === "subscription") && selectedCategorySlugs.length === 0) {
+      setStatus("Please select at least one category for this plan.");
+      return;
+    }
+
     // Resolve recipient
     let rName = fullName.trim();
     let rInmate = inmateNumber.trim();
@@ -133,6 +139,7 @@ export default function OrderPage() {
       body: JSON.stringify({
         planSlug: selectedPlan.slug,
         imageId: selectedImageId || null,
+        categorySlugs: selectedCategorySlugs,
         customerEmail: userData.user.email,
         recipientData: { firstName: nameParts[0] || "", lastName: nameParts.slice(1).join(" ") || "", offenderId: rInmate, facility: rFacility, state: rState },
       }),
@@ -278,10 +285,38 @@ export default function OrderPage() {
             {/* For packages/subs — just show what they bought */}
             {(selectedPlan.plan_type === "package" || selectedPlan.plan_type === "subscription") && (
               <section>
-                <h2 className="text-2xl font-bold">What You're Getting</h2>
+                <h2 className="text-2xl font-bold">Choose Categories</h2>
                 <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
                   <p className="text-lg font-black">{selectedPlan.name}</p>
                   <p className="mt-2 text-zinc-400">{selectedPlan.description}</p>
+
+                  <div className="mt-6">
+                    <p className="mb-3 text-sm font-bold text-amber-300">Select one or more categories</p>
+                    <div className="flex flex-wrap gap-2">
+                      {categories.map((cat) => {
+                        const active = selectedCategorySlugs.includes(cat.slug);
+                        return (
+                          <button
+                            key={cat.id}
+                            type="button"
+                            onClick={() => {
+                              setSelectedCategorySlugs((current) =>
+                                active ? current.filter((slug) => slug !== cat.slug) : [...current, cat.slug]
+                              );
+                            }}
+                            className={"rounded-full px-3 py-1.5 text-xs font-bold transition " + (active ? "bg-amber-400 text-black" : "border border-zinc-700 text-zinc-300 hover:border-amber-400")}
+                          >
+                            {cat.name}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {selectedCategorySlugs.length > 0 && (
+                      <p className="mt-3 text-xs font-bold text-green-400">
+                        Selected: {selectedCategorySlugs.join(", ")}
+                      </p>
+                    )}
+                  </div>
                   <div className="mt-6 space-y-3 text-sm text-zinc-300">
                     <p>✓ {selectedPlan.image_count} images total</p>
                     {selectedPlan.plan_type === "subscription" && <p>✓ 1 new image delivered to your recipient every day</p>}
