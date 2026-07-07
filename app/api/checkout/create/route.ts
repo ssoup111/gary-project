@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL || "https://friendsbehindbars.com";
 
     const body = await req.json();
-    const { planSlug, imageId, recipientData, customerEmail } = body;
+    const { planSlug, imageId, categorySlugs = [], recipientData, customerEmail } = body;
     // recipientData: { firstName, lastName, offenderId, facility, state }
 
     if (!planSlug || !customerEmail) {
@@ -40,6 +40,11 @@ export async function POST(req: Request) {
     // For individual single image — imageId is required
     if (plan.plan_type === "individual" && plan.image_count === 1 && !imageId) {
       return NextResponse.json({ success: false, error: "imageId is required for single image orders." }, { status: 400 });
+    }
+
+    // For packages/subscriptions — categories are required
+    if ((plan.plan_type === "package" || plan.plan_type === "subscription") && (!Array.isArray(categorySlugs) || categorySlugs.length === 0)) {
+      return NextResponse.json({ success: false, error: "Please select at least one category." }, { status: 400 });
     }
 
     // Save recipient
@@ -118,6 +123,7 @@ export async function POST(req: Request) {
         imageCount: String(plan.image_count),
         durationDays: String(plan.duration_days || 0),
         recipientId: recipientId || "",
+        categorySlugs: Array.isArray(categorySlugs) ? categorySlugs.join(",") : "",
       },
       success_url: `${appUrl}/my-orders?payment=success&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/order?payment=cancelled&plan=${planSlug}`,
