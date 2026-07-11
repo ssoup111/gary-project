@@ -347,7 +347,18 @@ export default function OrderPage() {
                   <p className="text-xs font-bold uppercase tracking-wider text-amber-300">Saved Recipients</p>
                   <div className="mt-3 grid gap-2">
                     {savedRecipients.map((r) => (
-                      <button key={r.id} onClick={() => setSelectedRecipientId(selectedRecipientId === r.id ? "" : r.id)}
+                      <button key={r.id} onClick={() => {
+                        if (selectedRecipientId === r.id) {
+                          setSelectedRecipientId("");
+                          setFullName(""); setInmateNumber(""); setFacilityName(""); setState("");
+                        } else {
+                          setSelectedRecipientId(r.id);
+                          setFullName(r.full_name);
+                          setInmateNumber(r.inmate_number || "");
+                          setFacilityName(r.facility_name || "");
+                          setState(r.state || "");
+                        }
+                      }}
                         className={"rounded-xl border p-3 text-left transition " + (selectedRecipientId === r.id ? "border-green-400 bg-green-400/10" : "border-zinc-800 hover:border-zinc-600")}>
                         <p className="font-black text-sm">{r.full_name}</p>
                         <p className="text-xs text-zinc-400">{r.inmate_number} · {r.facility_name} · {r.state}</p>

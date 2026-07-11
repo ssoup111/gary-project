@@ -45,7 +45,7 @@ animals, anime, beaches, big-cats, bikinis, boxing-mma, cars-motorcycles, classi
 
 Note: "yoga-pants" renamed to "yoga", "hot-rods" renamed to "classic-cars" — slugs updated in DB and images reassigned.
 
-## Current State (end of session July 6 2026)
+## Current State (end of session July 6 2026, ~8:30pm)
 
 - Login working ✓ — Enter key now submits, forgot password flow added, reset-password page built
 - Signup working ✓ — Enter key now submits
@@ -64,6 +64,8 @@ Note: "yoga-pants" renamed to "yoga", "hot-rods" renamed to "classic-cars" — s
 - Nav/footer/sitemap cleaned up ✓
 - All public pages have real content ✓
 - **Tiered pricing COMPLETE ✓** — 10 pricing tiers (individual, packages, subscriptions) in DB + UI
+- **Checkout tested end-to-end ✓** — test order went through, webhook fired, order marked paid, appeared in /admin/delivery, marked as sent successfully
+- **Confirmation email NOT working** — order confirmed but no email received; likely missing GMAIL_USER / GMAIL_APP_PASSWORD env vars in Vercel (or check spam + Vercel logs)
 
 ## Tiered Pricing System (session July 6 2026)
 
@@ -188,11 +190,11 @@ There are TWO separate webhooks needed — one for live mode, one for test mode.
 
 ## Priority List for Next Session
 
-1. **Add CRON_SECRET to Vercel** — daily report email won't fire without it; any random string → Vercel env vars → Redeploy
-2. **Test tiered checkout end-to-end** — buy a single image, buy a package, confirm webhook fires correctly and subscriptions table gets populated
-3. **Fill empty categories** — `node fill-empty-categories.mjs` → review in admin → `node reactivate-filled-categories.mjs`
-4. **Call Securus to add email to account** — blocks all Snap & Send automation work
-5. **Build facility typeahead UI** — customer picks state → types facility name → autocomplete (619 facilities ready in DB)
+1. **Fix confirmation email** — check Vercel env vars for `GMAIL_USER` + `GMAIL_APP_PASSWORD`; if missing, add them → Redeploy → test again. Also check spam + Vercel function logs for stripe-webhook errors.
+2. **Switch back to live mode** — restore `STRIPE_SECRET_KEY` (sk_live_...), `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` (pk_live_...), `STRIPE_WEBHOOK_SECRET` (whsec_ from `empowering-voyage` webhook) in Vercel → Redeploy
+3. **Add CRON_SECRET to Vercel** — any random string → Vercel env vars → Redeploy → enables daily report email
+4. **Fill empty categories** — `node fill-empty-categories.mjs` → review in admin → `node reactivate-filled-categories.mjs`
+5. **Call Securus to add email to account** — blocks all Snap & Send automation work
 
 ## Fulfillment — Phase 2: Securus Snap & Send Automation (Playwright)
 

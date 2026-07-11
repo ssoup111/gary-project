@@ -155,12 +155,17 @@ body{font-family:Arial,sans-serif;background:#f4f4f4;margin:0;padding:20px}
   <div class="footer"><p>Friends Behind Bars • Approved digital image collections for incarcerated recipients</p></div>
 </div></body></html>`;
 
-      await transporter.sendMail({
-        from: `"Friends Behind Bars" <${process.env.GMAIL_USER}>`,
-        to: customerEmail,
-        subject: `${planLabel} Confirmed — Friends Behind Bars (#${orderId.slice(0, 8).toUpperCase()})`,
-        html,
-      });
+      try {
+        await transporter.sendMail({
+          from: `"Friends Behind Bars" <${process.env.GMAIL_USER}>`,
+          to: customerEmail,
+          subject: `${planLabel} Confirmed — Friends Behind Bars (#${orderId.slice(0, 8).toUpperCase()})`,
+          html,
+        });
+        console.log(`Confirmation email sent to ${customerEmail}`);
+      } catch (emailErr) {
+        console.error("Failed to send confirmation email:", emailErr);
+      }
     }
   }
 
