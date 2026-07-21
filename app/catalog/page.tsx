@@ -142,6 +142,7 @@ export default async function CatalogPage({
           </div>
         ) : (
           <CatalogInfiniteScroll
+            key={selectedCategory || "all"}
             initialImages={initialImages}
             initialHasMore={initialHasMore}
             category={selectedCategory}
