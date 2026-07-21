@@ -107,7 +107,7 @@ export default function ImageDetailPage() {
 
             <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
               <p className="text-sm font-bold uppercase tracking-widest text-zinc-500">Single Image Delivery</p>
-              <p className="mt-2 text-4xl font-black">$1.99</p>
+              <p className="mt-2 text-4xl font-black">$0.99</p>
               <p className="mt-2 text-sm text-zinc-400">Delivered directly to your recipient's facility.</p>
 
               <Link

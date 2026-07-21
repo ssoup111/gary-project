@@ -8,7 +8,7 @@ import Link from "next/link";
 const faqs = [
   {
     q: "How much does it cost?",
-    a: "$1.99 per image. No subscription required, no hidden fees. Stripe processes payment securely.",
+    a: "$0.99 per image. No subscription required, no hidden fees. Stripe processes payment securely.",
   },
   {
     q: "Which facilities are supported?",
@@ -78,7 +78,7 @@ export default function FAQPage() {
 
         <div className="mt-12 rounded-3xl border border-amber-400/30 bg-amber-400/10 p-8 text-center">
           <h2 className="text-2xl font-black">Ready to get started?</h2>
-          <p className="mt-2 text-zinc-400">Browse the catalog and send your first image for $1.99.</p>
+          <p className="mt-2 text-zinc-400">Browse the catalog and send your first image for $0.99.</p>
           <div className="mt-6 flex flex-wrap justify-center gap-4">
             <Link href="/signup" className="rounded-xl bg-white px-6 py-3 font-black text-black hover:bg-amber-300">Create Account</Link>
             <Link href="/catalog" className="rounded-xl border border-zinc-600 px-6 py-3 font-black text-white hover:border-amber-400">Browse Catalog</Link>

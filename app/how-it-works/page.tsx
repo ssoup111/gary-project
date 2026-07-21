@@ -1,6 +1,6 @@
 export const metadata = {
   title: "How It Works",
-  description: "Learn how Friends Behind Bars delivers approved photos to incarcerated recipients through Securus. Simple 4-step process for $1.99 per image.",
+  description: "Learn how Friends Behind Bars delivers approved photos to incarcerated recipients through Securus. Simple 4-step process for $0.99 per image.",
 };
 
 import Link from "next/link";
@@ -26,7 +26,7 @@ const steps = [
   },
   {
     n: "4",
-    title: "Pay $1.99 and we handle delivery",
+    title: "Pay $0.99 and we handle delivery",
     text: "Secure checkout via Stripe. Once payment is confirmed, your order enters our fulfillment queue and the image is delivered directly to your recipient's facility account — typically within 1–2 business days.",
     cta: null,
   },

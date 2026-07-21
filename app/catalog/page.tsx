@@ -1,6 +1,6 @@
 export const metadata = {
   title: "Catalog",
-  description: "Browse thousands of approved images across 35 categories — animals, anime, classic cars, sports, and more. Each image $1.99, delivered to your recipient's facility.",
+  description: "Browse thousands of approved images across 35 categories — animals, anime, classic cars, sports, and more. Each image $0.99, delivered to your recipient's facility.",
 };
 
 import Link from "next/link";
@@ -77,7 +77,7 @@ export default async function CatalogPage({
             <p className="mt-4 max-w-2xl text-lg leading-8 text-zinc-400">
               {selectedCategory
                 ? "Browse approved images in this category."
-                : "Browse approved catalog images — $1.99 each, delivered to your recipient's facility."}
+                : "Browse approved catalog images — $0.99 each, delivered to your recipient's facility."}
             </p>
             {selectedCategory && (
               <div className="mt-5 flex flex-wrap gap-3">

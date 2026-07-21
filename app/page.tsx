@@ -1,6 +1,6 @@
 export const metadata = {
   title: "Friends Behind Bars — Send Photos to Incarcerated Loved Ones",
-  description: "Browse approved image collections and send photos directly to incarcerated recipients for $1.99. 35 categories, reviewed and safe.",
+  description: "Browse approved image collections and send photos directly to incarcerated recipients for $0.99. 35 categories, reviewed and safe.",
 };
 
 import Link from "next/link";
@@ -15,7 +15,7 @@ function getServerSupabase() {
 const steps = [
   { n: "1", title: "Browse the Catalog", body: "Choose from thousands of reviewed, approved images across 35 categories." },
   { n: "2", title: "Enter Your Recipient", body: "Add the inmate's name, ID number, and facility. We handle the rest." },
-  { n: "3", title: "Pay $1.99", body: "Secure checkout via Stripe. One flat fee per image, no subscriptions required." },
+  { n: "3", title: "Pay $0.99", body: "Secure checkout via Stripe. One flat fee per image, no subscriptions required." },
   { n: "4", title: "Image Delivered", body: "We send the image directly to your recipient's facility account." },
 ];
 
@@ -59,7 +59,7 @@ export default async function Home() {
             Friends Behind Bars
           </p>
           <h1 className="text-5xl font-black leading-tight md:text-7xl">
-            Send photos to incarcerated loved ones — for&nbsp;$1.99.
+            Send photos to incarcerated loved ones — for&nbsp;$0.99.
           </h1>
           <p className="mt-6 max-w-2xl text-xl leading-8 text-zinc-300">
             Browse our approved image catalog, enter your recipient's info, and we'll deliver the image directly to their facility. Simple, fast, reviewed.
@@ -144,7 +144,7 @@ export default async function Home() {
       <section className="bg-zinc-900 px-6 py-20">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-4xl font-black">Ready to send your first image?</h2>
-          <p className="mt-4 text-lg text-zinc-400">Create a free account, browse the catalog, and send an image for $1.99.</p>
+          <p className="mt-4 text-lg text-zinc-400">Create a free account, browse the catalog, and send an image for $0.99.</p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link href="/signup" className="rounded-xl bg-white px-8 py-3 font-black text-black hover:bg-amber-300">
               Get Started Free

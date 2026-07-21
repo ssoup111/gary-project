@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"], weight: ["400", "600", "700", "900"] }
 
 export const metadata: Metadata = {
   title: { default: "Friends Behind Bars", template: "%s — Friends Behind Bars" },
-  description: "Send approved photos to incarcerated loved ones for $1.99. Browse 35 curated image categories, enter your recipient's info, and we handle the delivery.",
+  description: "Send approved photos to incarcerated loved ones for $0.99. Browse 35 curated image categories, enter your recipient's info, and we handle the delivery.",
   openGraph: {
     siteName: "Friends Behind Bars",
     type: "website",
