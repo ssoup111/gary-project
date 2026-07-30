@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
-import nodemailer from "nodemailer";
+import { sendEmail } from "@/lib/email";
 
 export async function POST(req: Request) {
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
@@ -73,12 +73,7 @@ export async function POST(req: Request) {
     }
 
     // Send confirmation email
-    if (customerEmail && process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_APP_PASSWORD },
-      });
-
+    if (customerEmail) {
       // Fetch order + image data for email
       const { data: orderData } = await supabase
         .from("orders")
@@ -150,21 +145,18 @@ body{font-family:Arial,sans-serif;background:#f4f4f4;margin:0;padding:20px}
       ${amount ? `<div class="detail-row"><span class="detail-label">Amount Paid</span><span class="detail-value">${amount}</span></div>` : ""}
     </div>
     <a href="${appUrl}/my-orders" class="cta">View My Orders →</a>
-    <p>Questions? Contact us at <a href="mailto:${process.env.GMAIL_USER}">${process.env.GMAIL_USER}</a>.</p>
+    <p>Questions? Just reply to this email and we'll help.</p>
   </div>
   <div class="footer"><p>Friends Behind Bars • Approved digital image collections for incarcerated recipients</p></div>
 </div></body></html>`;
 
-      try {
-        await transporter.sendMail({
-          from: `"Friends Behind Bars" <${process.env.GMAIL_USER}>`,
-          to: customerEmail,
-          subject: `${planLabel} Confirmed — Friends Behind Bars (#${orderId.slice(0, 8).toUpperCase()})`,
-          html,
-        });
-        console.log(`Confirmation email sent to ${customerEmail}`);
-      } catch (emailErr) {
-        console.error("Failed to send confirmation email:", emailErr);
+      const result = await sendEmail({
+        to: customerEmail,
+        subject: `${planLabel} Confirmed — Friends Behind Bars (#${orderId.slice(0, 8).toUpperCase()})`,
+        html,
+      });
+      if (!result.ok) {
+        console.error("Confirmation email not sent:", result.error);
       }
     }
   }

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import nodemailer from "nodemailer";
+import { sendEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 
@@ -100,20 +100,11 @@ body{font-family:Arial,sans-serif;background:#f4f4f4;padding:20px}
 </body>
 </html>`;
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD,
-    },
-  });
-
-  await transporter.sendMail({
-    from: `"Friends Behind Bars" <${process.env.GMAIL_USER}>`,
+  const result = await sendEmail({
     to: ["garyspictureproject@gmail.com", "ssoup1@gmail.com"],
     subject: `FBB Daily Report — ${dateStr}`,
     html,
   });
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: result.ok, error: result.error });
 }

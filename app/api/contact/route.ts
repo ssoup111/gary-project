@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { sendEmail } from "@/lib/email";
 
 export async function POST(req: Request) {
   try {
@@ -12,24 +12,12 @@ export async function POST(req: Request) {
       );
     }
 
-    const gmailUser = process.env.GMAIL_USER;
-    const gmailPassword = process.env.GMAIL_APP_PASSWORD;
+    // Contact submissions go to the inbox we monitor; replyTo is the
+    // customer's address so replying goes straight back to them.
+    const inbox = process.env.EMAIL_REPLY_TO || "ssoup1@gmail.com";
 
-    if (!gmailUser || !gmailPassword) {
-      return NextResponse.json(
-        { success: false, error: "Email is not configured." },
-        { status: 500 }
-      );
-    }
-
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: { user: gmailUser, pass: gmailPassword },
-    });
-
-    await transporter.sendMail({
-      from: `"Friends Behind Bars Contact" <${gmailUser}>`,
-      to: gmailUser,
+    const result = await sendEmail({
+      to: inbox,
       replyTo: email,
       subject: `Contact Form: ${name}`,
       html: `
@@ -40,6 +28,13 @@ export async function POST(req: Request) {
         <p>${message.replace(/\n/g, "<br>")}</p>
       `,
     });
+
+    if (!result.ok) {
+      return NextResponse.json(
+        { success: false, error: "Failed to send message." },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
