@@ -108,7 +108,7 @@ export default function FacilityTypeahead({ onSelect }: Props) {
     <div className="space-y-5">
       {/* Step 1 — State */}
       <div>
-        <label className="block text-sm font-bold text-[#0A3161]/70">
+        <label className="block text-sm font-bold text-[#0A3161]/85">
           State <span className="text-[#B31942]">*</span>
         </label>
         <select
@@ -131,7 +131,7 @@ export default function FacilityTypeahead({ onSelect }: Props) {
       {/* Step 2 — Facility typeahead (only shown once state is picked) */}
       {selectedState && (
         <div className="relative">
-          <label className="block text-sm font-bold text-[#0A3161]/70">
+          <label className="block text-sm font-bold text-[#0A3161]/85">
             Facility Name
             {confirmed && <span className="ml-2 text-xs font-normal text-green-700">✓ confirmed</span>}
           </label>
@@ -155,7 +155,7 @@ export default function FacilityTypeahead({ onSelect }: Props) {
                 : `Type facility name...`
             }
             className={
-              "mt-2 w-full rounded-xl border p-3 text-[#0A3161] placeholder:text-[#0A3161]/45 bg-white transition " +
+              "mt-2 w-full rounded-xl border p-3 text-[#0A3161] placeholder:text-[#0A3161]/55 bg-white transition " +
               (confirmed ? "border-green-500" : "border-black/12")
             }
           />
@@ -178,7 +178,7 @@ export default function FacilityTypeahead({ onSelect }: Props) {
                     <span
                       className={
                         "ml-2 text-xs " +
-                        (i === highlightedIndex ? "opacity-70" : "text-[#0A3161]/50")
+                        (i === highlightedIndex ? "opacity-70" : "text-[#0A3161]/72")
                       }
                     >
                       {facility.facility_type}
@@ -190,7 +190,7 @@ export default function FacilityTypeahead({ onSelect }: Props) {
           )}
 
           {showDropdown && searchText.length > 1 && filtered.length === 0 && (
-            <div className="absolute z-50 mt-1 w-full rounded-xl border border-black/12 bg-white px-4 py-3 text-sm text-[#0A3161]/60 shadow-2xl">
+            <div className="absolute z-50 mt-1 w-full rounded-xl border border-black/12 bg-white px-4 py-3 text-sm text-[#0A3161]/78 shadow-2xl">
               No matches — your typed name will be used as-is.
             </div>
           )}

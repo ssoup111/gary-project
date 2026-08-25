@@ -3,7 +3,7 @@ export default function LoadingSpinner({ message = "Loading..." }: { message?: s
     <div className="flex min-h-[300px] items-center justify-center">
       <div className="text-center">
         <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-black/12 border-t-[#B31942]" />
-        <p className="mt-4 text-sm font-bold text-[#0A3161]/60">{message}</p>
+        <p className="mt-4 text-sm font-bold text-[#0A3161]/78">{message}</p>
       </div>
     </div>
   );

@@ -100,14 +100,14 @@ export default function FavoritesPage() {
 
           <h1 className="mt-4 text-5xl font-black">Saved Favorites</h1>
 
-          <p className="mt-4 text-[#0A3161]/60">
+          <p className="mt-4 text-[#0A3161]/78">
             Images saved for later ordering.
           </p>
 
           {status ? (
             <p className="mt-8 font-bold text-[#B31942]">{status}</p>
           ) : images.length === 0 ? (
-            <p className="mt-8 text-[#0A3161]/60">No saved favorites yet.</p>
+            <p className="mt-8 text-[#0A3161]/78">No saved favorites yet.</p>
           ) : (
             <div className="mt-10 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
               {images.map((image) => (
@@ -119,7 +119,7 @@ export default function FavoritesPage() {
                   )}
 
                   <div className="p-5">
-                    <p className="line-clamp-4 text-sm leading-6 text-[#0A3161]/60">
+                    <p className="line-clamp-4 text-sm leading-6 text-[#0A3161]/78">
                       {image.prompt}
                     </p>
 

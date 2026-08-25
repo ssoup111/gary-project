@@ -63,7 +63,7 @@ export default function HowItWorksPage() {
       <section className="mx-auto max-w-5xl px-6 py-20">
         <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">Friends Behind Bars</p>
         <h1 className="mt-4 text-5xl font-black">How It Works</h1>
-        <p className="mt-4 max-w-2xl text-lg leading-8 text-[#0A3161]/60">
+        <p className="mt-4 max-w-2xl text-lg leading-8 text-[#0A3161]/78">
           Send an approved photo to an incarcerated loved one in four steps — no technical knowledge required.
         </p>
       </section>
@@ -78,7 +78,7 @@ export default function HowItWorksPage() {
                   {step.n}
                 </span>
                 <h2 className="mt-5 text-2xl font-black">{step.title}</h2>
-                <p className="mt-3 leading-7 text-[#0A3161]/60">{step.text}</p>
+                <p className="mt-3 leading-7 text-[#0A3161]/78">{step.text}</p>
                 {step.cta && (
                   <Link href={step.cta.href} className="mt-5 inline-block rounded-xl bg-[#B31942] px-5 py-2 text-sm font-black text-white hover:bg-[#8f1434]">
                     {step.cta.label} →
@@ -97,7 +97,7 @@ export default function HowItWorksPage() {
           {details.map((item) => (
             <div key={item.q} className="rounded-2xl border border-black/10 bg-white p-6">
               <h3 className="text-lg font-black">{item.q}</h3>
-              <p className="mt-3 leading-7 text-[#0A3161]/60">{item.a}</p>
+              <p className="mt-3 leading-7 text-[#0A3161]/78">{item.a}</p>
             </div>
           ))}
         </div>
@@ -107,7 +107,7 @@ export default function HowItWorksPage() {
       <section className="bg-white px-6 py-16">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-black">Ready to send your first image?</h2>
-          <p className="mt-3 text-[#0A3161]/60">Create a free account and get started in minutes.</p>
+          <p className="mt-3 text-[#0A3161]/78">Create a free account and get started in minutes.</p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link href="/signup" className="rounded-xl bg-[#B31942] px-8 py-3 font-black text-white hover:bg-[#8f1434]">Get Started Free</Link>
             <Link href="/catalog" className="rounded-xl border border-black/15 px-8 py-3 font-black text-[#0A3161] hover:border-[#B31942]">Browse Catalog</Link>

@@ -39,33 +39,33 @@ export default function SignupPage() {
       <div className="mx-auto max-w-md rounded-3xl border border-black/10 bg-white p-8 shadow-2xl">
         <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">Friends Behind Bars</p>
         <h1 className="mt-4 text-4xl font-black">Create Account</h1>
-        <p className="mt-4 text-[#0A3161]/60">Sign up to browse approved images and send them to incarcerated recipients.</p>
+        <p className="mt-4 text-[#0A3161]/78">Sign up to browse approved images and send them to incarcerated recipients.</p>
 
         <form onSubmit={handleSignup} className="mt-8 space-y-5">
           <div>
-            <label className="block text-sm font-bold text-[#0A3161]/70">Email</label>
+            <label className="block text-sm font-bold text-[#0A3161]/85">Email</label>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-              className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161] placeholder:text-[#0A3161]/45"
+              className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161] placeholder:text-[#0A3161]/55"
               placeholder="you@example.com" />
           </div>
 
           <div>
             <div className="flex items-center justify-between">
-              <label className="block text-sm font-bold text-[#0A3161]/70">Password</label>
+              <label className="block text-sm font-bold text-[#0A3161]/85">Password</label>
               <button type="button" onClick={() => setShowPassword(!showPassword)}
                 className="text-xs font-bold text-[#B31942]">
                 {showPassword ? "Hide" : "Show"}
               </button>
             </div>
             <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
-              className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161] placeholder:text-[#0A3161]/45"
+              className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161] placeholder:text-[#0A3161]/55"
               placeholder="At least 6 characters" />
           </div>
 
           <div>
-            <label className="block text-sm font-bold text-[#0A3161]/70">Confirm Password</label>
+            <label className="block text-sm font-bold text-[#0A3161]/85">Confirm Password</label>
             <input type={showPassword ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
-              className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161] placeholder:text-[#0A3161]/45"
+              className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161] placeholder:text-[#0A3161]/55"
               placeholder="Re-enter your password" />
           </div>
 
@@ -76,7 +76,7 @@ export default function SignupPage() {
           {status && <p className="text-sm font-bold text-[#B31942]">{status}</p>}
         </form>
 
-        <p className="mt-6 text-sm text-[#0A3161]/60">
+        <p className="mt-6 text-sm text-[#0A3161]/78">
           Already have an account?{" "}
           <Link href="/login" className="font-bold text-[#B31942]">Sign in</Link>
         </p>

@@ -11,13 +11,13 @@ export default function LoginPage() {
 
         <h1 className="mt-4 text-4xl font-black">Customer Login</h1>
 
-        <p className="mt-4 text-[#0A3161]/60">
+        <p className="mt-4 text-[#0A3161]/78">
           Sign in to browse images, place orders, and track deliveries.
         </p>
 
         <LoginForm />
 
-        <p className="mt-6 text-sm text-[#0A3161]/60">
+        <p className="mt-6 text-sm text-[#0A3161]/78">
           New customer?{" "}
           <Link href="/signup" className="font-bold text-[#B31942]">
             Create an account

@@ -231,16 +231,16 @@ export default function RecipientsManager() {
         <h2 className="text-2xl font-black">Your Saved Recipients</h2>
 
         {recipients.length === 0 ? (
-          <p className="mt-5 text-[#0A3161]/60">No saved recipients yet.</p>
+          <p className="mt-5 text-[#0A3161]/78">No saved recipients yet.</p>
         ) : (
           <div className="mt-6 grid gap-4">
             {recipients.map((recipient) => (
               <div key={recipient.id} className="rounded-2xl border border-black/10 bg-white p-5">
                 <h3 className="text-xl font-black">{recipient.full_name}</h3>
-                <p className="mt-2 text-sm text-[#0A3161]/60">DOC/Inmate #: {recipient.inmate_number || "Not provided"}</p>
-                <p className="text-sm text-[#0A3161]/60">Facility: {recipient.facility_name || "Not provided"}</p>
-                <p className="text-sm text-[#0A3161]/60">State: {recipient.state || "Not provided"}</p>
-                {recipient.notes && <p className="mt-3 text-sm leading-6 text-[#0A3161]/70">{recipient.notes}</p>}
+                <p className="mt-2 text-sm text-[#0A3161]/78">DOC/Inmate #: {recipient.inmate_number || "Not provided"}</p>
+                <p className="text-sm text-[#0A3161]/78">Facility: {recipient.facility_name || "Not provided"}</p>
+                <p className="text-sm text-[#0A3161]/78">State: {recipient.state || "Not provided"}</p>
+                {recipient.notes && <p className="mt-3 text-sm leading-6 text-[#0A3161]/85">{recipient.notes}</p>}
 
                 <div className="mt-4 flex flex-wrap gap-3">
                   <button

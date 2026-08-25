@@ -62,7 +62,7 @@ export default function FacilitiesPage() {
 
         <h1 className="mt-4 text-5xl font-black">Facility Directory</h1>
 
-        <p className="mt-4 max-w-2xl text-[#0A3161]/60">
+        <p className="mt-4 max-w-2xl text-[#0A3161]/78">
           Search facilities and organize delivery notes as the platform grows.
         </p>
 
@@ -91,7 +91,7 @@ export default function FacilitiesPage() {
         {status ? (
           <p className="mt-8 font-bold text-[#B31942]">{status}</p>
         ) : filteredFacilities.length === 0 ? (
-          <p className="mt-8 text-[#0A3161]/60">No matching facilities.</p>
+          <p className="mt-8 text-[#0A3161]/78">No matching facilities.</p>
         ) : (
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {filteredFacilities.map((facility) => (
@@ -102,12 +102,12 @@ export default function FacilitiesPage() {
 
                 <h2 className="mt-3 text-2xl font-black">{facility.name}</h2>
 
-                <p className="mt-2 text-sm text-[#0A3161]/60">
+                <p className="mt-2 text-sm text-[#0A3161]/78">
                   {facility.facility_type || "Facility"}
                 </p>
 
                 {facility.delivery_notes && (
-                  <p className="mt-4 text-sm leading-6 text-[#0A3161]/70">
+                  <p className="mt-4 text-sm leading-6 text-[#0A3161]/85">
                     {facility.delivery_notes}
                   </p>
                 )}

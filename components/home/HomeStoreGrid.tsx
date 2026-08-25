@@ -34,7 +34,7 @@ function StoreCard({ image }: { image: StoreImage }) {
               className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center text-sm text-[#0A3161]/40">
+            <div className="flex h-full w-full items-center justify-center text-sm text-[#0A3161]/58">
               Image unavailable
             </div>
           )}
@@ -46,7 +46,7 @@ function StoreCard({ image }: { image: StoreImage }) {
           <p className="truncate text-sm font-bold text-[#0A3161]">
             {image.prompt?.split(",")[0] || "Approved Image"}
           </p>
-          <p className="text-xs font-semibold text-[#0A3161]/50">$0.99</p>
+          <p className="text-xs font-semibold text-[#0A3161]/72">$0.99</p>
         </div>
 
         <Link
@@ -123,7 +123,7 @@ export default function HomeStoreGrid({ initialImages, initialHasMore }: Props) 
 
       {loading && (
         <div className="mt-8 flex justify-center">
-          <div className="flex items-center gap-3 text-[#0A3161]/60">
+          <div className="flex items-center gap-3 text-[#0A3161]/78">
             <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -134,7 +134,7 @@ export default function HomeStoreGrid({ initialImages, initialHasMore }: Props) 
       )}
 
       {!hasMore && images.length > 0 && (
-        <p className="mt-10 text-center text-sm font-semibold text-[#0A3161]/40">
+        <p className="mt-10 text-center text-sm font-semibold text-[#0A3161]/58">
           You've reached the end of the catalog.
         </p>
       )}

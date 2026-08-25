@@ -66,7 +66,7 @@ export default async function CategoriesPage() {
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">Friends Behind Bars</p>
             <h1 className="mt-4 text-5xl font-black">Browse Categories</h1>
-            <p className="mt-4 max-w-2xl text-[#0A3161]/60">
+            <p className="mt-4 max-w-2xl text-[#0A3161]/78">
               35 curated collections, all reviewed and approved for incarcerated recipients.
             </p>
           </div>
@@ -103,14 +103,14 @@ export default async function CategoriesPage() {
                         className="h-full w-full object-cover transition duration-300 group-hover:scale-105 group-hover:opacity-80"
                       />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-xs text-[#0A3161]/45">No preview</div>
+                      <div className="flex h-full items-center justify-center text-xs text-[#0A3161]/68">No preview</div>
                     )}
                   </div>
                   {/* Info */}
                   <div className="flex items-center justify-between p-4">
                     <h2 className="font-black text-[#0A3161] group-hover:text-[#B31942] transition">{category.name}</h2>
                     {count > 0 && (
-                      <span className="rounded-full bg-[#F1F4F9] px-2 py-0.5 text-xs font-bold text-[#0A3161]/60">
+                      <span className="rounded-full bg-[#F1F4F9] px-2 py-0.5 text-xs font-bold text-[#0A3161]/78">
                         {count}
                       </span>
                     )}

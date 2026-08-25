@@ -102,13 +102,13 @@ export default function ImageDetailPage() {
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">
                 {image.category_slug || "Approved Image"}
               </p>
-              <p className="mt-4 text-lg leading-7 text-[#0A3161]/70">{image.prompt}</p>
+              <p className="mt-4 text-lg leading-7 text-[#0A3161]/85">{image.prompt}</p>
             </div>
 
             <div className="rounded-2xl border border-black/10 bg-white p-6">
-              <p className="text-sm font-bold uppercase tracking-widest text-[#0A3161]/50">Single Image Delivery</p>
+              <p className="text-sm font-bold uppercase tracking-widest text-[#0A3161]/72">Single Image Delivery</p>
               <p className="mt-2 text-4xl font-black">$0.99</p>
-              <p className="mt-2 text-sm text-[#0A3161]/60">Delivered directly to your recipient's facility.</p>
+              <p className="mt-2 text-sm text-[#0A3161]/78">Delivered directly to your recipient's facility.</p>
 
               <Link
                 href={`/order?imageId=${encodeURIComponent(image.id)}`}
@@ -119,7 +119,7 @@ export default function ImageDetailPage() {
             </div>
 
             <div className="rounded-2xl border border-black/10 bg-white p-6">
-              <p className="mb-3 text-sm font-bold uppercase tracking-widest text-[#0A3161]/50">Save for Later</p>
+              <p className="mb-3 text-sm font-bold uppercase tracking-widest text-[#0A3161]/72">Save for Later</p>
               <FavoriteButton imageId={image.id} />
             </div>
 

@@ -11,7 +11,7 @@ export default function InstallPage() {
         <div className="mt-10 grid gap-6 md:grid-cols-2">
           <section className="rounded-3xl border border-black/10 bg-white p-6">
             <h2 className="text-2xl font-black">iPhone / Safari</h2>
-            <ol className="mt-4 list-decimal space-y-3 pl-5 text-[#0A3161]/60">
+            <ol className="mt-4 list-decimal space-y-3 pl-5 text-[#0A3161]/78">
               <li>Open the site in Safari.</li>
               <li>Tap the Share button.</li>
               <li>Tap Add to Home Screen.</li>
@@ -21,7 +21,7 @@ export default function InstallPage() {
 
           <section className="rounded-3xl border border-black/10 bg-white p-6">
             <h2 className="text-2xl font-black">Android / Chrome</h2>
-            <ol className="mt-4 list-decimal space-y-3 pl-5 text-[#0A3161]/60">
+            <ol className="mt-4 list-decimal space-y-3 pl-5 text-[#0A3161]/78">
               <li>Open the site in Chrome.</li>
               <li>Tap the menu button.</li>
               <li>Tap Add to Home screen or Install app.</li>

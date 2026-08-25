@@ -74,7 +74,7 @@ export default async function CatalogPage({
                 ? selectedCategoryRecord.name
                 : selectedCategory || "Approved Image Collections"}
             </h1>
-            <p className="mt-4 max-w-2xl text-lg leading-8 text-[#0A3161]/60">
+            <p className="mt-4 max-w-2xl text-lg leading-8 text-[#0A3161]/78">
               {selectedCategory
                 ? "Browse approved images in this category."
                 : "Browse approved catalog images — $0.99 each, delivered to your recipient's facility."}
@@ -91,7 +91,7 @@ export default async function CatalogPage({
             )}
           </div>
           <div className="rounded-2xl border border-black/10 bg-white px-6 py-4">
-            <p className="text-sm uppercase tracking-widest text-[#0A3161]/50">
+            <p className="text-sm uppercase tracking-widest text-[#0A3161]/72">
               {selectedCategory ? "In Category" : "Approved Images"}
             </p>
             <p className="mt-2 text-4xl font-black">{total.toLocaleString()}</p>
@@ -134,7 +134,7 @@ export default async function CatalogPage({
             <h2 className="text-2xl font-bold">
               {selectedCategory ? "No images in this category yet" : "No approved images yet"}
             </h2>
-            <p className="mt-3 max-w-xl text-[#0A3161]/60">
+            <p className="mt-3 max-w-xl text-[#0A3161]/78">
               {selectedCategory
                 ? "Approved images will appear here once some are approved."
                 : "Approved catalog items will appear here."}

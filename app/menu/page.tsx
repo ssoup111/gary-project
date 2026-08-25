@@ -58,7 +58,7 @@ export default function MenuPage() {
           ))}
         </div>
 
-        <p className="mt-8 text-xs font-bold uppercase tracking-widest text-[#0A3161]/50">
+        <p className="mt-8 text-xs font-bold uppercase tracking-widest text-[#0A3161]/72">
           {userEmail ? "Your Account" : "Account"}
         </p>
         <div className="mt-3 grid gap-3">
@@ -68,16 +68,16 @@ export default function MenuPage() {
             </Link>
           ))}
           {userEmail && (
-            <button onClick={signOut} className="rounded-2xl border border-black/12 bg-white p-5 text-left text-lg font-black text-[#0A3161]/60 hover:border-red-500 hover:text-red-700">
+            <button onClick={signOut} className="rounded-2xl border border-black/12 bg-white p-5 text-left text-lg font-black text-[#0A3161]/78 hover:border-red-500 hover:text-red-700">
               Sign Out
             </button>
           )}
         </div>
 
-        <p className="mt-8 text-xs font-bold uppercase tracking-widest text-[#0A3161]/50">Legal</p>
+        <p className="mt-8 text-xs font-bold uppercase tracking-widest text-[#0A3161]/72">Legal</p>
         <div className="mt-3 grid gap-3">
           {legalLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="rounded-2xl border border-black/10 bg-white p-4 text-sm font-bold text-[#0A3161]/60 hover:border-[#B31942] hover:text-[#0A3161]">
+            <Link key={link.href} href={link.href} className="rounded-2xl border border-black/10 bg-white p-4 text-sm font-bold text-[#0A3161]/78 hover:border-[#B31942] hover:text-[#0A3161]">
               {link.label}
             </Link>
           ))}

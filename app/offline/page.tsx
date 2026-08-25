@@ -8,7 +8,7 @@ export default function OfflinePage() {
 
         <h1 className="mt-4 text-4xl font-black">You are offline</h1>
 
-        <p className="mt-4 leading-8 text-[#0A3161]/60">
+        <p className="mt-4 leading-8 text-[#0A3161]/78">
           Check your connection and try again. Some pages may require internet access to load images, orders, recipients, and account information.
         </p>
       </div>

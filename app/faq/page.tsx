@@ -62,7 +62,7 @@ export default function FAQPage() {
       <div className="mx-auto max-w-4xl">
         <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">Friends Behind Bars</p>
         <h1 className="mt-4 text-5xl font-black">Frequently Asked Questions</h1>
-        <p className="mt-4 text-[#0A3161]/60">
+        <p className="mt-4 text-[#0A3161]/78">
           Can't find your answer?{" "}
           <Link href="/contact" className="text-[#B31942] underline hover:text-[#B31942]">Contact us</Link>.
         </p>
@@ -71,14 +71,14 @@ export default function FAQPage() {
           {faqs.map((faq) => (
             <section key={faq.q} className="rounded-2xl border border-black/10 bg-white p-6">
               <h2 className="text-lg font-black">{faq.q}</h2>
-              <p className="mt-3 leading-7 text-[#0A3161]/60">{faq.a}</p>
+              <p className="mt-3 leading-7 text-[#0A3161]/78">{faq.a}</p>
             </section>
           ))}
         </div>
 
         <div className="mt-12 rounded-3xl border border-[#B31942]/30 bg-[#B31942]/10 p-8 text-center">
           <h2 className="text-2xl font-black">Ready to get started?</h2>
-          <p className="mt-2 text-[#0A3161]/60">Browse the catalog and send your first image for $0.99.</p>
+          <p className="mt-2 text-[#0A3161]/78">Browse the catalog and send your first image for $0.99.</p>
           <div className="mt-6 flex flex-wrap justify-center gap-4">
             <Link href="/signup" className="rounded-xl bg-[#B31942] px-6 py-3 font-black text-white hover:bg-[#8f1434]">Create Account</Link>
             <Link href="/catalog" className="rounded-xl border border-black/15 px-6 py-3 font-black text-[#0A3161] hover:border-[#B31942]">Browse Catalog</Link>

@@ -48,7 +48,7 @@ export default function RecipientList() {
   }
 
   if (recipients.length === 0) {
-    return <p className="mt-5 text-[#0A3161]/60">No saved recipients yet.</p>;
+    return <p className="mt-5 text-[#0A3161]/78">No saved recipients yet.</p>;
   }
 
   return (
@@ -56,17 +56,17 @@ export default function RecipientList() {
       {recipients.map((recipient) => (
         <div key={recipient.id} className="rounded-2xl border border-black/10 bg-white p-5">
           <h3 className="text-xl font-black">{recipient.full_name}</h3>
-          <p className="mt-2 text-sm text-[#0A3161]/60">
+          <p className="mt-2 text-sm text-[#0A3161]/78">
             DOC/Inmate #: {recipient.inmate_number || "Not provided"}
           </p>
-          <p className="text-sm text-[#0A3161]/60">
+          <p className="text-sm text-[#0A3161]/78">
             Facility: {recipient.facility_name || "Not provided"}
           </p>
-          <p className="text-sm text-[#0A3161]/60">
+          <p className="text-sm text-[#0A3161]/78">
             State: {recipient.state || "Not provided"}
           </p>
           {recipient.notes && (
-            <p className="mt-3 text-sm leading-6 text-[#0A3161]/70">{recipient.notes}</p>
+            <p className="mt-3 text-sm leading-6 text-[#0A3161]/85">{recipient.notes}</p>
           )}
         </div>
       ))}

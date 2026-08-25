@@ -40,11 +40,11 @@ export default function ResetPasswordPage() {
         <h1 className="mt-4 text-4xl font-black">Reset Password</h1>
 
         {!ready ? (
-          <p className="mt-6 text-[#0A3161]/60">Verifying your reset link… if nothing happens, try clicking the link in your email again.</p>
+          <p className="mt-6 text-[#0A3161]/78">Verifying your reset link… if nothing happens, try clicking the link in your email again.</p>
         ) : (
           <form onSubmit={handleReset} className="mt-8 space-y-5">
             <div>
-              <label className="block text-sm font-bold text-[#0A3161]/70">New Password</label>
+              <label className="block text-sm font-bold text-[#0A3161]/85">New Password</label>
               <input
                 type="password"
                 value={password}
@@ -56,7 +56,7 @@ export default function ResetPasswordPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-bold text-[#0A3161]/70">Confirm Password</label>
+              <label className="block text-sm font-bold text-[#0A3161]/85">Confirm Password</label>
               <input
                 type="password"
                 value={confirm}

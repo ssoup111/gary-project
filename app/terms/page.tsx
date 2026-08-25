@@ -16,12 +16,12 @@ export default function TermsPage() {
       <div className="mx-auto max-w-4xl">
         <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">Friends Behind Bars</p>
         <h1 className="mt-4 text-5xl font-black">Terms of Service</h1>
-        <p className="mt-4 text-[#0A3161]/60">Last updated: May 2026</p>
+        <p className="mt-4 text-[#0A3161]/78">Last updated: May 2026</p>
         <div className="mt-10 grid gap-6">
           {sections.map((s) => (
             <section key={s.title} className="rounded-3xl border border-black/10 bg-white p-6">
               <h2 className="text-xl font-black">{s.title}</h2>
-              <p className="mt-3 leading-7 text-[#0A3161]/70">{s.body}</p>
+              <p className="mt-3 leading-7 text-[#0A3161]/85">{s.body}</p>
             </section>
           ))}
         </div>

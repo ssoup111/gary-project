@@ -12,7 +12,7 @@ export default function ContactPage() {
 
         <h1 className="mt-4 text-5xl font-black">Contact Us</h1>
 
-        <p className="mt-4 leading-8 text-[#0A3161]/60">
+        <p className="mt-4 leading-8 text-[#0A3161]/78">
           Send a message about orders, facilities, content rules, or account questions.
         </p>
 

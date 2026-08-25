@@ -11,9 +11,9 @@ export default function PrivacyPage() {
       <div className="mx-auto max-w-4xl">
         <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">Friends Behind Bars</p>
         <h1 className="mt-4 text-5xl font-black">Privacy Policy</h1>
-        <p className="mt-3 text-sm text-[#0A3161]/50">Last updated: {updated}</p>
+        <p className="mt-3 text-sm text-[#0A3161]/72">Last updated: {updated}</p>
 
-        <div className="mt-10 space-y-8 leading-8 text-[#0A3161]/60">
+        <div className="mt-10 space-y-8 leading-8 text-[#0A3161]/78">
 
           <section>
             <h2 className="text-2xl font-black text-[#0A3161]">1. Who We Are</h2>
@@ -26,10 +26,10 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-black text-[#0A3161]">2. Information We Collect</h2>
             <p className="mt-3">We collect the following information when you use our service:</p>
             <ul className="mt-3 space-y-2 pl-4">
-              <li><span className="font-bold text-[#0A3161]/70">Account information:</span> Your email address when you create an account.</li>
-              <li><span className="font-bold text-[#0A3161]/70">Order information:</span> The images you purchase, the amount paid, and the date of each transaction.</li>
-              <li><span className="font-bold text-[#0A3161]/70">Recipient information:</span> The name, inmate/offender ID number, facility, and state of the person you're sending images to. You provide this voluntarily when placing an order.</li>
-              <li><span className="font-bold text-[#0A3161]/70">Payment information:</span> We do not store your credit card details. Payment is processed securely by Stripe, which has its own privacy policy at stripe.com/privacy.</li>
+              <li><span className="font-bold text-[#0A3161]/85">Account information:</span> Your email address when you create an account.</li>
+              <li><span className="font-bold text-[#0A3161]/85">Order information:</span> The images you purchase, the amount paid, and the date of each transaction.</li>
+              <li><span className="font-bold text-[#0A3161]/85">Recipient information:</span> The name, inmate/offender ID number, facility, and state of the person you're sending images to. You provide this voluntarily when placing an order.</li>
+              <li><span className="font-bold text-[#0A3161]/85">Payment information:</span> We do not store your credit card details. Payment is processed securely by Stripe, which has its own privacy policy at stripe.com/privacy.</li>
             </ul>
           </section>
 
@@ -49,9 +49,9 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-black text-[#0A3161]">4. Information We Share</h2>
             <p className="mt-3">We share your information only as necessary to operate the service:</p>
             <ul className="mt-3 space-y-2 pl-4">
-              <li><span className="font-bold text-[#0A3161]/70">Securus Technologies / JPay:</span> We transmit recipient information (name, inmate ID, facility) to the Securus Snap & Send system to deliver your image. This is required to complete your order.</li>
-              <li><span className="font-bold text-[#0A3161]/70">Stripe:</span> Payment is processed by Stripe. We share your order amount with Stripe; Stripe independently collects your card details.</li>
-              <li><span className="font-bold text-[#0A3161]/70">Supabase:</span> Our database and authentication are hosted on Supabase. Your account and order data is stored on Supabase's infrastructure.</li>
+              <li><span className="font-bold text-[#0A3161]/85">Securus Technologies / JPay:</span> We transmit recipient information (name, inmate ID, facility) to the Securus Snap & Send system to deliver your image. This is required to complete your order.</li>
+              <li><span className="font-bold text-[#0A3161]/85">Stripe:</span> Payment is processed by Stripe. We share your order amount with Stripe; Stripe independently collects your card details.</li>
+              <li><span className="font-bold text-[#0A3161]/85">Supabase:</span> Our database and authentication are hosted on Supabase. Your account and order data is stored on Supabase's infrastructure.</li>
             </ul>
             <p className="mt-3">We do not share your personal information with any other third parties except as required by law.</p>
           </section>

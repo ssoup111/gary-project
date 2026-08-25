@@ -42,7 +42,7 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleLogin} className="mt-8 space-y-5">
       <div>
-        <label className="block text-sm font-bold text-[#0A3161]/70">Email</label>
+        <label className="block text-sm font-bold text-[#0A3161]/85">Email</label>
         <input
           type="email"
           value={email}
@@ -56,11 +56,11 @@ export default function LoginForm() {
 
       <div>
         <div className="flex items-center justify-between">
-          <label className="block text-sm font-bold text-[#0A3161]/70">Password</label>
+          <label className="block text-sm font-bold text-[#0A3161]/85">Password</label>
           <button
             type="button"
             onClick={handleForgotPassword}
-            className="text-xs text-[#0A3161]/50 hover:text-[#B31942]"
+            className="text-xs text-[#0A3161]/72 hover:text-[#B31942]"
           >
             Forgot password?
           </button>
