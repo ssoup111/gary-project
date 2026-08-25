@@ -108,8 +108,8 @@ export default function FacilityTypeahead({ onSelect }: Props) {
     <div className="space-y-5">
       {/* Step 1 — State */}
       <div>
-        <label className="block text-sm font-bold text-zinc-300">
-          State <span className="text-amber-400">*</span>
+        <label className="block text-sm font-bold text-[#0A3161]/70">
+          State <span className="text-[#B31942]">*</span>
         </label>
         <select
           value={selectedState}
@@ -117,7 +117,7 @@ export default function FacilityTypeahead({ onSelect }: Props) {
             setSelectedState(e.target.value);
             setHighlightedIndex(-1);
           }}
-          className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white"
+          className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]"
         >
           <option value="">Select a state...</option>
           {US_STATES.map((s) => (
@@ -131,9 +131,9 @@ export default function FacilityTypeahead({ onSelect }: Props) {
       {/* Step 2 — Facility typeahead (only shown once state is picked) */}
       {selectedState && (
         <div className="relative">
-          <label className="block text-sm font-bold text-zinc-300">
+          <label className="block text-sm font-bold text-[#0A3161]/70">
             Facility Name
-            {confirmed && <span className="ml-2 text-xs font-normal text-green-400">✓ confirmed</span>}
+            {confirmed && <span className="ml-2 text-xs font-normal text-green-700">✓ confirmed</span>}
           </label>
           <input
             ref={inputRef}
@@ -155,13 +155,13 @@ export default function FacilityTypeahead({ onSelect }: Props) {
                 : `Type facility name...`
             }
             className={
-              "mt-2 w-full rounded-xl border p-3 text-white placeholder:text-zinc-600 bg-zinc-950 transition " +
-              (confirmed ? "border-green-500" : "border-zinc-700")
+              "mt-2 w-full rounded-xl border p-3 text-[#0A3161] placeholder:text-[#0A3161]/45 bg-white transition " +
+              (confirmed ? "border-green-500" : "border-black/12")
             }
           />
 
           {showDropdown && filtered.length > 0 && (
-            <ul className="absolute z-50 mt-1 max-h-64 w-full overflow-y-auto rounded-xl border border-zinc-700 bg-zinc-900 shadow-2xl">
+            <ul className="absolute z-50 mt-1 max-h-64 w-full overflow-y-auto rounded-xl border border-black/12 bg-white shadow-2xl">
               {filtered.map((facility, i) => (
                 <li
                   key={facility.name}
@@ -169,8 +169,8 @@ export default function FacilityTypeahead({ onSelect }: Props) {
                   className={
                     "cursor-pointer px-4 py-3 text-sm transition " +
                     (i === highlightedIndex
-                      ? "bg-amber-400 text-black"
-                      : "text-white hover:bg-zinc-800")
+                      ? "bg-[#B31942] text-white"
+                      : "text-[#0A3161] hover:bg-[#F1F4F9]")
                   }
                 >
                   <span className="font-bold">{facility.name}</span>
@@ -178,7 +178,7 @@ export default function FacilityTypeahead({ onSelect }: Props) {
                     <span
                       className={
                         "ml-2 text-xs " +
-                        (i === highlightedIndex ? "opacity-70" : "text-zinc-500")
+                        (i === highlightedIndex ? "opacity-70" : "text-[#0A3161]/50")
                       }
                     >
                       {facility.facility_type}
@@ -190,7 +190,7 @@ export default function FacilityTypeahead({ onSelect }: Props) {
           )}
 
           {showDropdown && searchText.length > 1 && filtered.length === 0 && (
-            <div className="absolute z-50 mt-1 w-full rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-sm text-zinc-400 shadow-2xl">
+            <div className="absolute z-50 mt-1 w-full rounded-xl border border-black/12 bg-white px-4 py-3 text-sm text-[#0A3161]/60 shadow-2xl">
               No matches — your typed name will be used as-is.
             </div>
           )}

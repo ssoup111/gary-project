@@ -14,8 +14,8 @@ export default function CatalogImageCard({ id, image_url, prompt }: Props) {
 
   if (!image_url || broken) {
     return (
-      <div className="flex h-48 w-full items-center justify-center bg-zinc-800">
-        <span className="text-xs text-zinc-600">Image unavailable</span>
+      <div className="flex h-48 w-full items-center justify-center bg-[#F1F4F9]">
+        <span className="text-xs text-[#0A3161]/45">Image unavailable</span>
       </div>
     );
   }

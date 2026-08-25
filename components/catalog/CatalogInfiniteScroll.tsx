@@ -68,18 +68,18 @@ export default function CatalogInfiniteScroll({ initialImages, initialHasMore, c
         {images.map((image) => (
           <div
             key={image.id}
-            className="mb-7 break-inside-avoid overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900 shadow-2xl shadow-black/30"
+            className="mb-7 break-inside-avoid overflow-hidden rounded-2xl border border-black/10 bg-white shadow-md shadow-black/10 transition hover:shadow-xl hover:shadow-black/15"
           >
             <CatalogImageCard id={image.id} image_url={image.image_url} prompt={image.prompt} />
             <div className="p-5">
-              <p className="line-clamp-4 text-sm leading-6 text-zinc-400">{image.prompt}</p>
+              <p className="line-clamp-4 text-sm leading-6 text-[#0A3161]/60">{image.prompt}</p>
               <div className="mt-5 flex items-center justify-between gap-3">
-                <span className="rounded-full bg-green-500/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-green-400">
+                <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-green-700">
                   Approved
                 </span>
                 <Link
                   href={`/order?imageId=${encodeURIComponent(image.id)}`}
-                  className="rounded-xl bg-white px-4 py-2 text-sm font-bold text-black hover:bg-amber-300"
+                  className="rounded-xl bg-[#B31942] px-4 py-2 text-sm font-bold text-white hover:bg-[#8f1434]"
                 >
                   Select
                 </Link>
@@ -95,7 +95,7 @@ export default function CatalogInfiniteScroll({ initialImages, initialHasMore, c
       {/* Loading indicator */}
       {loading && (
         <div className="mt-6 flex justify-center">
-          <div className="flex items-center gap-3 text-zinc-400">
+          <div className="flex items-center gap-3 text-[#0A3161]/60">
             <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
@@ -107,7 +107,7 @@ export default function CatalogInfiniteScroll({ initialImages, initialHasMore, c
 
       {/* End of results */}
       {!hasMore && images.length > 0 && (
-        <div className="mt-10 py-8 text-center text-sm text-zinc-600">
+        <div className="mt-10 py-8 text-center text-sm text-[#0A3161]/45">
           You&apos;ve seen all {total.toLocaleString()} images
           {category ? " in this category" : ""}.
         </div>

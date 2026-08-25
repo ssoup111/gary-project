@@ -35,50 +35,50 @@ export default function SignupPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-950 px-6 py-20 text-white">
-      <div className="mx-auto max-w-md rounded-3xl border border-zinc-800 bg-zinc-900 p-8 shadow-2xl">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">Friends Behind Bars</p>
+    <main className="min-h-screen bg-white px-6 py-20 text-[#0A3161]">
+      <div className="mx-auto max-w-md rounded-3xl border border-black/10 bg-white p-8 shadow-2xl">
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">Friends Behind Bars</p>
         <h1 className="mt-4 text-4xl font-black">Create Account</h1>
-        <p className="mt-4 text-zinc-400">Sign up to browse approved images and send them to incarcerated recipients.</p>
+        <p className="mt-4 text-[#0A3161]/60">Sign up to browse approved images and send them to incarcerated recipients.</p>
 
         <form onSubmit={handleSignup} className="mt-8 space-y-5">
           <div>
-            <label className="block text-sm font-bold text-zinc-300">Email</label>
+            <label className="block text-sm font-bold text-[#0A3161]/70">Email</label>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-              className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white placeholder:text-zinc-600"
+              className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161] placeholder:text-[#0A3161]/45"
               placeholder="you@example.com" />
           </div>
 
           <div>
             <div className="flex items-center justify-between">
-              <label className="block text-sm font-bold text-zinc-300">Password</label>
+              <label className="block text-sm font-bold text-[#0A3161]/70">Password</label>
               <button type="button" onClick={() => setShowPassword(!showPassword)}
-                className="text-xs font-bold text-amber-300">
+                className="text-xs font-bold text-[#B31942]">
                 {showPassword ? "Hide" : "Show"}
               </button>
             </div>
             <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
-              className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white placeholder:text-zinc-600"
+              className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161] placeholder:text-[#0A3161]/45"
               placeholder="At least 6 characters" />
           </div>
 
           <div>
-            <label className="block text-sm font-bold text-zinc-300">Confirm Password</label>
+            <label className="block text-sm font-bold text-[#0A3161]/70">Confirm Password</label>
             <input type={showPassword ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
-              className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white placeholder:text-zinc-600"
+              className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161] placeholder:text-[#0A3161]/45"
               placeholder="Re-enter your password" />
           </div>
 
           <button type="submit"
-            className="w-full rounded-xl bg-white px-6 py-3 font-black text-black hover:bg-amber-300">
+            className="w-full rounded-xl bg-[#B31942] px-6 py-3 font-black text-white hover:bg-[#8f1434]">
             Create Account
           </button>
-          {status && <p className="text-sm font-bold text-amber-300">{status}</p>}
+          {status && <p className="text-sm font-bold text-[#B31942]">{status}</p>}
         </form>
 
-        <p className="mt-6 text-sm text-zinc-400">
+        <p className="mt-6 text-sm text-[#0A3161]/60">
           Already have an account?{" "}
-          <Link href="/login" className="font-bold text-amber-300">Sign in</Link>
+          <Link href="/login" className="font-bold text-[#B31942]">Sign in</Link>
         </p>
       </div>
     </main>

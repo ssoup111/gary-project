@@ -49,9 +49,9 @@ export default function ImageDetailPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
+      <main className="min-h-screen bg-white px-6 py-16 text-[#0A3161]">
         <div className="mx-auto max-w-4xl">
-          <p className="font-bold text-amber-300">Loading image...</p>
+          <p className="font-bold text-[#B31942]">Loading image...</p>
         </div>
       </main>
     );
@@ -59,10 +59,10 @@ export default function ImageDetailPage() {
 
   if (error || !image) {
     return (
-      <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
+      <main className="min-h-screen bg-white px-6 py-16 text-[#0A3161]">
         <div className="mx-auto max-w-4xl">
-          <p className="font-bold text-red-400">{error || "Image not found."}</p>
-          <Link href="/catalog" className="mt-4 inline-block rounded-xl border border-zinc-700 px-4 py-2 text-sm font-bold hover:border-amber-400">
+          <p className="font-bold text-red-700">{error || "Image not found."}</p>
+          <Link href="/catalog" className="mt-4 inline-block rounded-xl border border-black/12 px-4 py-2 text-sm font-bold hover:border-[#B31942]">
             ← Back to Catalog
           </Link>
         </div>
@@ -71,14 +71,14 @@ export default function ImageDetailPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
+    <main className="min-h-screen bg-white px-6 py-16 text-[#0A3161]">
       <div className="mx-auto max-w-4xl">
 
         {/* Back button */}
         <button
           type="button"
           onClick={() => hasHistory.current ? router.back() : router.push("/catalog")}
-          className="mb-8 flex items-center gap-2 rounded-xl border border-zinc-700 px-4 py-2 text-sm font-bold text-zinc-200 hover:border-amber-400 hover:text-amber-300"
+          className="mb-8 flex items-center gap-2 rounded-xl border border-black/12 px-4 py-2 text-sm font-bold text-[#0A3161] hover:border-[#B31942] hover:text-[#B31942]"
         >
           ← Back to Catalog
         </button>
@@ -86,7 +86,7 @@ export default function ImageDetailPage() {
         <div className="grid gap-10 lg:grid-cols-[1fr_380px]">
 
           {/* Image */}
-          <div className="overflow-hidden rounded-3xl border border-zinc-800 bg-black">
+          <div className="overflow-hidden rounded-3xl border border-black/10 bg-black">
             {image.image_url && (
               <img
                 src={image.image_url}
@@ -99,33 +99,33 @@ export default function ImageDetailPage() {
           {/* Actions */}
           <div className="flex flex-col gap-6">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">
+              <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">
                 {image.category_slug || "Approved Image"}
               </p>
-              <p className="mt-4 text-lg leading-7 text-zinc-300">{image.prompt}</p>
+              <p className="mt-4 text-lg leading-7 text-[#0A3161]/70">{image.prompt}</p>
             </div>
 
-            <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-              <p className="text-sm font-bold uppercase tracking-widest text-zinc-500">Single Image Delivery</p>
+            <div className="rounded-2xl border border-black/10 bg-white p-6">
+              <p className="text-sm font-bold uppercase tracking-widest text-[#0A3161]/50">Single Image Delivery</p>
               <p className="mt-2 text-4xl font-black">$0.99</p>
-              <p className="mt-2 text-sm text-zinc-400">Delivered directly to your recipient's facility.</p>
+              <p className="mt-2 text-sm text-[#0A3161]/60">Delivered directly to your recipient's facility.</p>
 
               <Link
                 href={`/order?imageId=${encodeURIComponent(image.id)}`}
-                className="mt-6 block w-full rounded-xl bg-white px-6 py-3 text-center font-black text-black hover:bg-amber-300"
+                className="mt-6 block w-full rounded-xl bg-[#B31942] px-6 py-3 text-center font-black text-white hover:bg-[#8f1434]"
               >
                 Add to Order →
               </Link>
             </div>
 
-            <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-              <p className="mb-3 text-sm font-bold uppercase tracking-widest text-zinc-500">Save for Later</p>
+            <div className="rounded-2xl border border-black/10 bg-white p-6">
+              <p className="mb-3 text-sm font-bold uppercase tracking-widest text-[#0A3161]/50">Save for Later</p>
               <FavoriteButton imageId={image.id} />
             </div>
 
             <Link
               href="/catalog"
-              className="rounded-xl border border-zinc-700 px-6 py-3 text-center text-sm font-bold text-zinc-200 hover:border-amber-400"
+              className="rounded-xl border border-black/12 px-6 py-3 text-center text-sm font-bold text-[#0A3161] hover:border-[#B31942]"
             >
               Browse More Images
             </Link>

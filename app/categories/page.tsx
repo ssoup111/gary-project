@@ -60,27 +60,27 @@ export default async function CategoriesPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
+    <main className="min-h-screen bg-white px-6 py-16 text-[#0A3161]">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">Friends Behind Bars</p>
+            <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">Friends Behind Bars</p>
             <h1 className="mt-4 text-5xl font-black">Browse Categories</h1>
-            <p className="mt-4 max-w-2xl text-zinc-400">
+            <p className="mt-4 max-w-2xl text-[#0A3161]/60">
               35 curated collections, all reviewed and approved for incarcerated recipients.
             </p>
           </div>
-          <Link href="/catalog" className="rounded-2xl bg-white px-5 py-3 font-bold text-black hover:bg-amber-300">
+          <Link href="/catalog" className="rounded-2xl bg-[#B31942] px-5 py-3 font-bold text-white hover:bg-[#8f1434]">
             View Full Catalog
           </Link>
         </div>
 
         {error && (
-          <p className="mt-6 rounded-xl bg-red-950 p-4 text-red-200">Error loading categories: {error.message}</p>
+          <p className="mt-6 rounded-xl bg-red-50 p-4 text-red-700">Error loading categories: {error.message}</p>
         )}
 
         {!categories || categories.length === 0 ? (
-          <div className="mt-10 rounded-2xl border border-zinc-800 bg-zinc-900 p-8">
+          <div className="mt-10 rounded-2xl border border-black/10 bg-white p-8">
             <h2 className="text-2xl font-bold">No active categories yet</h2>
           </div>
         ) : (
@@ -92,10 +92,10 @@ export default async function CategoriesPage() {
                 <Link
                   key={category.id}
                   href={`/catalog?category=${encodeURIComponent(category.slug)}`}
-                  className="group overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900 shadow-lg transition hover:border-amber-400"
+                  className="group overflow-hidden rounded-2xl border border-black/10 bg-white shadow-lg transition hover:border-[#B31942]"
                 >
                   {/* Thumbnail */}
-                  <div className="h-44 w-full overflow-hidden bg-zinc-800">
+                  <div className="h-44 w-full overflow-hidden bg-[#F1F4F9]">
                     {thumb ? (
                       <img
                         src={thumb}
@@ -103,14 +103,14 @@ export default async function CategoriesPage() {
                         className="h-full w-full object-cover transition duration-300 group-hover:scale-105 group-hover:opacity-80"
                       />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-xs text-zinc-600">No preview</div>
+                      <div className="flex h-full items-center justify-center text-xs text-[#0A3161]/45">No preview</div>
                     )}
                   </div>
                   {/* Info */}
                   <div className="flex items-center justify-between p-4">
-                    <h2 className="font-black text-white group-hover:text-amber-300 transition">{category.name}</h2>
+                    <h2 className="font-black text-[#0A3161] group-hover:text-[#B31942] transition">{category.name}</h2>
                     {count > 0 && (
-                      <span className="rounded-full bg-zinc-800 px-2 py-0.5 text-xs font-bold text-zinc-400">
+                      <span className="rounded-full bg-[#F1F4F9] px-2 py-0.5 text-xs font-bold text-[#0A3161]/60">
                         {count}
                       </span>
                     )}

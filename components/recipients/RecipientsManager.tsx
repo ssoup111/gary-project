@@ -161,12 +161,12 @@ export default function RecipientsManager() {
 
   return (
     <>
-      <section className="mt-10 rounded-3xl border border-zinc-800 bg-zinc-900 p-8">
+      <section className="mt-10 rounded-3xl border border-black/10 bg-white p-8">
         <h2 className="text-2xl font-black">Add Recipient</h2>
 
         <form className="mt-6 grid gap-5">
-          <input value={fullName} onChange={(e) => setFullName(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Recipient full name" />
-          <input value={inmateNumber} onChange={(e) => setInmateNumber(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Inmate / DOC number" />
+          <input value={fullName} onChange={(e) => setFullName(e.target.value)} className="rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="Recipient full name" />
+          <input value={inmateNumber} onChange={(e) => setInmateNumber(e.target.value)} className="rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="Inmate / DOC number" />
           <select
             value={facilities.some(f => f.name === facilityName && f.state === state) ? `${facilityName}|${state}` : "|"}
             onChange={(e) => {
@@ -179,7 +179,7 @@ export default function RecipientsManager() {
                 setState(selectedState || "");
               }
             }}
-            className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white"
+            className="rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]"
           >
             <option value="|">Select facility (or enter manually below)</option>
             {facilities.map((facility) => (
@@ -191,16 +191,16 @@ export default function RecipientsManager() {
 
           {!facilities.some(f => f.name === facilityName && f.state === state) && (
             <>
-              <input value={facilityName} onChange={(e) => setFacilityName(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Facility name if not listed" />
-              <input value={state} onChange={(e) => setState(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="State" />
+              <input value={facilityName} onChange={(e) => setFacilityName(e.target.value)} className="rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="Facility name if not listed" />
+              <input value={state} onChange={(e) => setState(e.target.value)} className="rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="State" />
             </>
           )}
-          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="min-h-28 rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Mailing rules or notes" />
+          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="min-h-28 rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="Mailing rules or notes" />
 
           <button
             type="button"
             onClick={editingId ? updateRecipient : saveRecipient}
-            className="rounded-xl bg-white px-6 py-3 font-black text-black"
+            className="rounded-xl bg-[#B31942] px-6 py-3 font-black text-white"
           >
             {editingId ? "Update Recipient" : "Save Recipient"}
           </button>
@@ -217,36 +217,36 @@ export default function RecipientsManager() {
                 setNotes("");
                 setStatus("Edit cancelled.");
               }}
-              className="rounded-xl border border-zinc-700 px-6 py-3 font-black text-white"
+              className="rounded-xl border border-black/12 px-6 py-3 font-black text-[#0A3161]"
             >
               Cancel Edit
             </button>
           )}
 
-          {status && <p className="font-bold text-amber-300">{status}</p>}
+          {status && <p className="font-bold text-[#B31942]">{status}</p>}
         </form>
       </section>
 
-      <section className="mt-10 rounded-3xl border border-zinc-800 bg-zinc-900 p-8">
+      <section className="mt-10 rounded-3xl border border-black/10 bg-white p-8">
         <h2 className="text-2xl font-black">Your Saved Recipients</h2>
 
         {recipients.length === 0 ? (
-          <p className="mt-5 text-zinc-400">No saved recipients yet.</p>
+          <p className="mt-5 text-[#0A3161]/60">No saved recipients yet.</p>
         ) : (
           <div className="mt-6 grid gap-4">
             {recipients.map((recipient) => (
-              <div key={recipient.id} className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
+              <div key={recipient.id} className="rounded-2xl border border-black/10 bg-white p-5">
                 <h3 className="text-xl font-black">{recipient.full_name}</h3>
-                <p className="mt-2 text-sm text-zinc-400">DOC/Inmate #: {recipient.inmate_number || "Not provided"}</p>
-                <p className="text-sm text-zinc-400">Facility: {recipient.facility_name || "Not provided"}</p>
-                <p className="text-sm text-zinc-400">State: {recipient.state || "Not provided"}</p>
-                {recipient.notes && <p className="mt-3 text-sm leading-6 text-zinc-300">{recipient.notes}</p>}
+                <p className="mt-2 text-sm text-[#0A3161]/60">DOC/Inmate #: {recipient.inmate_number || "Not provided"}</p>
+                <p className="text-sm text-[#0A3161]/60">Facility: {recipient.facility_name || "Not provided"}</p>
+                <p className="text-sm text-[#0A3161]/60">State: {recipient.state || "Not provided"}</p>
+                {recipient.notes && <p className="mt-3 text-sm leading-6 text-[#0A3161]/70">{recipient.notes}</p>}
 
                 <div className="mt-4 flex flex-wrap gap-3">
                   <button
                     type="button"
                     onClick={() => startEdit(recipient)}
-                    className="rounded-xl border border-amber-700 px-4 py-2 text-sm font-bold text-amber-300 hover:bg-amber-950"
+                    className="rounded-xl border border-[#B31942]/50 px-4 py-2 text-sm font-bold text-[#B31942] hover:bg-[#B31942]/10"
                   >
                     Edit Recipient
                   </button>
@@ -254,7 +254,7 @@ export default function RecipientsManager() {
                   <button
                     type="button"
                     onClick={() => deleteRecipient(recipient.id)}
-                    className="rounded-xl border border-red-800 px-4 py-2 text-sm font-bold text-red-300 hover:bg-red-950"
+                    className="rounded-xl border border-red-200 px-4 py-2 text-sm font-bold text-red-700 hover:bg-red-50"
                   >
                     Delete Recipient
                   </button>

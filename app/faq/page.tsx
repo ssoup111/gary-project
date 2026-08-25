@@ -58,30 +58,30 @@ const faqs = [
 
 export default function FAQPage() {
   return (
-    <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
+    <main className="min-h-screen bg-white px-6 py-16 text-[#0A3161]">
       <div className="mx-auto max-w-4xl">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">Friends Behind Bars</p>
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">Friends Behind Bars</p>
         <h1 className="mt-4 text-5xl font-black">Frequently Asked Questions</h1>
-        <p className="mt-4 text-zinc-400">
+        <p className="mt-4 text-[#0A3161]/60">
           Can't find your answer?{" "}
-          <Link href="/contact" className="text-amber-400 underline hover:text-amber-300">Contact us</Link>.
+          <Link href="/contact" className="text-[#B31942] underline hover:text-[#B31942]">Contact us</Link>.
         </p>
 
         <div className="mt-10 grid gap-4">
           {faqs.map((faq) => (
-            <section key={faq.q} className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+            <section key={faq.q} className="rounded-2xl border border-black/10 bg-white p-6">
               <h2 className="text-lg font-black">{faq.q}</h2>
-              <p className="mt-3 leading-7 text-zinc-400">{faq.a}</p>
+              <p className="mt-3 leading-7 text-[#0A3161]/60">{faq.a}</p>
             </section>
           ))}
         </div>
 
-        <div className="mt-12 rounded-3xl border border-amber-400/30 bg-amber-400/10 p-8 text-center">
+        <div className="mt-12 rounded-3xl border border-[#B31942]/30 bg-[#B31942]/10 p-8 text-center">
           <h2 className="text-2xl font-black">Ready to get started?</h2>
-          <p className="mt-2 text-zinc-400">Browse the catalog and send your first image for $0.99.</p>
+          <p className="mt-2 text-[#0A3161]/60">Browse the catalog and send your first image for $0.99.</p>
           <div className="mt-6 flex flex-wrap justify-center gap-4">
-            <Link href="/signup" className="rounded-xl bg-white px-6 py-3 font-black text-black hover:bg-amber-300">Create Account</Link>
-            <Link href="/catalog" className="rounded-xl border border-zinc-600 px-6 py-3 font-black text-white hover:border-amber-400">Browse Catalog</Link>
+            <Link href="/signup" className="rounded-xl bg-[#B31942] px-6 py-3 font-black text-white hover:bg-[#8f1434]">Create Account</Link>
+            <Link href="/catalog" className="rounded-xl border border-black/15 px-6 py-3 font-black text-[#0A3161] hover:border-[#B31942]">Browse Catalog</Link>
           </div>
         </div>
       </div>

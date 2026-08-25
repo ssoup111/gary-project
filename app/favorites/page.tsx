@@ -90,28 +90,28 @@ export default function FavoritesPage() {
 
   return (
     <AuthGuard>
-      <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
+      <main className="min-h-screen bg-white px-6 py-16 text-[#0A3161]">
         <div className="mx-auto max-w-6xl">
           <AccountNav />
 
-          <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">
+          <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">
             Friends Behind Bars
           </p>
 
           <h1 className="mt-4 text-5xl font-black">Saved Favorites</h1>
 
-          <p className="mt-4 text-zinc-400">
+          <p className="mt-4 text-[#0A3161]/60">
             Images saved for later ordering.
           </p>
 
           {status ? (
-            <p className="mt-8 font-bold text-amber-300">{status}</p>
+            <p className="mt-8 font-bold text-[#B31942]">{status}</p>
           ) : images.length === 0 ? (
-            <p className="mt-8 text-zinc-400">No saved favorites yet.</p>
+            <p className="mt-8 text-[#0A3161]/60">No saved favorites yet.</p>
           ) : (
             <div className="mt-10 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
               {images.map((image) => (
-                <div key={image.id} className="overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900">
+                <div key={image.id} className="overflow-hidden rounded-3xl border border-black/10 bg-white">
                   {image.image_url && (
                     <a href={image.image_url} target="_blank" rel="noopener noreferrer" className="block bg-black">
                       <img src={image.image_url} alt={image.prompt} className="w-full object-contain" />
@@ -119,14 +119,14 @@ export default function FavoritesPage() {
                   )}
 
                   <div className="p-5">
-                    <p className="line-clamp-4 text-sm leading-6 text-zinc-400">
+                    <p className="line-clamp-4 text-sm leading-6 text-[#0A3161]/60">
                       {image.prompt}
                     </p>
 
                     <div className="mt-5 flex flex-wrap gap-3">
                       <Link
                         href={`/order?imageId=${encodeURIComponent(image.id)}`}
-                        className="rounded-xl bg-white px-4 py-2 text-sm font-black text-black"
+                        className="rounded-xl bg-[#B31942] px-4 py-2 text-sm font-black text-white"
                       >
                         Order This Image
                       </Link>
@@ -134,7 +134,7 @@ export default function FavoritesPage() {
                       <button
                         type="button"
                         onClick={() => removeFavorite(image.id)}
-                        className="rounded-xl border border-red-800 px-4 py-2 text-sm font-black text-red-300 hover:bg-red-950"
+                        className="rounded-xl border border-red-200 px-4 py-2 text-sm font-black text-red-700 hover:bg-red-50"
                       >
                         Remove
                       </button>

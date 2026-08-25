@@ -57,30 +57,30 @@ const details = [
 
 export default function HowItWorksPage() {
   return (
-    <main className="min-h-screen bg-zinc-950 text-white">
+    <main className="min-h-screen bg-white text-[#0A3161]">
 
       {/* Header */}
       <section className="mx-auto max-w-5xl px-6 py-20">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">Friends Behind Bars</p>
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">Friends Behind Bars</p>
         <h1 className="mt-4 text-5xl font-black">How It Works</h1>
-        <p className="mt-4 max-w-2xl text-lg leading-8 text-zinc-400">
+        <p className="mt-4 max-w-2xl text-lg leading-8 text-[#0A3161]/60">
           Send an approved photo to an incarcerated loved one in four steps — no technical knowledge required.
         </p>
       </section>
 
       {/* Steps */}
-      <section className="bg-zinc-900 px-6 py-16">
+      <section className="bg-white px-6 py-16">
         <div className="mx-auto max-w-5xl">
           <div className="grid gap-6 md:grid-cols-2">
             {steps.map((step) => (
-              <div key={step.n} className="rounded-3xl border border-zinc-800 bg-zinc-950 p-8">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-amber-400 text-xl font-black text-black">
+              <div key={step.n} className="rounded-3xl border border-black/10 bg-white p-8">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#B31942] text-xl font-black text-white">
                   {step.n}
                 </span>
                 <h2 className="mt-5 text-2xl font-black">{step.title}</h2>
-                <p className="mt-3 leading-7 text-zinc-400">{step.text}</p>
+                <p className="mt-3 leading-7 text-[#0A3161]/60">{step.text}</p>
                 {step.cta && (
-                  <Link href={step.cta.href} className="mt-5 inline-block rounded-xl bg-white px-5 py-2 text-sm font-black text-black hover:bg-amber-300">
+                  <Link href={step.cta.href} className="mt-5 inline-block rounded-xl bg-[#B31942] px-5 py-2 text-sm font-black text-white hover:bg-[#8f1434]">
                     {step.cta.label} →
                   </Link>
                 )}
@@ -95,22 +95,22 @@ export default function HowItWorksPage() {
         <h2 className="text-3xl font-black">Delivery Details</h2>
         <div className="mt-8 grid gap-5">
           {details.map((item) => (
-            <div key={item.q} className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+            <div key={item.q} className="rounded-2xl border border-black/10 bg-white p-6">
               <h3 className="text-lg font-black">{item.q}</h3>
-              <p className="mt-3 leading-7 text-zinc-400">{item.a}</p>
+              <p className="mt-3 leading-7 text-[#0A3161]/60">{item.a}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* CTA */}
-      <section className="bg-zinc-900 px-6 py-16">
+      <section className="bg-white px-6 py-16">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-black">Ready to send your first image?</h2>
-          <p className="mt-3 text-zinc-400">Create a free account and get started in minutes.</p>
+          <p className="mt-3 text-[#0A3161]/60">Create a free account and get started in minutes.</p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link href="/signup" className="rounded-xl bg-white px-8 py-3 font-black text-black hover:bg-amber-300">Get Started Free</Link>
-            <Link href="/catalog" className="rounded-xl border border-zinc-600 px-8 py-3 font-black text-white hover:border-amber-400">Browse Catalog</Link>
+            <Link href="/signup" className="rounded-xl bg-[#B31942] px-8 py-3 font-black text-white hover:bg-[#8f1434]">Get Started Free</Link>
+            <Link href="/catalog" className="rounded-xl border border-black/15 px-8 py-3 font-black text-[#0A3161] hover:border-[#B31942]">Browse Catalog</Link>
           </div>
         </div>
       </section>

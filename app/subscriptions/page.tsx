@@ -49,42 +49,42 @@ function SubscriptionsContent() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
+    <main className="min-h-screen bg-white px-6 py-16 text-[#0A3161]">
       <div className="mx-auto max-w-6xl">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">Friends Behind Bars</p>
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">Friends Behind Bars</p>
         <h1 className="mt-4 text-5xl font-black">Plans & Packs</h1>
-        <p className="mt-4 max-w-2xl text-zinc-400">Single images, image packs, and monthly subscription options.</p>
+        <p className="mt-4 max-w-2xl text-[#0A3161]/60">Single images, image packs, and monthly subscription options.</p>
 
         {paymentStatus === "success" && (
           <div className="mt-8 rounded-2xl border border-green-500/40 bg-green-500/10 p-5">
-            <p className="text-lg font-black text-green-300">Payment successful!</p>
-            <p className="mt-1 text-sm text-green-200/70">Your plan is now active. Check your dashboard to manage it.</p>
+            <p className="text-lg font-black text-green-700">Payment successful!</p>
+            <p className="mt-1 text-sm text-green-700/80">Your plan is now active. Check your dashboard to manage it.</p>
           </div>
         )}
         {paymentStatus === "cancelled" && (
-          <div className="mt-8 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-5">
-            <p className="font-bold text-amber-300">Payment cancelled — no charge was made.</p>
+          <div className="mt-8 rounded-2xl border border-[#8f1434]/40 bg-[#8f1434]/10 p-5">
+            <p className="font-bold text-[#B31942]">Payment cancelled — no charge was made.</p>
           </div>
         )}
 
-        {status && <div className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-4 font-bold text-amber-300">{status}</div>}
+        {status && <div className="mt-6 rounded-2xl border border-black/10 bg-white p-4 font-bold text-[#B31942]">{status}</div>}
         {loading ? (
           <LoadingSpinner message="Loading plans..." />
         ) : plans.length === 0 ? (
-          <div className="mt-10 rounded-3xl border border-zinc-800 bg-zinc-900 p-10">
+          <div className="mt-10 rounded-3xl border border-black/10 bg-white p-10">
             <p className="text-xl font-bold">No plans available yet.</p>
-            <p className="mt-3 text-zinc-400">Check back soon or contact us for pricing.</p>
+            <p className="mt-3 text-[#0A3161]/60">Check back soon or contact us for pricing.</p>
           </div>
         ) : (
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {plans.map((plan) => (
-              <div key={plan.id} className="rounded-3xl border border-zinc-800 bg-zinc-900 p-7">
-                <p className="text-sm font-bold uppercase tracking-widest text-amber-400">{plan.plan_type}</p>
+              <div key={plan.id} className="rounded-3xl border border-black/10 bg-white p-7">
+                <p className="text-sm font-bold uppercase tracking-widest text-[#B31942]">{plan.plan_type}</p>
                 <h2 className="mt-3 text-3xl font-black">{plan.name}</h2>
                 <p className="mt-5 text-5xl font-black">${(plan.price_cents / 100).toFixed(2)}</p>
-                <p className="mt-4 text-zinc-300">{plan.description || `${plan.image_count} image${plan.image_count === 1 ? "" : "s"}`}</p>
-                <p className="mt-2 text-zinc-400">Access: {plan.access_level}</p>
-                <button type="button" onClick={() => selectPlan(plan.id)} className="mt-7 w-full cursor-pointer rounded-2xl bg-white px-5 py-3 font-black text-black hover:bg-amber-300 transition">
+                <p className="mt-4 text-[#0A3161]/70">{plan.description || `${plan.image_count} image${plan.image_count === 1 ? "" : "s"}`}</p>
+                <p className="mt-2 text-[#0A3161]/60">Access: {plan.access_level}</p>
+                <button type="button" onClick={() => selectPlan(plan.id)} className="mt-7 w-full cursor-pointer rounded-2xl bg-[#B31942] px-5 py-3 font-black text-white hover:bg-[#8f1434] transition">
                   Select Plan
                 </button>
               </div>
@@ -98,7 +98,7 @@ function SubscriptionsContent() {
 
 export default function SubscriptionsPage() {
   return (
-    <Suspense fallback={<main className="min-h-screen bg-zinc-950 px-6 py-16 text-white"><p className="text-zinc-400">Loading...</p></main>}>
+    <Suspense fallback={<main className="min-h-screen bg-white px-6 py-16 text-[#0A3161]"><p className="text-[#0A3161]/60">Loading...</p></main>}>
       <SubscriptionsContent />
     </Suspense>
   );

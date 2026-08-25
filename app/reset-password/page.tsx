@@ -34,46 +34,46 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-950 px-6 py-20 text-white">
-      <div className="mx-auto max-w-md rounded-3xl border border-zinc-800 bg-zinc-900 p-8 shadow-2xl">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">Friends Behind Bars</p>
+    <main className="min-h-screen bg-white px-6 py-20 text-[#0A3161]">
+      <div className="mx-auto max-w-md rounded-3xl border border-black/10 bg-white p-8 shadow-2xl">
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">Friends Behind Bars</p>
         <h1 className="mt-4 text-4xl font-black">Reset Password</h1>
 
         {!ready ? (
-          <p className="mt-6 text-zinc-400">Verifying your reset link… if nothing happens, try clicking the link in your email again.</p>
+          <p className="mt-6 text-[#0A3161]/60">Verifying your reset link… if nothing happens, try clicking the link in your email again.</p>
         ) : (
           <form onSubmit={handleReset} className="mt-8 space-y-5">
             <div>
-              <label className="block text-sm font-bold text-zinc-300">New Password</label>
+              <label className="block text-sm font-bold text-[#0A3161]/70">New Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="At least 6 characters"
-                className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white"
+                className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]"
                 autoComplete="new-password"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-bold text-zinc-300">Confirm Password</label>
+              <label className="block text-sm font-bold text-[#0A3161]/70">Confirm Password</label>
               <input
                 type="password"
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 placeholder="Re-enter new password"
-                className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white"
+                className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]"
                 autoComplete="new-password"
                 required
               />
             </div>
             <button
               type="submit"
-              className="w-full rounded-xl bg-white px-6 py-3 font-black text-black hover:bg-amber-300"
+              className="w-full rounded-xl bg-[#B31942] px-6 py-3 font-black text-white hover:bg-[#8f1434]"
             >
               Set New Password
             </button>
-            {status && <p className="text-sm font-bold text-amber-300">{status}</p>}
+            {status && <p className="text-sm font-bold text-[#B31942]">{status}</p>}
           </form>
         )}
       </div>

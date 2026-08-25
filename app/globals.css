@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --background: #09090b;
-  --foreground: #fafafa;
+  --background: #ffffff;
+  --foreground: #0a3161;
+  --color-primary: #ffffff;
+  --color-secondary: #0a3161;
+  --color-tertiary: #b31942;
 }
 
 @theme inline {
@@ -12,7 +15,7 @@
 
 body {
   background: var(--background);
-  color: #ffffff;
+  color: var(--foreground);
   font-size: 18px;
   line-height: 1.8;
   -webkit-font-smoothing: antialiased;

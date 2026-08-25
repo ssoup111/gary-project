@@ -12,16 +12,16 @@ export default function TermsPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
+    <main className="min-h-screen bg-white px-6 py-16 text-[#0A3161]">
       <div className="mx-auto max-w-4xl">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">Friends Behind Bars</p>
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">Friends Behind Bars</p>
         <h1 className="mt-4 text-5xl font-black">Terms of Service</h1>
-        <p className="mt-4 text-zinc-400">Last updated: May 2026</p>
+        <p className="mt-4 text-[#0A3161]/60">Last updated: May 2026</p>
         <div className="mt-10 grid gap-6">
           {sections.map((s) => (
-            <section key={s.title} className="rounded-3xl border border-zinc-800 bg-zinc-900 p-6">
+            <section key={s.title} className="rounded-3xl border border-black/10 bg-white p-6">
               <h2 className="text-xl font-black">{s.title}</h2>
-              <p className="mt-3 leading-7 text-zinc-300">{s.body}</p>
+              <p className="mt-3 leading-7 text-[#0A3161]/70">{s.body}</p>
             </section>
           ))}
         </div>

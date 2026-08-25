@@ -45,7 +45,9 @@ animals, anime, beaches, big-cats, bikinis, boxing-mma, cars-motorcycles, classi
 
 Note: "yoga-pants" renamed to "yoga", "hot-rods" renamed to "classic-cars" — slugs updated in DB and images reassigned.
 
-## Current State (end of session July 6 2026, ~8:30pm)
+## Current State (as of Aug 17 2026 — full audit session)
+
+**⚠️ Two known-broken production issues found in tonight's audit — see Priority List below. Everything else in this section is historical (July 6) and still mostly accurate for what it describes, but the Stripe/email lines are now superseded.**
 
 - Login working ✓ — Enter key now submits, forgot password flow added, reset-password page built
 - Signup working ✓ — Enter key now submits
@@ -54,18 +56,21 @@ Note: "yoga-pants" renamed to "yoga", "hot-rods" renamed to "classic-cars" — s
 - Admin orders page fixed ✓ — service-role API bypasses RLS, shows all customer orders
 - Duplicate protection hardened ✓ — Pexels/Unsplash URLs now stripped of query params before insert; `deduplicate-images.mjs` cleaned 1,664 existing duplicates
 - 35 categories live in DB ✓
-- Stripe payments working ✓ — live mode, tiered pricing
 - Fulfillment queue built ✓ — `/admin/delivery` shows image + recipient info + download + "Mark as Sent"
 - Stripe business verification: COMPLETE ✓
-- Customer confirmation email: WORKING ✓ — CTA links to /my-orders
 - JPay/Securus facility scraper: COMPLETE ✓ — 619 facilities across 40 states
-- Facility typeahead: shows all facilities for state, filters to 25 as user types ✓
+- Facility typeahead: shows all facilities for state, filters to 25 as user types ✓ (saved-recipient autofill only fills name/inmate#, not state/facility — minor UX gap, not blocking)
 - RLS policies hardened ✓
 - Nav/footer/sitemap cleaned up ✓
 - All public pages have real content ✓
 - **Tiered pricing COMPLETE ✓** — 10 pricing tiers (individual, packages, subscriptions) in DB + UI
-- **Checkout tested end-to-end ✓** — test order went through, webhook fired, order marked paid, appeared in /admin/delivery, marked as sent successfully
-- **Confirmation email NOT working** — order confirmed but no email received; likely missing GMAIL_USER / GMAIL_APP_PASSWORD env vars in Vercel (or check spam + Vercel logs)
+- **Checkout tested end-to-end ✓** (as of July 6) — test order went through, webhook fired, order marked paid, appeared in /admin/delivery, marked as sent successfully
+- **Email migrated from Gmail/nodemailer to Resend ✓ WORKING ✓** (fixed Aug 17 2026, same session as the audit) — `RESEND_API_KEY` added to Vercel, domain DNS records added at Namecheap, redeployed, confirmed "Delivered" via a real `/contact` test
+- **Stripe: very likely still in TEST mode in production** — see Priority List #2 (still open, the one real blocker left)
+- Daily report cron is intentionally **paused** (`vercel.json` → `"crons": []`, commit `e6b0d36`, July 5) — not a bug, just off
+- **Checkout "Plan not found" bug FIXED ✓ (Aug 23 2026)** — `SUPABASE_SERVICE_ROLE_KEY` in Vercel prod (and `.env.local`) held an invalid/unregistered `sb_secret_...` key, so every server-side `product_plans` lookup in `/api/checkout/create` 401'd and got reported as "Plan not found." Fixed by pulling the real legacy `service_role` JWT from Supabase dashboard → API Keys → Legacy tab, updating the Vercel env var, redeploying, and confirming via a direct API call that checkout now passes the plan lookup. See Priority List item 7 for full detail.
+- **Supabase Auth "email rate limit exceeded" bug FIXED ✓ (Aug 23 2026)** — Signup was using Supabase Auth's built-in email service, which is capped at 2 emails/hour and explicitly not meant for production. Fixed by enabling custom SMTP for Supabase Auth (Authentication → Emails → SMTP Settings) using Resend's SMTP relay (`smtp.resend.com`, port 465, username `resend`), with a new dedicated Resend API key (`friendsbehindbars supabase auth smtp`, Sending-access only, scoped to the friendsbehindbars.com domain) as the password, and sender `orders@friendsbehindbars.com`. Confirmed fix by checking Auth → Rate Limits: sending-email limit went from 2/h → 30/h after saving. This is separate from the app's own transactional emails (order/contact/delivery), which already went through Resend via `lib/email.ts` — this fix specifically covers Supabase's own signup-confirmation/password-reset/magic-link emails. See Priority List item 8 for full detail.
+- **Missing order confirmation email bug FIXED ✓ (Aug 23 2026)** — Bill signed up and completed a real test purchase (Stripe test mode, `fbbpictures@gmail.com`) but got no order confirmation email. Root cause: `STRIPE_WEBHOOK_SECRET` in Vercel production didn't match the signing secret of Stripe's actual **test-mode** webhook endpoint (`upbeat-excellence`) — Stripe dashboard showed all 3 recent `checkout.session.completed` deliveries failing with `400 "Invalid webhook signature."` Since `stripe.webhooks.constructEvent()` throws on mismatch, `/api/stripe-webhook` returned 400 before ever reaching the order-update or email-send code — the order stayed stuck at `status: "pending"` with `stripe_checkout_session_id: null` forever, and the confirmation email (which fires from inside that webhook handler, not from `/api/checkout/create`) never sent. Fix: revealed the real test-webhook signing secret from Stripe dashboard → Webhooks → `upbeat-excellence` → Overview (`whsec_F4yYW5pzf7uohZwNl1Wx2ompluWuWKYe`), updated Vercel's `STRIPE_WEBHOOK_SECRET` to match, redeployed. Verified by clicking "Resend" on the previously-failed webhook event in Stripe — delivery now returns `200 OK` — then re-querying the `orders` table (Bill's order flipped to `status: "paid"`, `delivery_status: "queued_for_delivery"`), then confirming in Resend's email log that "Single Image Confirmed — Friends..." shows **Delivered** to `fbbpictures@gmail.com`. Full loop confirmed working. Note: `.env.local`'s `STRIPE_WEBHOOK_SECRET` (`whsec_08vv6m1kb...`) was NOT updated to match — only the Vercel production value was fixed, so local webhook testing would still fail until that's synced too.
 
 ## Tiered Pricing System (session July 6 2026)
 
@@ -188,13 +193,30 @@ There are TWO separate webhooks needed — one for live mode, one for test mode.
 
 **To fill empty categories:** `cd ~/Desktop/jpix && node fill-empty-categories.mjs` → review in admin → `node reactivate-filled-categories.mjs`
 
-## Priority List for Next Session
+## Red/White/Blue Rebrand (session Aug 24 2026)
 
-1. **Fix confirmation email** — check Vercel env vars for `GMAIL_USER` + `GMAIL_APP_PASSWORD`; if missing, add them → Redeploy → test again. Also check spam + Vercel function logs for stripe-webhook errors.
-2. **Switch back to live mode** — restore `STRIPE_SECRET_KEY` (sk_live_...), `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` (pk_live_...), `STRIPE_WEBHOOK_SECRET` (whsec_ from `empowering-voyage` webhook) in Vercel → Redeploy
-3. **Add CRON_SECRET to Vercel** — any random string → Vercel env vars → Redeploy → enables daily report email
-4. **Fill empty categories** — `node fill-empty-categories.mjs` → review in admin → `node reactivate-filled-categories.mjs`
+Gary requested a full storefront-style redesign: top nav with logo, Categories dropdown, Subscriptions/Packages/Contact/About Us links; homepage showing pictures directly below nav with lazy-load infinite scroll and a cart-icon "add to order" button per image; American-flag color scheme (white = primary/background, blue = secondary, red = tertiary/accent) applied consistently site-wide with matching borders/shadows on every card.
+
+**What changed:**
+- `components/layout/SiteNav.tsx` — blue (`#0A3161`) top bar, logo mark + wordmark left, live Categories dropdown (fetched from Supabase), Subscriptions/Packages(→`/pricing`)/Contact/About Us(→`/how-it-works`) links, red (`#B31942`) accents.
+- `components/layout/SiteFooter.tsx` — recolored to match.
+- `app/page.tsx` + new `components/home/HomeStoreGrid.tsx` — homepage replaced with a white-background picture grid directly below the nav (newest-approved first — no purchase-count tracking exists yet, so this isn't true "best sellers"), lazy-loaded via IntersectionObserver reusing `/api/catalog/images`, white cards with consistent shadow/border, red circular cart-icon button linking into the existing single-image checkout (`/order?imageId=...`). No real multi-item cart was built — this is a visual-only restyle of the existing "Select" flow, per explicit instruction that this was styling-only, not new functionality.
+- **Site-wide reskin**: every customer-facing page/component (all of `app/` and `components/` except `app/admin/` and `components/admin/`, which were deliberately left on the old dark theme as an internal tool) had its dark zinc/amber theme converted to the new palette: `bg-zinc-950`/`bg-zinc-900` → white, `bg-zinc-800` → `#F1F4F9`, all `border-zinc-*` → consistent `border-black/10–15`, all `text-zinc-*`/`text-white` (headings/body) → navy `#0A3161` at varying opacity for hierarchy, all `amber-*` accent classes → red `#B31942` (with `#8f1434` as the darker hover shade). Button pattern that was previously "light button on dark page" (`bg-white text-black`) flipped to a proper red-fill CTA (`bg-[#B31942] text-white`) since the page itself is now white. Status colors (green success / red error badges) were re-tuned from dark-mode-bright shades to light-mode-readable shades (e.g. `text-green-400`→`text-green-700`, `bg-red-950`→`bg-red-50`) for contrast, but kept as green/red (not brand red) since those are functional status indicators, not brand accents. Card shadow/border treatment standardized to `border border-black/10 bg-white shadow-md shadow-black/10` (or `shadow-2xl` specifically for floating/overlay elements like dropdowns and modals) across the app.
+- `app/globals.css` — `--background`/`--foreground` flipped to white/navy; the existing zinc-text-forced-white override rule was left in place since it's now effectively admin-only (no other files use zinc-* classes anymore).
+- Verified via `tsc --noEmit` (clean, aside from one pre-existing unrelated `resend` module resolution error caused by this sandbox's `node_modules` not being fully installed — not something introduced by this change). Could not run a live preview from the sandbox (no network access to fetch Next's SWC binary for this environment) — Bill verified locally via `npm run dev`.
+- **Scoping notes for next time**: admin panel (`/admin/**`) intentionally NOT touched — still dark zinc theme. "About Us" and "Packages" nav links point at the closest existing pages (`/how-it-works`, `/pricing`) rather than new dedicated pages, since no new pages were requested. No real shopping cart or best-seller tracking was built — flagged explicitly to Bill/Gary before starting.
+
+## Priority List for Next Session (updated Aug 17 2026 audit)
+
+1. ~~Fix email~~ — **DONE (Aug 17 2026, same night).** `RESEND_API_KEY` was missing from Vercel production entirely — created a new Resend API key (`friendsbehindbars production`, Sending-access only) and added it to Vercel. Also found `friendsbehindbars.com` domain in Resend was stuck at "Not Started" — added the missing DNS records at Namecheap (DKIM TXT `resend._domainkey`, SPF TXT `send`, MX `send` → `feedback-smtp.us-east-1.amazonses.com` priority 10, DMARC TXT `_dmarc`), verified in Resend (went to Pending → should finish propagating shortly after). Redeployed production, then sent a real test message through `/contact` — confirmed **Delivered** in Resend's email log. Email is fully working end to end now.
+2. **Switch Stripe back to live mode — very likely still in test mode right now.** Vercel won't let you re-reveal a "Sensitive" env var once saved (by design), so this couldn't be 100% confirmed by reading the value directly, but: the `STRIPE_SECRET_KEY` currently in Vercel production was added tonight as part of a rotation done explicitly in Stripe's **Test mode** — meaning the live key rotation from this priority item is still outstanding. Fix: Stripe dashboard → switch OFF Test mode/Sandbox → Developers → API keys → get `sk_live_...` and `pk_live_...` → Vercel → update `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` → also restore `STRIPE_WEBHOOK_SECRET` to the live value (from the `empowering-voyage` webhook) → Redeploy. Test with a real $0.99 order afterward to confirm.
+3. ~~Add CRON_SECRET to Vercel~~ — **already done**, confirmed present in Vercel production (added May 21). Daily report cron itself is still intentionally paused (`vercel.json`), separate decision — turn back on if wanted.
+4. **Fill empty categories** — `node fill-empty-categories.mjs` → review in admin → `node reactivate-filled-categories.mjs` (status not re-checked tonight)
 5. **Call Securus to add email to account** — blocks all Snap & Send automation work
+6. ~~Optional cleanup~~ — **DONE (Aug 23 2026).** Deleted the unused `GMAIL_USER` / `GMAIL_APP_PASSWORD` env vars from Vercel production (old email system, no longer used now that Resend is confirmed working) and redeployed; also removed them from local `.env.local`. Separately, found the live-mode Stripe key literally named `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` was actually a live **secret** key (`sk_live_...HAIb`), not the publishable key — renamed it in Stripe's dashboard (Developers → API keys, Live mode) to `DO NOT USE - LIVE SECRET KEY (was mislabeled as publishable)` so nobody copies it into a public-facing var by mistake. The correctly-labeled live secret key in use is "Friends Behind Bars Live" (`sk_live_...tMdn`).
+7. ~~Fix "Plan not found" checkout error~~ — **DONE (Aug 23 2026).** Bill reported the error while doing a live test purchase on `/order`. Root cause: `SUPABASE_SERVICE_ROLE_KEY` in Vercel production (and in `.env.local`) was set to `sb_secret_f8T3RAM...` — a new-style Supabase secret key that was never actually created/registered in the Supabase project (confirmed via a direct API call that returned `"Unregistered API key"`). Because `/api/checkout/create` uses this key to query `product_plans` server-side, every lookup 401'd and the route's catch-all logic reported it as "Plan not found." (the `product_plans` table and RLS policies were fine the whole time — `single` plan slug confirmed active at $0.99). Fix: pulled the real key from Supabase dashboard → Settings → API Keys → "Legacy anon, service_role API keys" tab → Reveal on `service_role` → copied the JWT → replaced the value in Vercel's `SUPABASE_SERVICE_ROLE_KEY` (Production) → Redeployed → confirmed via a direct `fetch()` to `/api/checkout/create` that the plan lookup now succeeds (response changed from "Plan not found" 404 to the expected "imageId is required" 400 for a test call with no image). Also updated the same key in local `.env.local` for consistency. Bill still needs to do his own test purchase through the actual `/order` UI to confirm the full flow (image → recipient → Stripe test checkout → confirmation email).
+8. ~~Fix "email rate limit exceeded" on signup~~ — **DONE (Aug 23 2026).** Bill hit this while creating a fresh test account on `/signup`. Root cause: Supabase Auth was still using its default built-in email service for signup confirmations, which Supabase caps at 2 emails/hour and explicitly documents as not meant for production apps (confirmed in dashboard: Authentication → Emails showed the "Set up custom SMTP" warning banner, and Authentication → Rate Limits showed `2 emails/h`). This is separate from the app's own order/contact/delivery emails, which already went through Resend via `lib/email.ts` — Supabase Auth's own emails (signup confirm, password reset, magic link) were never wired to Resend. Fix: Authentication → Emails → SMTP Settings → enabled custom SMTP → sender `orders@friendsbehindbars.com` / "Friends Behind Bars" → host `smtp.resend.com`, port 465 → username `resend` → password = a brand-new dedicated Resend API key (`friendsbehindbars supabase auth smtp`, Sending-access only, scoped to friendsbehindbars.com domain — a fresh key was created rather than reusing the app's existing Resend key, since Resend never re-displays a key's value after creation) → Saved. Confirmed via Rate Limits page: sending-email limit changed from `2 emails/h` to `30 emails/h` immediately after saving. Bill retried signup himself on `/signup` (`fbbpictures@gmail.com`) — confirmation email arrived, confirmed via his own screenshot.
+9. ~~Fix missing order confirmation email~~ — **DONE (Aug 23 2026).** Bill did a real test purchase right after the signup fix and got no order confirmation email. Root cause: `STRIPE_WEBHOOK_SECRET` in Vercel didn't match the signing secret of Stripe's actual test-mode webhook (`upbeat-excellence`) — all `checkout.session.completed` deliveries were failing with `400 "Invalid webhook signature."`, so the webhook handler (which both marks orders paid AND sends the confirmation email) never ran. Fix: pulled the correct signing secret from Stripe → updated `STRIPE_WEBHOOK_SECRET` in Vercel → redeployed → resent the failed webhook event from Stripe (now `200 OK`) → confirmed order `ae1dedda...` flipped to `status: "paid"` → confirmed "Single Image Confirmed" email shows **Delivered** in Resend's log. Full loop verified working. Local `.env.local`'s `STRIPE_WEBHOOK_SECRET` also updated to match (`whsec_F4yYW5pzf7uohZwNl1Wx2ompluWuWKYe`) — no remaining gap.
 
 ## Fulfillment — Phase 2: Securus Snap & Send Automation (Playwright)
 
@@ -295,18 +317,30 @@ Competitor pricing: Pigeonly charges $5/month for unlimited photos (they use pri
 - Run import-cars.mjs — Classic Cars + Supercars still light on images
 - Task #13 — confirm catalog image cards link to `/catalog/[id]` detail page
 
-## Vercel Env Vars (production)
+## Vercel Env Vars (production) — full inventory confirmed Aug 17 2026
 
-| Var | Purpose |
-|-----|---------|
-| `NEXT_PUBLIC_SUPABASE_URL` | `https://zgcqbvvvwbgpbgaofkmg.supabase.co` — baked into client bundle |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Legacy JWT anon key (from Supabase Settings → API Keys → Legacy tab) |
-| `SUPABASE_URL` | Runtime server-side Supabase URL |
-| `SUPABASE_ANON_KEY` | Runtime server-side anon key |
-| `SUPABASE_SERVICE_ROLE_KEY` | Service role key for admin API routes |
-| `NEXT_PUBLIC_SITE_URL` | https://friendsbehindbars.com |
-| `NEXT_PUBLIC_APP_URL` | https://friendsbehindbars.com |
-| `NEXT_PUBLIC_ADMIN_EMAIL` | ssoup1@protonmail.com |
+| Var | Purpose | Note |
+|-----|---------|------|
+| `STRIPE_SECRET_KEY` | Stripe secret key | **Rotated tonight in TEST mode — likely still test, not live. See Priority #2.** |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key | Check matches live/test alongside secret key |
+| `STRIPE_WEBHOOK_SECRET` | Webhook signing secret | Must match whichever mode the secret key is in |
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://zgcqbvvvwbgpbgaofkmg.supabase.co` — baked into client bundle | |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Legacy JWT anon key | |
+| `SUPABASE_URL` | Runtime server-side Supabase URL | |
+| `SUPABASE_ANON_KEY` | Runtime server-side anon key | |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service role key for admin API routes | |
+| `NEXT_PUBLIC_SITE_URL` | https://friendsbehindbars.com | |
+| `NEXT_PUBLIC_ADMIN_EMAIL` | ssoup1@protonmail.com | |
+| `CRON_SECRET` | Auth for `/api/cron/daily-report` | Confirmed present (added May 21) |
+| `ADMIN_USERNAME` / `ADMIN_PASSWORD` | Admin basic-auth (Production + Development variants both exist) | |
+| `OPENAI_API_KEY` | Used somewhere in the app (not audited tonight) | |
+| `UNSPLASH_ACCESS_KEY` / `PEXELS_API_KEY` | Import scripts | |
+| `VERCEL_OIDC_TOKEN` | Vercel-managed, ignore | |
+| `GMAIL_USER` / `GMAIL_APP_PASSWORD` | Old email system, unused now | **Deleted from Vercel and `.env.local` Aug 23 2026** |
+| `RESEND_API_KEY` | Resend sending key, "friendsbehindbars production" (Sending-access only) | **Added Aug 17 2026** — confirmed working (contact form test showed "Delivered" in Resend's log) |
+| `EMAIL_FROM` / `EMAIL_REPLY_TO` | Not set | Optional — `lib/email.ts` has working defaults (`orders@friendsbehindbars.com` / `ssoup1@gmail.com`) if left unset |
+| `NEXT_PUBLIC_APP_URL` | Not found in production list tonight | Code falls back to `NEXT_PUBLIC_SITE_URL` fine, but confirm if anything depends on it directly |
+| `PIXABAY_API_KEY` | Import script | Present in `.env.local` for local dev; not checked in Vercel prod tonight |
 
 ## .env.local Keys (local dev)
 

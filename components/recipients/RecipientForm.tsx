@@ -45,17 +45,17 @@ export default function RecipientForm() {
 
   return (
     <form className="mt-6 grid gap-5">
-      <input value={fullName} onChange={(e) => setFullName(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Recipient full name" />
-      <input value={inmateNumber} onChange={(e) => setInmateNumber(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Inmate / DOC number" />
-      <input value={facilityName} onChange={(e) => setFacilityName(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Facility name" />
-      <input value={state} onChange={(e) => setState(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="State" />
-      <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="min-h-28 rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Mailing rules or notes" />
+      <input value={fullName} onChange={(e) => setFullName(e.target.value)} className="rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="Recipient full name" />
+      <input value={inmateNumber} onChange={(e) => setInmateNumber(e.target.value)} className="rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="Inmate / DOC number" />
+      <input value={facilityName} onChange={(e) => setFacilityName(e.target.value)} className="rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="Facility name" />
+      <input value={state} onChange={(e) => setState(e.target.value)} className="rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="State" />
+      <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="min-h-28 rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="Mailing rules or notes" />
 
-      <button type="button" onClick={saveRecipient} className="rounded-xl bg-white px-6 py-3 font-black text-black">
+      <button type="button" onClick={saveRecipient} className="rounded-xl bg-[#B31942] px-6 py-3 font-black text-white">
         Save Recipient
       </button>
 
-      {status && <p className="font-bold text-amber-300">{status}</p>}
+      {status && <p className="font-bold text-[#B31942]">{status}</p>}
     </form>
   );
 }

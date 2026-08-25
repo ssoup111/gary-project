@@ -71,13 +71,13 @@ export default function FavoriteButton({ imageId }: { imageId: string }) {
         type="button"
         onClick={toggleFavorite}
         className={`rounded-xl px-4 py-2 text-sm font-black ${
-          isFavorite ? "bg-amber-400 text-black" : "border border-amber-500 text-amber-300"
+          isFavorite ? "bg-[#B31942] text-white" : "border border-[#8f1434] text-[#B31942]"
         }`}
       >
         {isFavorite ? "Saved Favorite" : "Save Favorite"}
       </button>
 
-      {status && <p className="mt-2 text-xs font-bold text-amber-300">{status}</p>}
+      {status && <p className="mt-2 text-xs font-bold text-[#B31942]">{status}</p>}
     </div>
   );
 }

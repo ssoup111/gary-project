@@ -42,12 +42,12 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleLogin} className="mt-8 space-y-5">
       <div>
-        <label className="block text-sm font-bold text-zinc-300">Email</label>
+        <label className="block text-sm font-bold text-[#0A3161]/70">Email</label>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white"
+          className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]"
           placeholder="you@example.com"
           autoComplete="email"
           required
@@ -56,11 +56,11 @@ export default function LoginForm() {
 
       <div>
         <div className="flex items-center justify-between">
-          <label className="block text-sm font-bold text-zinc-300">Password</label>
+          <label className="block text-sm font-bold text-[#0A3161]/70">Password</label>
           <button
             type="button"
             onClick={handleForgotPassword}
-            className="text-xs text-zinc-500 hover:text-amber-300"
+            className="text-xs text-[#0A3161]/50 hover:text-[#B31942]"
           >
             Forgot password?
           </button>
@@ -69,26 +69,26 @@ export default function LoginForm() {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white"
+          className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]"
           placeholder="••••••••"
           autoComplete="current-password"
         />
       </div>
 
       {resetSent && (
-        <p className="rounded-xl border border-green-700 bg-green-950 p-3 text-sm font-bold text-green-300">
+        <p className="rounded-xl border border-green-200 bg-green-50 p-3 text-sm font-bold text-green-700">
           Password reset email sent — check your inbox.
         </p>
       )}
 
       <button
         type="submit"
-        className="w-full rounded-xl bg-white px-6 py-3 font-black text-black hover:bg-amber-300"
+        className="w-full rounded-xl bg-[#B31942] px-6 py-3 font-black text-white hover:bg-[#8f1434]"
       >
         Sign In
       </button>
 
-      {status && <p className="text-sm font-bold text-amber-300">{status}</p>}
+      {status && <p className="text-sm font-bold text-[#B31942]">{status}</p>}
     </form>
   );
 }

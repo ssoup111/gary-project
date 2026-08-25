@@ -43,13 +43,13 @@ export default async function PricingPage() {
   const subs       = (plans || []).filter((p: Plan) => p.plan_type === "subscription");
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white">
+    <main className="min-h-screen bg-white text-[#0A3161]">
 
       {/* Hero */}
       <section className="mx-auto max-w-5xl px-6 py-24 text-center">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">Simple, Affordable Pricing</p>
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">Simple, Affordable Pricing</p>
         <h1 className="mt-4 text-5xl font-black md:text-6xl">Send love — not hassle.</h1>
-        <p className="mx-auto mt-6 max-w-2xl text-xl leading-8 text-zinc-400">
+        <p className="mx-auto mt-6 max-w-2xl text-xl leading-8 text-[#0A3161]/60">
           From a single photo to a full year of daily images, we have a plan that fits your budget.
           Every image reviewed, approved, and delivered to your recipient's facility.
         </p>
@@ -58,21 +58,21 @@ export default async function PricingPage() {
       {/* Individual */}
       <section className="mx-auto max-w-5xl px-6 pb-20">
         <h2 className="text-3xl font-black">Individual Images</h2>
-        <p className="mt-2 text-zinc-400">Good for one-offs or trying it out.</p>
+        <p className="mt-2 text-[#0A3161]/60">Good for one-offs or trying it out.</p>
         <div className="mt-8 grid gap-5 sm:grid-cols-2">
           {individual.map((plan: Plan) => (
-            <div key={plan.id} className="relative rounded-3xl border border-zinc-800 bg-zinc-900 p-8">
+            <div key={plan.id} className="relative rounded-3xl border border-black/10 bg-white p-8">
               {plan.badge && (
-                <span className="absolute right-5 top-5 rounded-full bg-amber-400 px-3 py-1 text-xs font-black text-black">{plan.badge}</span>
+                <span className="absolute right-5 top-5 rounded-full bg-[#B31942] px-3 py-1 text-xs font-black text-white">{plan.badge}</span>
               )}
               <p className="text-lg font-black">{plan.name}</p>
-              <p className="mt-1 text-sm text-zinc-400">{plan.description}</p>
+              <p className="mt-1 text-sm text-[#0A3161]/60">{plan.description}</p>
               <p className="mt-6 text-4xl font-black">${(plan.price_cents / 100).toFixed(2)}</p>
-              <p className="mt-1 text-sm text-zinc-500">${(perImageCents(plan) / 100).toFixed(2)} per image</p>
+              <p className="mt-1 text-sm text-[#0A3161]/50">${(perImageCents(plan) / 100).toFixed(2)} per image</p>
               {plan.savings_pct && (
-                <p className="mt-2 text-sm font-bold text-green-400">Save {plan.savings_pct}% vs buying one at a time</p>
+                <p className="mt-2 text-sm font-bold text-green-700">Save {plan.savings_pct}% vs buying one at a time</p>
               )}
-              <Link href={`/order?plan=${plan.slug}`} className="mt-8 block rounded-2xl bg-white py-3 text-center font-black text-black hover:bg-amber-300">
+              <Link href={`/order?plan=${plan.slug}`} className="mt-8 block rounded-2xl bg-[#B31942] py-3 text-center font-black text-white hover:bg-[#8f1434]">
                 Get Started →
               </Link>
             </div>
@@ -81,24 +81,24 @@ export default async function PricingPage() {
       </section>
 
       {/* Packages */}
-      <section className="bg-zinc-900 px-6 py-20">
+      <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-3xl font-black">Image Packages</h2>
-          <p className="mt-2 text-zinc-400">Buy a bundle and send images whenever you want — credits never expire.</p>
+          <p className="mt-2 text-[#0A3161]/60">Buy a bundle and send images whenever you want — credits never expire.</p>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {packages.map((plan: Plan) => (
-              <div key={plan.id} className={"relative flex flex-col rounded-3xl border p-6 " + (plan.badge === "Popular" ? "border-amber-400 bg-zinc-800" : plan.badge === "Best Value" ? "border-green-400 bg-zinc-800" : "border-zinc-800 bg-zinc-950")}>
+              <div key={plan.id} className={"relative flex flex-col rounded-3xl border p-6 " + (plan.badge === "Popular" ? "border-[#B31942] bg-[#F1F4F9]" : plan.badge === "Best Value" ? "border-green-400 bg-[#F1F4F9]" : "border-black/10 bg-white")}>
                 {plan.badge && (
-                  <span className={"absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs font-black " + (plan.badge === "Best Value" ? "bg-green-400 text-black" : "bg-amber-400 text-black")}>{plan.badge}</span>
+                  <span className={"absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs font-black " + (plan.badge === "Best Value" ? "bg-green-400 text-black" : "bg-[#B31942] text-white")}>{plan.badge}</span>
                 )}
                 <p className="text-lg font-black">{plan.name}</p>
-                <p className="mt-1 text-xs text-zinc-400">{plan.description}</p>
+                <p className="mt-1 text-xs text-[#0A3161]/60">{plan.description}</p>
                 <p className="mt-5 text-3xl font-black">${(plan.price_cents / 100).toFixed(2)}</p>
-                <p className="text-xs text-zinc-500">${(perImageCents(plan) / 100).toFixed(2)}/image</p>
+                <p className="text-xs text-[#0A3161]/50">${(perImageCents(plan) / 100).toFixed(2)}/image</p>
                 {plan.savings_pct && (
-                  <p className="mt-2 text-xs font-bold text-green-400">Save {plan.savings_pct}%</p>
+                  <p className="mt-2 text-xs font-bold text-green-700">Save {plan.savings_pct}%</p>
                 )}
-                <Link href={`/order?plan=${plan.slug}`} className={"mt-auto pt-6 block rounded-2xl py-3 text-center text-sm font-black " + (plan.badge ? "bg-white text-black hover:bg-amber-300" : "border border-zinc-700 text-white hover:border-amber-400")}>
+                <Link href={`/order?plan=${plan.slug}`} className={"mt-auto pt-6 block rounded-2xl py-3 text-center text-sm font-black " + (plan.badge ? "bg-[#B31942] text-white hover:bg-[#8f1434]" : "border border-black/12 text-[#0A3161] hover:border-[#B31942]")}>
                   Buy Package →
                 </Link>
               </div>
@@ -110,21 +110,21 @@ export default async function PricingPage() {
       {/* Subscriptions */}
       <section className="mx-auto max-w-5xl px-6 py-20">
         <h2 className="text-3xl font-black">Daily Subscriptions</h2>
-        <p className="mt-2 text-zinc-400">1 new image delivered to your recipient every day. Set it and forget it.</p>
+        <p className="mt-2 text-[#0A3161]/60">1 new image delivered to your recipient every day. Set it and forget it.</p>
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {subs.map((plan: Plan) => {
             const perDay = (plan.price_cents / (plan.duration_days || 30) / 100).toFixed(2);
             return (
-              <div key={plan.id} className={"relative flex flex-col rounded-3xl border p-6 " + (plan.badge === "Popular" ? "border-amber-400 bg-zinc-800" : plan.badge === "Best Value" ? "border-green-400 bg-zinc-800" : "border-zinc-800 bg-zinc-900")}>
+              <div key={plan.id} className={"relative flex flex-col rounded-3xl border p-6 " + (plan.badge === "Popular" ? "border-[#B31942] bg-[#F1F4F9]" : plan.badge === "Best Value" ? "border-green-400 bg-[#F1F4F9]" : "border-black/10 bg-white")}>
                 {plan.badge && (
-                  <span className={"absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs font-black " + (plan.badge === "Best Value" ? "bg-green-400 text-black" : "bg-amber-400 text-black")}>{plan.badge}</span>
+                  <span className={"absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs font-black " + (plan.badge === "Best Value" ? "bg-green-400 text-black" : "bg-[#B31942] text-white")}>{plan.badge}</span>
                 )}
                 <p className="text-lg font-black">{plan.name}</p>
-                <p className="mt-1 text-xs text-zinc-400">{plan.image_count} images total</p>
+                <p className="mt-1 text-xs text-[#0A3161]/60">{plan.image_count} images total</p>
                 <p className="mt-5 text-3xl font-black">${(plan.price_cents / 100).toFixed(2)}</p>
-                <p className="text-xs text-zinc-500">${perDay}/day</p>
-                <p className="mt-2 text-xs font-bold text-green-400">1 image delivered daily</p>
-                <Link href={`/order?plan=${plan.slug}`} className={"mt-auto pt-6 block rounded-2xl py-3 text-center text-sm font-black " + (plan.badge ? "bg-white text-black hover:bg-amber-300" : "border border-zinc-700 text-white hover:border-amber-400")}>
+                <p className="text-xs text-[#0A3161]/50">${perDay}/day</p>
+                <p className="mt-2 text-xs font-bold text-green-700">1 image delivered daily</p>
+                <Link href={`/order?plan=${plan.slug}`} className={"mt-auto pt-6 block rounded-2xl py-3 text-center text-sm font-black " + (plan.badge ? "bg-[#B31942] text-white hover:bg-[#8f1434]" : "border border-black/12 text-[#0A3161] hover:border-[#B31942]")}>
                   Start Subscription →
                 </Link>
               </div>
@@ -134,7 +134,7 @@ export default async function PricingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-zinc-900 px-6 py-20">
+      <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-3xl">
           <h2 className="text-3xl font-black">Common Questions</h2>
           <div className="mt-8 space-y-6">
@@ -145,9 +145,9 @@ export default async function PricingPage() {
               { q: "What happens after I pay?", a: "Your order goes into our delivery queue. We deliver it to your recipient's facility account, usually within 24 hours." },
               { q: "Is there a free trial?", a: "Yes — your first single image is just $0.99. Try it risk-free." },
             ].map(({ q, a }) => (
-              <div key={q} className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
-                <p className="font-black text-white">{q}</p>
-                <p className="mt-2 text-sm leading-6 text-zinc-400">{a}</p>
+              <div key={q} className="rounded-2xl border border-black/10 bg-white p-6">
+                <p className="font-black text-[#0A3161]">{q}</p>
+                <p className="mt-2 text-sm leading-6 text-[#0A3161]/60">{a}</p>
               </div>
             ))}
           </div>
@@ -157,10 +157,10 @@ export default async function PricingPage() {
       {/* CTA */}
       <section className="mx-auto max-w-3xl px-6 py-20 text-center">
         <h2 className="text-4xl font-black">Ready to get started?</h2>
-        <p className="mt-4 text-zinc-400">Browse the catalog and place your first order in minutes.</p>
+        <p className="mt-4 text-[#0A3161]/60">Browse the catalog and place your first order in minutes.</p>
         <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <Link href="/catalog" className="rounded-2xl bg-white px-8 py-4 font-black text-black hover:bg-amber-300">Browse Catalog →</Link>
-          <Link href="/signup" className="rounded-2xl border border-zinc-600 px-8 py-4 font-black text-white hover:border-amber-400">Create Free Account</Link>
+          <Link href="/catalog" className="rounded-2xl bg-[#B31942] px-8 py-4 font-black text-white hover:bg-[#8f1434]">Browse Catalog →</Link>
+          <Link href="/signup" className="rounded-2xl border border-black/15 px-8 py-4 font-black text-[#0A3161] hover:border-[#B31942]">Create Free Account</Link>
         </div>
       </section>
 

@@ -41,16 +41,16 @@ export default function ContactForm() {
 
   return (
     <div className="grid gap-5">
-      <input value={name} onChange={(e) => setName(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Your name" />
-      <input value={email} onChange={(e) => setEmail(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Email address" />
-      <input value={phone} onChange={(e) => setPhone(e.target.value)} className="rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Phone number optional" />
-      <textarea value={message} onChange={(e) => setMessage(e.target.value)} className="min-h-40 rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-white" placeholder="Message" />
+      <input value={name} onChange={(e) => setName(e.target.value)} className="rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="Your name" />
+      <input value={email} onChange={(e) => setEmail(e.target.value)} className="rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="Email address" />
+      <input value={phone} onChange={(e) => setPhone(e.target.value)} className="rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="Phone number optional" />
+      <textarea value={message} onChange={(e) => setMessage(e.target.value)} className="min-h-40 rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="Message" />
 
-      <button type="button" onClick={sendMessage} className="rounded-xl bg-white px-6 py-3 font-black text-black">
+      <button type="button" onClick={sendMessage} className="rounded-xl bg-[#B31942] px-6 py-3 font-black text-white">
         Send Message
       </button>
 
-      {status && <p className="font-bold text-amber-300">{status}</p>}
+      {status && <p className="font-bold text-[#B31942]">{status}</p>}
     </div>
   );
 }

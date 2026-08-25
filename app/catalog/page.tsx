@@ -62,11 +62,11 @@ export default async function CatalogPage({
   );
 
   return (
-    <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
+    <main className="min-h-screen bg-white px-6 py-16 text-[#0A3161]">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">
+            <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">
               Friends Behind Bars Catalog
             </p>
             <h1 className="mt-4 text-5xl font-black">
@@ -74,7 +74,7 @@ export default async function CatalogPage({
                 ? selectedCategoryRecord.name
                 : selectedCategory || "Approved Image Collections"}
             </h1>
-            <p className="mt-4 max-w-2xl text-lg leading-8 text-zinc-400">
+            <p className="mt-4 max-w-2xl text-lg leading-8 text-[#0A3161]/60">
               {selectedCategory
                 ? "Browse approved images in this category."
                 : "Browse approved catalog images — $0.99 each, delivered to your recipient's facility."}
@@ -83,15 +83,15 @@ export default async function CatalogPage({
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link
                   href="/catalog"
-                  className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-bold text-zinc-200 hover:border-amber-400 hover:text-amber-300"
+                  className="rounded-xl border border-black/12 px-4 py-2 text-sm font-bold text-[#0A3161] hover:border-[#B31942] hover:text-[#B31942]"
                 >
                   Clear Category
                 </Link>
               </div>
             )}
           </div>
-          <div className="rounded-2xl border border-zinc-800 bg-zinc-900 px-6 py-4">
-            <p className="text-sm uppercase tracking-widest text-zinc-500">
+          <div className="rounded-2xl border border-black/10 bg-white px-6 py-4">
+            <p className="text-sm uppercase tracking-widest text-[#0A3161]/50">
               {selectedCategory ? "In Category" : "Approved Images"}
             </p>
             <p className="mt-2 text-4xl font-black">{total.toLocaleString()}</p>
@@ -106,8 +106,8 @@ export default async function CatalogPage({
               className={
                 "rounded-full px-4 py-2 text-sm font-bold " +
                 (!selectedCategory
-                  ? "bg-white text-black"
-                  : "border border-zinc-700 text-zinc-200 hover:border-amber-400 hover:text-amber-300")
+                  ? "bg-[#B31942] text-white"
+                  : "border border-black/12 text-[#0A3161] hover:border-[#B31942] hover:text-[#B31942]")
               }
             >
               All
@@ -119,8 +119,8 @@ export default async function CatalogPage({
                 className={
                   "rounded-full px-4 py-2 text-sm font-bold " +
                   (selectedCategory === cat.slug
-                    ? "bg-amber-400 text-black"
-                    : "border border-zinc-700 text-zinc-200 hover:border-amber-400 hover:text-amber-300")
+                    ? "bg-[#B31942] text-white"
+                    : "border border-black/12 text-[#0A3161] hover:border-[#B31942] hover:text-[#B31942]")
                 }
               >
                 {cat.name}
@@ -130,11 +130,11 @@ export default async function CatalogPage({
         )}
 
         {initialImages.length === 0 ? (
-          <div className="mt-12 rounded-2xl border border-zinc-800 bg-zinc-900 p-10">
+          <div className="mt-12 rounded-2xl border border-black/10 bg-white p-10">
             <h2 className="text-2xl font-bold">
               {selectedCategory ? "No images in this category yet" : "No approved images yet"}
             </h2>
-            <p className="mt-3 max-w-xl text-zinc-400">
+            <p className="mt-3 max-w-xl text-[#0A3161]/60">
               {selectedCategory
                 ? "Approved images will appear here once some are approved."
                 : "Approved catalog items will appear here."}

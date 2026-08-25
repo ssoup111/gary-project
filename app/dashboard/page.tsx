@@ -23,11 +23,11 @@ export default function DashboardPage() {
 
   return (
     <AuthGuard>
-      <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
+      <main className="min-h-screen bg-white px-6 py-16 text-[#0A3161]">
         <div className="mx-auto max-w-6xl">
           <AccountNav />
 
-          <p className="text-sm font-bold uppercase tracking-[0.25em] text-amber-400">
+          <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">
             Friends Behind Bars
           </p>
 
@@ -35,29 +35,29 @@ export default function DashboardPage() {
             {displayName ? `Welcome back, ${displayName}!` : "Customer Dashboard"}
           </h1>
 
-          <p className="mt-4 max-w-2xl text-zinc-400">
+          <p className="mt-4 max-w-2xl text-[#0A3161]/60">
             Browse images, manage recipients, and track your orders.
           </p>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <Link href="/catalog" className="rounded-3xl border border-zinc-800 bg-zinc-900 p-6 hover:border-amber-400">
+            <Link href="/catalog" className="rounded-3xl border border-black/10 bg-white p-6 hover:border-[#B31942]">
               <h2 className="text-xl font-black">Browse Images</h2>
-              <p className="mt-3 text-sm text-zinc-400">Choose approved images for delivery.</p>
+              <p className="mt-3 text-sm text-[#0A3161]/60">Choose approved images for delivery.</p>
             </Link>
 
-            <Link href="/my-orders" className="rounded-3xl border border-zinc-800 bg-zinc-900 p-6 hover:border-amber-400">
+            <Link href="/my-orders" className="rounded-3xl border border-black/10 bg-white p-6 hover:border-[#B31942]">
               <h2 className="text-xl font-black">My Orders</h2>
-              <p className="mt-3 text-sm text-zinc-400">Track image purchases and delivery status.</p>
+              <p className="mt-3 text-sm text-[#0A3161]/60">Track image purchases and delivery status.</p>
             </Link>
 
-            <Link href="/recipients" className="rounded-3xl border border-zinc-800 bg-zinc-900 p-6 hover:border-amber-400">
+            <Link href="/recipients" className="rounded-3xl border border-black/10 bg-white p-6 hover:border-[#B31942]">
               <h2 className="text-xl font-black">Recipients</h2>
-              <p className="mt-3 text-sm text-zinc-400">Save inmate profiles for repeat orders.</p>
+              <p className="mt-3 text-sm text-[#0A3161]/60">Save inmate profiles for repeat orders.</p>
             </Link>
 
-            <Link href="/favorites" className="rounded-3xl border border-zinc-800 bg-zinc-900 p-6 hover:border-amber-400">
+            <Link href="/favorites" className="rounded-3xl border border-black/10 bg-white p-6 hover:border-[#B31942]">
               <h2 className="text-xl font-black">Favorites</h2>
-              <p className="mt-3 text-sm text-zinc-400">Saved images you can re-order quickly.</p>
+              <p className="mt-3 text-sm text-[#0A3161]/60">Saved images you can re-order quickly.</p>
             </Link>
           </div>
         </div>
