@@ -31,6 +31,9 @@ export default function OrderPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCategorySlugs, setSelectedCategorySlugs] = useState<string[]>([]);
+  const [previewImages, setPreviewImages] = useState<CatalogImage[]>([]);
+  const [previewLoading, setPreviewLoading] = useState(false);
+  const [previewCount, setPreviewCount] = useState(0);
   const [selectedImageId, setSelectedImageId] = useState("");
   const [fullName, setFullName] = useState("");
   const [inmateNumber, setInmateNumber] = useState("");
@@ -91,6 +94,19 @@ export default function OrderPage() {
         .then(({ data }) => { setImages(data || []); setLoading(false); });
     }
   }, [selectedCategory]);
+
+  // Preview real photos from the categories chosen for a package/subscription plan.
+  useEffect(() => {
+    if (selectedCategorySlugs.length === 0) { setPreviewImages([]); setPreviewCount(0); return; }
+    setPreviewLoading(true);
+    supabase.from("generated_images")
+      .select("id,prompt,image_url,category_slug", { count: "exact" })
+      .eq("status", "approved")
+      .in("category_slug", selectedCategorySlugs)
+      .order("created_at", { ascending: false })
+      .limit(24)
+      .then(({ data, count }) => { setPreviewImages(data || []); setPreviewCount(count || 0); setPreviewLoading(false); });
+  }, [selectedCategorySlugs]);
 
   async function handleCheckout() {
     if (!selectedPlan) { setStatus("Please select a plan."); return; }
@@ -318,6 +334,35 @@ export default function OrderPage() {
                       </p>
                     )}
                   </div>
+
+                  {selectedCategorySlugs.length > 0 && (
+                    <div className="mt-6 border-t border-black/10 pt-6">
+                      <p className="mb-3 text-sm font-bold text-[#0A3161]">
+                        {previewLoading ? "Loading preview…" : `Preview — ${previewCount.toLocaleString()} approved image${previewCount !== 1 ? "s" : ""} in these categories`}
+                      </p>
+                      {!previewLoading && previewImages.length === 0 && (
+                        <p className="text-sm text-[#0A3161]/68">No approved images in these categories yet — try a different category.</p>
+                      )}
+                      {previewImages.length > 0 && (
+                        <>
+                          <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+                            {previewImages.map((img) => (
+                              <div key={img.id} className="aspect-square overflow-hidden rounded-lg bg-black/5">
+                                {img.image_url && (
+                                  <img src={img.image_url} alt={categoryLabel(img.category_slug)} loading="lazy" className="h-full w-full object-cover" />
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                          <p className="mt-3 text-xs text-[#0A3161]/68">
+                            A preview of what's in these categories — your {selectedPlan.image_count} image{selectedPlan.image_count !== 1 ? "s" : ""} will be a curated mix from this pool
+                            {selectedPlan.plan_type === "subscription" ? ", delivered one per day." : "."}
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  )}
+
                   <div className="mt-6 space-y-3 text-sm text-[#0A3161]/85">
                     <p>✓ {selectedPlan.image_count} images total</p>
                     {selectedPlan.plan_type === "subscription" && <p>✓ 1 new image delivered to your recipient every day</p>}
