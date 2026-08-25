@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { categoryLabel } from "@/lib/categoryLabel";
 
 type StoreImage = {
   id: string;
@@ -44,7 +45,7 @@ function StoreCard({ image }: { image: StoreImage }) {
       <div className="flex items-center justify-between gap-3 p-3.5">
         <div className="min-w-0">
           <p className="truncate text-sm font-bold text-[#0A3161]">
-            {image.prompt?.split(",")[0] || "Approved Image"}
+            {categoryLabel(image.category_slug)}
           </p>
           <p className="text-xs font-semibold text-[#0A3161]/72">$0.99</p>
         </div>
@@ -53,7 +54,7 @@ function StoreCard({ image }: { image: StoreImage }) {
           href={`/order?imageId=${encodeURIComponent(image.id)}`}
           aria-label="Add to cart"
           title="Add to cart"
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#B31942] text-white shadow-sm transition hover:scale-105 hover:bg-[#8f1434]"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#9C2B44] text-white shadow-sm transition hover:scale-105 hover:bg-[#7A2036]"
         >
           <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
             <path

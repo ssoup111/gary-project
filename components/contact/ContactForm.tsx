@@ -46,11 +46,11 @@ export default function ContactForm() {
       <input value={phone} onChange={(e) => setPhone(e.target.value)} className="rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="Phone number optional" />
       <textarea value={message} onChange={(e) => setMessage(e.target.value)} className="min-h-40 rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="Message" />
 
-      <button type="button" onClick={sendMessage} className="rounded-xl bg-[#B31942] px-6 py-3 font-black text-white">
+      <button type="button" onClick={sendMessage} className="rounded-xl bg-[#9C2B44] px-6 py-3 font-black text-white">
         Send Message
       </button>
 
-      {status && <p className="font-bold text-[#B31942]">{status}</p>}
+      {status && <p className="font-bold text-[#9C2B44]">{status}</p>}
     </div>
   );
 }

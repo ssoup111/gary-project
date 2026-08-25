@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import CatalogImageCard from "./CatalogImageCard";
+import { categoryLabel } from "@/lib/categoryLabel";
 
 type CatalogImage = {
   id: string;
@@ -72,14 +73,14 @@ export default function CatalogInfiniteScroll({ initialImages, initialHasMore, c
           >
             <CatalogImageCard id={image.id} image_url={image.image_url} prompt={image.prompt} />
             <div className="p-5">
-              <p className="line-clamp-4 text-sm leading-6 text-[#0A3161]/78">{image.prompt}</p>
+              <p className="text-base font-bold text-[#0A3161]">{categoryLabel(image.category_slug)}</p>
               <div className="mt-5 flex items-center justify-between gap-3">
                 <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-green-700">
                   Approved
                 </span>
                 <Link
                   href={`/order?imageId=${encodeURIComponent(image.id)}`}
-                  className="rounded-xl bg-[#B31942] px-4 py-2 text-sm font-bold text-white hover:bg-[#8f1434]"
+                  className="rounded-xl bg-[#9C2B44] px-4 py-2 text-sm font-bold text-white hover:bg-[#7A2036]"
                 >
                   Select
                 </Link>

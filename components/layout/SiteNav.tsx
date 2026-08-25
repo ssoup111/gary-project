@@ -50,7 +50,7 @@ export default function SiteNav() {
   }
 
   const navLinkClass =
-    "text-sm font-bold text-white/90 transition hover:text-[#B31942]";
+    "text-sm font-bold text-white/90 transition hover:text-[#9C2B44]";
 
   return (
     <header className="sticky top-0 z-50 bg-[#0A3161] px-4 py-3 text-white shadow-md">
@@ -61,7 +61,7 @@ export default function SiteNav() {
             <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M12 2 3 6v6c0 5 3.8 8.7 9 10 5.2-1.3 9-5 9-10V6l-9-4Z"
-                fill="#B31942"
+                fill="#9C2B44"
               />
               <path
                 d="M12 2 3 6v6c0 5 3.8 8.7 9 10 5.2-1.3 9-5 9-10V6l-9-4Z"
@@ -103,7 +103,7 @@ export default function SiteNav() {
                       key={cat.id}
                       href={`/catalog?category=${encodeURIComponent(cat.slug)}`}
                       onClick={() => setCategoriesOpen(false)}
-                      className="truncate rounded-lg px-2 py-1.5 text-sm font-semibold text-[#0A3161] transition hover:bg-[#B31942]/10 hover:text-[#B31942]"
+                      className="truncate rounded-lg px-2 py-1.5 text-sm font-semibold text-[#0A3161] transition hover:bg-[#9C2B44]/10 hover:text-[#9C2B44]"
                     >
                       {cat.name}
                     </Link>
@@ -113,7 +113,7 @@ export default function SiteNav() {
                   <Link
                     href="/catalog"
                     onClick={() => setCategoriesOpen(false)}
-                    className="text-sm font-black text-[#B31942] hover:underline"
+                    className="text-sm font-black text-[#9C2B44] hover:underline"
                   >
                     View Full Catalog →
                   </Link>
@@ -134,7 +134,7 @@ export default function SiteNav() {
               <Link href="/my-orders" className={navLinkClass}>My Orders</Link>
               <button
                 onClick={signOut}
-                className="rounded-xl border border-white/30 px-4 py-2 text-sm font-bold text-white transition hover:border-[#B31942] hover:text-[#B31942]"
+                className="rounded-xl border border-white/30 px-4 py-2 text-sm font-bold text-white transition hover:border-[#9C2B44] hover:text-[#9C2B44]"
               >
                 Sign Out
               </button>
@@ -144,7 +144,7 @@ export default function SiteNav() {
               <Link href="/login" className={navLinkClass}>Sign In</Link>
               <Link
                 href="/signup"
-                className="rounded-xl bg-[#B31942] px-4 py-2 text-sm font-black text-white shadow-sm transition hover:bg-[#8f1434]"
+                className="rounded-xl bg-[#9C2B44] px-4 py-2 text-sm font-black text-white shadow-sm transition hover:bg-[#7A2036]"
               >
                 Get Started
               </Link>
@@ -155,7 +155,7 @@ export default function SiteNav() {
         {/* Mobile menu button */}
         <Link
           href="/menu"
-          className="rounded-xl bg-[#B31942] px-4 py-2 text-sm font-black text-white md:hidden"
+          className="rounded-xl bg-[#9C2B44] px-4 py-2 text-sm font-black text-white md:hidden"
         >
           Menu
         </Link>

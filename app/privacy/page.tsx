@@ -7,9 +7,9 @@ export default function PrivacyPage() {
   const updated = "June 28, 2026";
 
   return (
-    <main className="min-h-screen bg-white px-6 py-16 text-[#0A3161]">
+    <main className="min-h-screen bg-[#FAF8F5] px-6 py-16 text-[#0A3161]">
       <div className="mx-auto max-w-4xl">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">Friends Behind Bars</p>
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#9C2B44]">Friends Behind Bars</p>
         <h1 className="mt-4 text-5xl font-black">Privacy Policy</h1>
         <p className="mt-3 text-sm text-[#0A3161]/72">Last updated: {updated}</p>
 
@@ -95,7 +95,7 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-black text-[#0A3161]">10. Contact</h2>
             <p className="mt-3">
               Questions about this privacy policy? Email us at{" "}
-              <a href="mailto:ssoup1@gmail.com" className="text-[#B31942] underline hover:text-[#B31942]">ssoup1@gmail.com</a>.
+              <a href="mailto:ssoup1@gmail.com" className="text-[#9C2B44] underline hover:text-[#9C2B44]">ssoup1@gmail.com</a>.
             </p>
           </section>
 

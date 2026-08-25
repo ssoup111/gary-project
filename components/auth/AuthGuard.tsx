@@ -25,8 +25,8 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
   if (checking) {
     return (
-      <main className="min-h-screen bg-white px-6 py-20 text-[#0A3161]">
-        <p className="font-bold text-[#B31942]">Checking account...</p>
+      <main className="min-h-screen bg-[#FAF8F5] px-6 py-20 text-[#0A3161]">
+        <p className="font-bold text-[#9C2B44]">Checking account...</p>
       </main>
     );
   }

@@ -31,9 +31,9 @@ const prohibited = [
 
 export default function ContentRulesPage() {
   return (
-    <main className="min-h-screen bg-white px-6 py-16 text-[#0A3161]">
+    <main className="min-h-screen bg-[#FAF8F5] px-6 py-16 text-[#0A3161]">
       <div className="mx-auto max-w-4xl">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">Friends Behind Bars</p>
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#9C2B44]">Friends Behind Bars</p>
         <h1 className="mt-4 text-5xl font-black">Content Rules</h1>
         <p className="mt-4 max-w-2xl leading-8 text-[#0A3161]/78">
           Every image in our catalog has been manually reviewed and approved before it becomes available to customers. These rules exist to protect our customers, their recipients, and the integrity of the platform.
@@ -77,8 +77,8 @@ export default function ContentRulesPage() {
         </section>
 
         {/* Minors callout */}
-        <section className="mt-8 rounded-3xl border border-[#B31942]/30 bg-[#B31942]/10 p-6">
-          <h2 className="text-lg font-black text-[#B31942]">Zero Tolerance: Minors</h2>
+        <section className="mt-8 rounded-3xl border border-[#9C2B44]/30 bg-[#9C2B44]/10 p-6">
+          <h2 className="text-lg font-black text-[#9C2B44]">Zero Tolerance: Minors</h2>
           <p className="mt-3 leading-7 text-[#0A3161]/85">
             Under no circumstances may any image depicting a person under 18 years of age appear in our catalog or be sent through our platform. This rule applies without exception. Accounts found attempting to circumvent this policy will be permanently banned and reported to the appropriate authorities.
           </p>
@@ -86,7 +86,7 @@ export default function ContentRulesPage() {
 
         <p className="mt-8 text-sm text-[#0A3161]/72">
           Questions about our content standards?{" "}
-          <Link href="/contact" className="text-[#B31942] underline hover:text-[#B31942]">Contact us</Link>.
+          <Link href="/contact" className="text-[#9C2B44] underline hover:text-[#9C2B44]">Contact us</Link>.
         </p>
       </div>
     </main>

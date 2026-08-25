@@ -35,9 +35,9 @@ export default function SignupPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white px-6 py-20 text-[#0A3161]">
+    <main className="min-h-screen bg-[#FAF8F5] px-6 py-20 text-[#0A3161]">
       <div className="mx-auto max-w-md rounded-3xl border border-black/10 bg-white p-8 shadow-2xl">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#B31942]">Friends Behind Bars</p>
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#9C2B44]">Friends Behind Bars</p>
         <h1 className="mt-4 text-4xl font-black">Create Account</h1>
         <p className="mt-4 text-[#0A3161]/78">Sign up to browse approved images and send them to incarcerated recipients.</p>
 
@@ -53,7 +53,7 @@ export default function SignupPage() {
             <div className="flex items-center justify-between">
               <label className="block text-sm font-bold text-[#0A3161]/85">Password</label>
               <button type="button" onClick={() => setShowPassword(!showPassword)}
-                className="text-xs font-bold text-[#B31942]">
+                className="text-xs font-bold text-[#9C2B44]">
                 {showPassword ? "Hide" : "Show"}
               </button>
             </div>
@@ -70,15 +70,15 @@ export default function SignupPage() {
           </div>
 
           <button type="submit"
-            className="w-full rounded-xl bg-[#B31942] px-6 py-3 font-black text-white hover:bg-[#8f1434]">
+            className="w-full rounded-xl bg-[#9C2B44] px-6 py-3 font-black text-white hover:bg-[#7A2036]">
             Create Account
           </button>
-          {status && <p className="text-sm font-bold text-[#B31942]">{status}</p>}
+          {status && <p className="text-sm font-bold text-[#9C2B44]">{status}</p>}
         </form>
 
         <p className="mt-6 text-sm text-[#0A3161]/78">
           Already have an account?{" "}
-          <Link href="/login" className="font-bold text-[#B31942]">Sign in</Link>
+          <Link href="/login" className="font-bold text-[#9C2B44]">Sign in</Link>
         </p>
       </div>
     </main>
