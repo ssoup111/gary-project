@@ -1,105 +1,11 @@
-"use client";
+import { redirect } from "next/navigation";
 
-import { useEffect, useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
-import { supabase } from "@/lib/supabaseClient";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
-
-type ProductPlan = {
-  id: string;
-  name: string;
-  slug: string;
-  plan_type: string;
-  access_level: string;
-  image_count: number;
-  price_cents: number;
-  description: string | null;
-};
-
-function SubscriptionsContent() {
-  const searchParams = useSearchParams();
-  const paymentStatus = searchParams.get("payment");
-
-  const [plans, setPlans] = useState<ProductPlan[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [status, setStatus] = useState("");
-
-  async function loadPlans() {
-    const { data } = await supabase
-      .from("product_plans")
-      .select("id,name,slug,plan_type,access_level,image_count,price_cents,description")
-      .eq("is_active", true)
-      .order("price_cents");
-    setPlans(data || []);
-    setLoading(false);
-  }
-
-  useEffect(() => { loadPlans(); }, []);
-
-  async function selectPlan(planId: string) {
-    setStatus("Opening Stripe checkout...");
-    const response = await fetch("/api/create-plan-checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ planId }),
-    });
-    const result = await response.json();
-    if (!result.success || !result.url) { setStatus(result.error || "Checkout failed."); return; }
-    window.location.href = result.url;
-  }
-
-  return (
-    <main className="min-h-screen bg-[#FAF8F5] px-6 py-16 text-[#0A3161]">
-      <div className="mx-auto max-w-6xl">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#A6412B]">Friends Behind Bars</p>
-        <h1 className="mt-4 text-5xl font-black">Plans & Packs</h1>
-        <p className="mt-4 max-w-2xl text-[#0A3161]/78">Single images, image packs, and monthly subscription options.</p>
-
-        {paymentStatus === "success" && (
-          <div className="mt-8 rounded-2xl border border-green-500/40 bg-green-500/10 p-5">
-            <p className="text-lg font-black text-green-700">Payment successful!</p>
-            <p className="mt-1 text-sm text-green-700/80">Your plan is now active. Check your dashboard to manage it.</p>
-          </div>
-        )}
-        {paymentStatus === "cancelled" && (
-          <div className="mt-8 rounded-2xl border border-[#8C3520]/40 bg-[#8C3520]/10 p-5">
-            <p className="font-bold text-[#A6412B]">Payment cancelled — no charge was made.</p>
-          </div>
-        )}
-
-        {status && <div className="mt-6 rounded-2xl border border-black/10 bg-white p-4 font-bold text-[#A6412B]">{status}</div>}
-        {loading ? (
-          <LoadingSpinner message="Loading plans..." />
-        ) : plans.length === 0 ? (
-          <div className="mt-10 rounded-3xl border border-black/10 bg-white p-10">
-            <p className="text-xl font-bold">No plans available yet.</p>
-            <p className="mt-3 text-[#0A3161]/78">Check back soon or contact us for pricing.</p>
-          </div>
-        ) : (
-          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {plans.map((plan) => (
-              <div key={plan.id} className="rounded-3xl border border-black/10 bg-white p-7">
-                <p className="text-sm font-bold uppercase tracking-widest text-[#A6412B]">{plan.plan_type}</p>
-                <h2 className="mt-3 text-3xl font-black">{plan.name}</h2>
-                <p className="mt-5 text-5xl font-black">${(plan.price_cents / 100).toFixed(2)}</p>
-                <p className="mt-4 text-[#0A3161]/85">{plan.description || `${plan.image_count} image${plan.image_count === 1 ? "" : "s"}`}</p>
-                <p className="mt-2 text-[#0A3161]/78">Access: {plan.access_level}</p>
-                <button type="button" onClick={() => selectPlan(plan.id)} className="mt-7 w-full cursor-pointer rounded-2xl bg-[#A6412B] px-5 py-3 font-black text-white hover:bg-[#8C3520] transition">
-                  Select Plan
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </main>
-  );
-}
-
-export default function SubscriptionsPage() {
-  return (
-    <Suspense fallback={<main className="min-h-screen bg-[#FAF8F5] px-6 py-16 text-[#0A3161]"><p className="text-[#0A3161]/78">Loading...</p></main>}>
-      <SubscriptionsContent />
-    </Suspense>
-  );
+// This page used to run its own standalone checkout flow through the legacy
+// /api/create-plan-checkout endpoint — no recipient info, no order record, no
+// confirmation email, completely disconnected from the real order system.
+// The site nav pointed "Subscriptions" here instead of /pricing, so real
+// purchases were silently falling through this broken path. Redirecting to
+// /pricing, which uses the real /order + /api/checkout/create flow.
+export default function SubscriptionsRedirect() {
+  redirect("/pricing");
 }

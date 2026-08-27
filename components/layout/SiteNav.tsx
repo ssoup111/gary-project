@@ -117,7 +117,7 @@ export default function SiteNav() {
             )}
           </div>
 
-          <Link href="/subscriptions" className={navLinkClass}>Subscriptions</Link>
+          <Link href="/pricing" className={navLinkClass}>Subscriptions</Link>
           <Link href="/pricing" className={navLinkClass}>Packages</Link>
           <Link href="/contact" className={navLinkClass}>Contact</Link>
           <Link href="/how-it-works" className={navLinkClass}>About Us</Link>
