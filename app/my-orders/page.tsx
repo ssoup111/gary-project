@@ -293,9 +293,9 @@ function MyOrdersContent() {
                       </div>
 
                       {!isDaily && (sub.images_remaining || 0) > 0 && (
-                        <Link href={`/order?plan=single`} className="mt-5 inline-block rounded-xl bg-[#A6412B] px-5 py-2.5 text-sm font-black text-white hover:bg-[#8C3520]">
-                          Use a Credit →
-                        </Link>
+                        <p className="mt-5 rounded-xl border border-black/10 bg-[#F1F4F9] p-3 text-xs leading-5 text-[#0A3161]/78">
+                          No need to pick images yourself — we send them to your recipient from your chosen categories as your credits are used.
+                        </p>
                       )}
                     </div>
                   );
