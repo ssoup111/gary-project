@@ -64,13 +64,13 @@ export default async function CategoriesPage() {
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#9C2B44]">Friends Behind Bars</p>
+            <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#A6412B]">Friends Behind Bars</p>
             <h1 className="mt-4 text-5xl font-black">Browse Categories</h1>
             <p className="mt-4 max-w-2xl text-[#0A3161]/78">
               35 curated collections, all reviewed and approved for incarcerated recipients.
             </p>
           </div>
-          <Link href="/catalog" className="rounded-2xl bg-[#9C2B44] px-5 py-3 font-bold text-white hover:bg-[#7A2036]">
+          <Link href="/catalog" className="rounded-2xl bg-[#A6412B] px-5 py-3 font-bold text-white hover:bg-[#8C3520]">
             View Full Catalog
           </Link>
         </div>
@@ -92,7 +92,7 @@ export default async function CategoriesPage() {
                 <Link
                   key={category.id}
                   href={`/catalog?category=${encodeURIComponent(category.slug)}`}
-                  className="group overflow-hidden rounded-2xl border border-black/10 bg-white shadow-lg transition hover:border-[#9C2B44]"
+                  className="group overflow-hidden rounded-2xl border border-black/10 bg-white shadow-lg transition hover:border-[#A6412B]"
                 >
                   {/* Thumbnail */}
                   <div className="h-44 w-full overflow-hidden bg-[#F1F4F9]">
@@ -108,7 +108,7 @@ export default async function CategoriesPage() {
                   </div>
                   {/* Info */}
                   <div className="flex items-center justify-between p-4">
-                    <h2 className="font-black text-[#0A3161] group-hover:text-[#9C2B44] transition">{category.name}</h2>
+                    <h2 className="font-black text-[#0A3161] group-hover:text-[#A6412B] transition">{category.name}</h2>
                     {count > 0 && (
                       <span className="rounded-full bg-[#F1F4F9] px-2 py-0.5 text-xs font-bold text-[#0A3161]/78">
                         {count}

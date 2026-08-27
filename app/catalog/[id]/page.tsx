@@ -52,7 +52,7 @@ export default function ImageDetailPage() {
     return (
       <main className="min-h-screen bg-[#FAF8F5] px-6 py-16 text-[#0A3161]">
         <div className="mx-auto max-w-4xl">
-          <p className="font-bold text-[#9C2B44]">Loading image...</p>
+          <p className="font-bold text-[#A6412B]">Loading image...</p>
         </div>
       </main>
     );
@@ -63,7 +63,7 @@ export default function ImageDetailPage() {
       <main className="min-h-screen bg-[#FAF8F5] px-6 py-16 text-[#0A3161]">
         <div className="mx-auto max-w-4xl">
           <p className="font-bold text-red-700">{error || "Image not found."}</p>
-          <Link href="/catalog" className="mt-4 inline-block rounded-xl border border-black/12 px-4 py-2 text-sm font-bold hover:border-[#9C2B44]">
+          <Link href="/catalog" className="mt-4 inline-block rounded-xl border border-black/12 px-4 py-2 text-sm font-bold hover:border-[#A6412B]">
             ← Back to Catalog
           </Link>
         </div>
@@ -79,7 +79,7 @@ export default function ImageDetailPage() {
         <button
           type="button"
           onClick={() => hasHistory.current ? router.back() : router.push("/catalog")}
-          className="mb-8 flex items-center gap-2 rounded-xl border border-black/12 px-4 py-2 text-sm font-bold text-[#0A3161] hover:border-[#9C2B44] hover:text-[#9C2B44]"
+          className="mb-8 flex items-center gap-2 rounded-xl border border-black/12 px-4 py-2 text-sm font-bold text-[#0A3161] hover:border-[#A6412B] hover:text-[#A6412B]"
         >
           ← Back to Catalog
         </button>
@@ -100,7 +100,7 @@ export default function ImageDetailPage() {
           {/* Actions */}
           <div className="flex flex-col gap-6">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#9C2B44]">
+              <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#A6412B]">
                 {categoryLabel(image.category_slug)}
               </p>
               <p className="mt-4 text-lg leading-7 text-[#0A3161]/85">
@@ -115,7 +115,7 @@ export default function ImageDetailPage() {
 
               <Link
                 href={`/order?imageId=${encodeURIComponent(image.id)}`}
-                className="mt-6 block w-full rounded-xl bg-[#9C2B44] px-6 py-3 text-center font-black text-white hover:bg-[#7A2036]"
+                className="mt-6 block w-full rounded-xl bg-[#A6412B] px-6 py-3 text-center font-black text-white hover:bg-[#8C3520]"
               >
                 Add to Order →
               </Link>
@@ -128,7 +128,7 @@ export default function ImageDetailPage() {
 
             <Link
               href="/catalog"
-              className="rounded-xl border border-black/12 px-6 py-3 text-center text-sm font-bold text-[#0A3161] hover:border-[#9C2B44]"
+              className="rounded-xl border border-black/12 px-6 py-3 text-center text-sm font-bold text-[#0A3161] hover:border-[#A6412B]"
             >
               Browse More Images
             </Link>

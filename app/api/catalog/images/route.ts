@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { SENSITIVE_HOME_CATEGORY_SLUGS } from "@/lib/sensitiveCategories";
 
 export const runtime = "nodejs";
 
@@ -14,6 +15,7 @@ const PAGE_SIZE = 96;
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const category = searchParams.get("category") || "";
+  const exclude = searchParams.get("exclude") || "";
   const offset = Math.max(0, parseInt(searchParams.get("offset") || "0", 10));
 
   const supabase = getServerSupabase();
@@ -26,6 +28,7 @@ export async function GET(req: Request) {
     .range(offset, offset + PAGE_SIZE - 1);
 
   if (category) query = query.eq("category_slug", category);
+  if (exclude === "sensitive") query = query.not("category_slug", "in", `(${SENSITIVE_HOME_CATEGORY_SLUGS.join(",")})`);
 
   const { data, error } = await query;
 

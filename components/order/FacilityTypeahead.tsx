@@ -109,7 +109,7 @@ export default function FacilityTypeahead({ onSelect }: Props) {
       {/* Step 1 — State */}
       <div>
         <label className="block text-sm font-bold text-[#0A3161]/85">
-          State <span className="text-[#9C2B44]">*</span>
+          State <span className="text-[#A6412B]">*</span>
         </label>
         <select
           value={selectedState}
@@ -169,7 +169,7 @@ export default function FacilityTypeahead({ onSelect }: Props) {
                   className={
                     "cursor-pointer px-4 py-3 text-sm transition " +
                     (i === highlightedIndex
-                      ? "bg-[#9C2B44] text-white"
+                      ? "bg-[#A6412B] text-white"
                       : "text-[#0A3161] hover:bg-[#F1F4F9]")
                   }
                 >

@@ -56,7 +56,7 @@ export default function FacilitiesPage() {
   return (
     <main className="min-h-screen bg-[#FAF8F5] px-6 py-16 text-[#0A3161]">
       <div className="mx-auto max-w-5xl">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#9C2B44]">
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#A6412B]">
           Friends Behind Bars
         </p>
 
@@ -89,14 +89,14 @@ export default function FacilitiesPage() {
         </div>
 
         {status ? (
-          <p className="mt-8 font-bold text-[#9C2B44]">{status}</p>
+          <p className="mt-8 font-bold text-[#A6412B]">{status}</p>
         ) : filteredFacilities.length === 0 ? (
           <p className="mt-8 text-[#0A3161]/78">No matching facilities.</p>
         ) : (
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {filteredFacilities.map((facility) => (
               <div key={facility.id} className="rounded-3xl border border-black/10 bg-white p-6">
-                <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#9C2B44]">
+                <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#A6412B]">
                   {facility.state}
                 </p>
 

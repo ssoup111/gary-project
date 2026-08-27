@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "Approved digital image collections for incarcerated recipients.",
     start_url: "/",
     display: "standalone",
-    background_color: "#09090b",
-    theme_color: "#f59e0b",
+    background_color: "#FAF8F5",
+    theme_color: "#0A3161",
     icons: [
       {
         src: "/icon-192.png",

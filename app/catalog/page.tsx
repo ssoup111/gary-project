@@ -66,7 +66,7 @@ export default async function CatalogPage({
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#9C2B44]">
+            <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#A6412B]">
               Friends Behind Bars Catalog
             </p>
             <h1 className="mt-4 text-5xl font-black">
@@ -83,7 +83,7 @@ export default async function CatalogPage({
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link
                   href="/catalog"
-                  className="rounded-xl border border-black/12 px-4 py-2 text-sm font-bold text-[#0A3161] hover:border-[#9C2B44] hover:text-[#9C2B44]"
+                  className="rounded-xl border border-black/12 px-4 py-2 text-sm font-bold text-[#0A3161] hover:border-[#A6412B] hover:text-[#A6412B]"
                 >
                   Clear Category
                 </Link>
@@ -106,8 +106,8 @@ export default async function CatalogPage({
               className={
                 "rounded-full px-4 py-2 text-sm font-bold " +
                 (!selectedCategory
-                  ? "bg-[#9C2B44] text-white"
-                  : "border border-black/12 text-[#0A3161] hover:border-[#9C2B44] hover:text-[#9C2B44]")
+                  ? "bg-[#A6412B] text-white"
+                  : "border border-black/12 text-[#0A3161] hover:border-[#A6412B] hover:text-[#A6412B]")
               }
             >
               All
@@ -119,8 +119,8 @@ export default async function CatalogPage({
                 className={
                   "rounded-full px-4 py-2 text-sm font-bold " +
                   (selectedCategory === cat.slug
-                    ? "bg-[#9C2B44] text-white"
-                    : "border border-black/12 text-[#0A3161] hover:border-[#9C2B44] hover:text-[#9C2B44]")
+                    ? "bg-[#A6412B] text-white"
+                    : "border border-black/12 text-[#0A3161] hover:border-[#A6412B] hover:text-[#A6412B]")
                 }
               >
                 {cat.name}

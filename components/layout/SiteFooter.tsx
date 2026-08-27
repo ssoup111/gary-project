@@ -14,25 +14,25 @@ export default function SiteFooter() {
         <div>
           <p className="font-bold text-white">Browse</p>
           <div className="mt-3 grid gap-2 text-sm text-white/70">
-            <Link href="/how-it-works" className="hover:text-[#9C2B44]">How It Works</Link>
-            <Link href="/catalog" className="hover:text-[#9C2B44]">Catalog</Link>
-            <Link href="/categories" className="hover:text-[#9C2B44]">Categories</Link>
-            <Link href="/faq" className="hover:text-[#9C2B44]">FAQ</Link>
-            <Link href="/contact" className="hover:text-[#9C2B44]">Contact</Link>
+            <Link href="/how-it-works" className="hover:text-[#A6412B]">How It Works</Link>
+            <Link href="/catalog" className="hover:text-[#A6412B]">Catalog</Link>
+            <Link href="/categories" className="hover:text-[#A6412B]">Categories</Link>
+            <Link href="/faq" className="hover:text-[#A6412B]">FAQ</Link>
+            <Link href="/contact" className="hover:text-[#A6412B]">Contact</Link>
           </div>
         </div>
 
         <div>
           <p className="font-bold text-white">Account</p>
           <div className="mt-3 grid gap-2 text-sm text-white/70">
-            <Link href="/login" className="hover:text-[#9C2B44]">Login</Link>
-            <Link href="/signup" className="hover:text-[#9C2B44]">Create Account</Link>
-            <Link href="/dashboard" className="hover:text-[#9C2B44]">Dashboard</Link>
-            <Link href="/privacy" className="hover:text-[#9C2B44]">Privacy</Link>
-            <Link href="/terms" className="hover:text-[#9C2B44]">Terms</Link>
-            <Link href="/content-rules" className="hover:text-[#9C2B44]">Content Rules</Link>
-            <Link href="/contact" className="hover:text-[#9C2B44]">Contact</Link>
-            <Link href="/faq" className="hover:text-[#9C2B44]">FAQ</Link>
+            <Link href="/login" className="hover:text-[#A6412B]">Login</Link>
+            <Link href="/signup" className="hover:text-[#A6412B]">Create Account</Link>
+            <Link href="/dashboard" className="hover:text-[#A6412B]">Dashboard</Link>
+            <Link href="/privacy" className="hover:text-[#A6412B]">Privacy</Link>
+            <Link href="/terms" className="hover:text-[#A6412B]">Terms</Link>
+            <Link href="/content-rules" className="hover:text-[#A6412B]">Content Rules</Link>
+            <Link href="/contact" className="hover:text-[#A6412B]">Contact</Link>
+            <Link href="/faq" className="hover:text-[#A6412B]">FAQ</Link>
           </div>
         </div>
       </div>

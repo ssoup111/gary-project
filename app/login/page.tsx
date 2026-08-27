@@ -5,7 +5,7 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen bg-[#FAF8F5] px-6 py-20 text-[#0A3161]">
       <div className="mx-auto max-w-md rounded-3xl border border-black/10 bg-white p-8 shadow-2xl">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#9C2B44]">
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#A6412B]">
           Friends Behind Bars
         </p>
 
@@ -19,7 +19,7 @@ export default function LoginPage() {
 
         <p className="mt-6 text-sm text-[#0A3161]/78">
           New customer?{" "}
-          <Link href="/signup" className="font-bold text-[#9C2B44]">
+          <Link href="/signup" className="font-bold text-[#A6412B]">
             Create an account
           </Link>
         </p>

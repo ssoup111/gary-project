@@ -60,7 +60,7 @@ export default function LoginForm() {
           <button
             type="button"
             onClick={handleForgotPassword}
-            className="text-xs text-[#0A3161]/72 hover:text-[#9C2B44]"
+            className="text-xs text-[#0A3161]/72 hover:text-[#A6412B]"
           >
             Forgot password?
           </button>
@@ -83,12 +83,12 @@ export default function LoginForm() {
 
       <button
         type="submit"
-        className="w-full rounded-xl bg-[#9C2B44] px-6 py-3 font-black text-white hover:bg-[#7A2036]"
+        className="w-full rounded-xl bg-[#A6412B] px-6 py-3 font-black text-white hover:bg-[#8C3520]"
       >
         Sign In
       </button>
 
-      {status && <p className="text-sm font-bold text-[#9C2B44]">{status}</p>}
+      {status && <p className="text-sm font-bold text-[#A6412B]">{status}</p>}
     </form>
   );
 }

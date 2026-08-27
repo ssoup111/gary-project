@@ -44,7 +44,7 @@ export default function RecipientList() {
   }, []);
 
   if (status) {
-    return <p className="mt-5 font-bold text-[#9C2B44]">{status}</p>;
+    return <p className="mt-5 font-bold text-[#A6412B]">{status}</p>;
   }
 
   if (recipients.length === 0) {

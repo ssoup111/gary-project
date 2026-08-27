@@ -50,27 +50,22 @@ export default function SiteNav() {
   }
 
   const navLinkClass =
-    "text-sm font-bold text-white/90 transition hover:text-[#9C2B44]";
+    "text-sm font-bold text-white/90 transition hover:text-[#A6412B]";
 
   return (
     <header className="sticky top-0 z-50 bg-[#0A3161] px-4 py-3 text-white shadow-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
         {/* Logo + company name — left */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#0A3161] shadow-sm">
-            <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M12 2 3 6v6c0 5 3.8 8.7 9 10 5.2-1.3 9-5 9-10V6l-9-4Z"
-                fill="#9C2B44"
-              />
-              <path
-                d="M12 2 3 6v6c0 5 3.8 8.7 9 10 5.2-1.3 9-5 9-10V6l-9-4Z"
-                stroke="#0A3161"
-                strokeWidth="1"
-              />
-            </svg>
-          </span>
-          <span className="text-lg font-black tracking-tight text-white sm:text-xl">
+        <Link href="/" className="flex items-center gap-2 shrink-0">
+          <svg viewBox="0 0 24 24" fill="none" className="h-8 w-8" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 2 3 6v6c0 5 3.8 8.7 9 10 5.2-1.3 9-5 9-10V6l-9-4Z"
+              fill="#A6412B"
+              stroke="#FAF8F5"
+              strokeWidth="1"
+            />
+          </svg>
+          <span className="text-lg font-black tracking-tighter text-white sm:text-xl">
             Friends Behind Bars
           </span>
         </Link>
@@ -103,7 +98,7 @@ export default function SiteNav() {
                       key={cat.id}
                       href={`/catalog?category=${encodeURIComponent(cat.slug)}`}
                       onClick={() => setCategoriesOpen(false)}
-                      className="truncate rounded-lg px-2 py-1.5 text-sm font-semibold text-[#0A3161] transition hover:bg-[#9C2B44]/10 hover:text-[#9C2B44]"
+                      className="truncate rounded-lg px-2 py-1.5 text-sm font-semibold text-[#0A3161] transition hover:bg-[#A6412B]/10 hover:text-[#A6412B]"
                     >
                       {cat.name}
                     </Link>
@@ -113,7 +108,7 @@ export default function SiteNav() {
                   <Link
                     href="/catalog"
                     onClick={() => setCategoriesOpen(false)}
-                    className="text-sm font-black text-[#9C2B44] hover:underline"
+                    className="text-sm font-black text-[#A6412B] hover:underline"
                   >
                     View Full Catalog →
                   </Link>
@@ -134,7 +129,7 @@ export default function SiteNav() {
               <Link href="/my-orders" className={navLinkClass}>My Orders</Link>
               <button
                 onClick={signOut}
-                className="rounded-xl border border-white/30 px-4 py-2 text-sm font-bold text-white transition hover:border-[#9C2B44] hover:text-[#9C2B44]"
+                className="rounded-xl border border-white/30 px-4 py-2 text-sm font-bold text-white transition hover:border-[#A6412B] hover:text-[#A6412B]"
               >
                 Sign Out
               </button>
@@ -144,7 +139,7 @@ export default function SiteNav() {
               <Link href="/login" className={navLinkClass}>Sign In</Link>
               <Link
                 href="/signup"
-                className="rounded-xl bg-[#9C2B44] px-4 py-2 text-sm font-black text-white shadow-sm transition hover:bg-[#7A2036]"
+                className="rounded-xl bg-[#A6412B] px-4 py-2 text-sm font-black text-white shadow-sm transition hover:bg-[#8C3520]"
               >
                 Get Started
               </Link>
@@ -155,7 +150,7 @@ export default function SiteNav() {
         {/* Mobile menu button */}
         <Link
           href="/menu"
-          className="rounded-xl bg-[#9C2B44] px-4 py-2 text-sm font-black text-white md:hidden"
+          className="rounded-xl bg-[#A6412B] px-4 py-2 text-sm font-black text-white md:hidden"
         >
           Menu
         </Link>

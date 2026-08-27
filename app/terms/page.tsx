@@ -14,7 +14,7 @@ export default function TermsPage() {
   return (
     <main className="min-h-screen bg-[#FAF8F5] px-6 py-16 text-[#0A3161]">
       <div className="mx-auto max-w-4xl">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#9C2B44]">Friends Behind Bars</p>
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#A6412B]">Friends Behind Bars</p>
         <h1 className="mt-4 text-5xl font-black">Terms of Service</h1>
         <p className="mt-4 text-[#0A3161]/78">Last updated: May 2026</p>
         <div className="mt-10 grid gap-6">

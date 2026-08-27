@@ -60,11 +60,11 @@ export default function FAQPage() {
   return (
     <main className="min-h-screen bg-[#FAF8F5] px-6 py-16 text-[#0A3161]">
       <div className="mx-auto max-w-4xl">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#9C2B44]">Friends Behind Bars</p>
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#A6412B]">Friends Behind Bars</p>
         <h1 className="mt-4 text-5xl font-black">Frequently Asked Questions</h1>
         <p className="mt-4 text-[#0A3161]/78">
           Can't find your answer?{" "}
-          <Link href="/contact" className="text-[#9C2B44] underline hover:text-[#9C2B44]">Contact us</Link>.
+          <Link href="/contact" className="text-[#A6412B] underline hover:text-[#A6412B]">Contact us</Link>.
         </p>
 
         <div className="mt-10 grid gap-4">
@@ -76,12 +76,12 @@ export default function FAQPage() {
           ))}
         </div>
 
-        <div className="mt-12 rounded-3xl border border-[#9C2B44]/30 bg-[#9C2B44]/10 p-8 text-center">
+        <div className="mt-12 rounded-3xl border border-[#A6412B]/30 bg-[#A6412B]/10 p-8 text-center">
           <h2 className="text-2xl font-black">Ready to get started?</h2>
           <p className="mt-2 text-[#0A3161]/78">Browse the catalog and send your first image for $0.99.</p>
           <div className="mt-6 flex flex-wrap justify-center gap-4">
-            <Link href="/signup" className="rounded-xl bg-[#9C2B44] px-6 py-3 font-black text-white hover:bg-[#7A2036]">Create Account</Link>
-            <Link href="/catalog" className="rounded-xl border border-black/15 px-6 py-3 font-black text-[#0A3161] hover:border-[#9C2B44]">Browse Catalog</Link>
+            <Link href="/signup" className="rounded-xl bg-[#A6412B] px-6 py-3 font-black text-white hover:bg-[#8C3520]">Create Account</Link>
+            <Link href="/catalog" className="rounded-xl border border-black/15 px-6 py-3 font-black text-[#0A3161] hover:border-[#A6412B]">Browse Catalog</Link>
           </div>
         </div>
       </div>

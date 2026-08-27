@@ -96,7 +96,7 @@ export default function FavoritesPage() {
         <div className="mx-auto max-w-6xl">
           <AccountNav />
 
-          <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#9C2B44]">
+          <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#A6412B]">
             Friends Behind Bars
           </p>
 
@@ -107,7 +107,7 @@ export default function FavoritesPage() {
           </p>
 
           {status ? (
-            <p className="mt-8 font-bold text-[#9C2B44]">{status}</p>
+            <p className="mt-8 font-bold text-[#A6412B]">{status}</p>
           ) : images.length === 0 ? (
             <p className="mt-8 text-[#0A3161]/78">No saved favorites yet.</p>
           ) : (
@@ -128,7 +128,7 @@ export default function FavoritesPage() {
                     <div className="mt-5 flex flex-wrap gap-3">
                       <Link
                         href={`/order?imageId=${encodeURIComponent(image.id)}`}
-                        className="rounded-xl bg-[#9C2B44] px-4 py-2 text-sm font-black text-white"
+                        className="rounded-xl bg-[#A6412B] px-4 py-2 text-sm font-black text-white"
                       >
                         Order This Image
                       </Link>

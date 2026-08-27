@@ -73,32 +73,37 @@ export default function HowItWorksPage() {
     <main className="min-h-screen bg-[#FAF8F5] text-[#0A3161]">
 
       {/* Header */}
-      <section className="mx-auto max-w-5xl px-6 py-20">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#9C2B44]">Friends Behind Bars</p>
-        <h1 className="mt-4 text-5xl font-black">How It Works</h1>
-        <p className="mt-4 max-w-2xl text-lg leading-8 text-[#0A3161]/78">
+      <section className="mx-auto max-w-5xl px-6 py-12">
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#A6412B]">Friends Behind Bars</p>
+        <h1 className="mt-3 text-4xl font-black">How It Works</h1>
+        <p className="mt-3 max-w-2xl text-lg leading-7 text-[#0A3161]/78">
           Send an approved photo to an incarcerated loved one in four steps — no technical knowledge required.
         </p>
       </section>
 
-      {/* Steps */}
+      {/* Steps — horizontal timeline on desktop, stacked on mobile */}
       <section className="bg-white px-6 py-16">
-        <div className="mx-auto max-w-5xl">
-          <div className="grid gap-6 md:grid-cols-2">
+        <div className="mx-auto max-w-6xl">
+          <div className="relative grid gap-10 md:grid-cols-4 md:gap-6">
+            {/* connecting line — desktop only */}
+            <div className="pointer-events-none absolute left-0 right-0 top-6 hidden h-px bg-black/10 md:block" />
+
             {steps.map((step) => {
               const cta = loggedIn ? step.loggedInCta : step.cta;
               return (
-                <div key={step.n} className="rounded-3xl border border-black/10 bg-white p-8">
-                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#9C2B44] text-xl font-black text-white">
+                <div key={step.n} className="relative flex gap-4 md:flex-col md:gap-0">
+                  <span className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#A6412B] text-xl font-black text-white ring-4 ring-white">
                     {step.n}
                   </span>
-                  <h2 className="mt-5 text-2xl font-black">{step.title}</h2>
-                  <p className="mt-3 leading-7 text-[#0A3161]/78">{step.text}</p>
-                  {cta && (
-                    <Link href={cta.href} className="mt-5 inline-block rounded-xl bg-[#9C2B44] px-5 py-2 text-sm font-black text-white hover:bg-[#7A2036]">
-                      {cta.label} →
-                    </Link>
-                  )}
+                  <div className="md:mt-5">
+                    <h2 className="text-xl font-black">{step.title}</h2>
+                    <p className="mt-2 text-sm leading-6 text-[#0A3161]/78">{step.text}</p>
+                    {cta && (
+                      <Link href={cta.href} className="mt-4 inline-block rounded-xl bg-[#A6412B] px-4 py-2 text-xs font-black text-white hover:bg-[#8C3520]">
+                        {cta.label} →
+                      </Link>
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -127,8 +132,8 @@ export default function HowItWorksPage() {
               <h2 className="text-3xl font-black">Ready to send your next image?</h2>
               <p className="mt-3 text-[#0A3161]/78">Browse the catalog or check your order history.</p>
               <div className="mt-8 flex flex-wrap justify-center gap-4">
-                <Link href="/catalog" className="rounded-xl bg-[#9C2B44] px-8 py-3 font-black text-white hover:bg-[#7A2036]">Browse Catalog</Link>
-                <Link href="/my-orders" className="rounded-xl border border-black/15 px-8 py-3 font-black text-[#0A3161] hover:border-[#9C2B44]">My Orders</Link>
+                <Link href="/catalog" className="rounded-xl bg-[#A6412B] px-8 py-3 font-black text-white hover:bg-[#8C3520]">Browse Catalog</Link>
+                <Link href="/my-orders" className="rounded-xl border border-black/15 px-8 py-3 font-black text-[#0A3161] hover:border-[#A6412B]">My Orders</Link>
               </div>
             </>
           ) : (
@@ -136,8 +141,8 @@ export default function HowItWorksPage() {
               <h2 className="text-3xl font-black">Ready to send your first image?</h2>
               <p className="mt-3 text-[#0A3161]/78">Create a free account and get started in minutes.</p>
               <div className="mt-8 flex flex-wrap justify-center gap-4">
-                <Link href="/signup" className="rounded-xl bg-[#9C2B44] px-8 py-3 font-black text-white hover:bg-[#7A2036]">Get Started Free</Link>
-                <Link href="/catalog" className="rounded-xl border border-black/15 px-8 py-3 font-black text-[#0A3161] hover:border-[#9C2B44]">Browse Catalog</Link>
+                <Link href="/signup" className="rounded-xl bg-[#A6412B] px-8 py-3 font-black text-white hover:bg-[#8C3520]">Get Started Free</Link>
+                <Link href="/catalog" className="rounded-xl border border-black/15 px-8 py-3 font-black text-[#0A3161] hover:border-[#A6412B]">Browse Catalog</Link>
               </div>
             </>
           )}

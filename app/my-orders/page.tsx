@@ -132,7 +132,7 @@ function MyOrdersContent() {
     const name = [rec.first_name, rec.last_name].filter(Boolean).join(" ");
     return (
       <div className="mt-3 rounded-xl border border-black/10 bg-white p-3">
-        <p className="text-xs font-bold uppercase tracking-wider text-[#9C2B44]">Recipient</p>
+        <p className="text-xs font-bold uppercase tracking-wider text-[#A6412B]">Recipient</p>
         <p className="mt-1 font-black">{name || "—"}</p>
         {rec.offender_id && <p className="text-xs text-[#0A3161]/78">Inmate #: {rec.offender_id}</p>}
         {rec.facility && <p className="text-xs text-[#0A3161]/78">Facility: {rec.facility}</p>}
@@ -144,7 +144,7 @@ function MyOrdersContent() {
   return (
     <main className="min-h-screen bg-[#FAF8F5] px-6 py-16 text-[#0A3161]">
       <div className="mx-auto max-w-5xl">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#9C2B44]">Friends Behind Bars</p>
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#A6412B]">Friends Behind Bars</p>
         <h1 className="mt-4 text-5xl font-black">My Orders</h1>
         <p className="mt-3 text-[#0A3161]/78">Your image purchases, package credits, and subscription plans.</p>
 
@@ -155,9 +155,9 @@ function MyOrdersContent() {
           </div>
         )}
         {paymentStatus === "cancelled" && (
-          <div className="mt-8 rounded-2xl border border-[#7A2036]/40 bg-[#7A2036]/10 p-5">
-            <p className="font-bold text-[#9C2B44]">Payment cancelled — no charge was made.</p>
-            <p className="mt-1 text-sm text-[#9C2B44]/70">You can <Link href="/order" className="underline">start a new order</Link> anytime.</p>
+          <div className="mt-8 rounded-2xl border border-[#8C3520]/40 bg-[#8C3520]/10 p-5">
+            <p className="font-bold text-[#A6412B]">Payment cancelled — no charge was made.</p>
+            <p className="mt-1 text-sm text-[#A6412B]/70">You can <Link href="/order" className="underline">start a new order</Link> anytime.</p>
           </div>
         )}
         {statusMsg && <div className="mt-6 rounded-2xl border border-black/12 bg-white p-4 font-bold text-[#0A3161]/85">{statusMsg}</div>}
@@ -165,7 +165,7 @@ function MyOrdersContent() {
         {notSignedIn ? (
           <div className="mt-10 rounded-3xl border border-black/10 bg-white p-10">
             <p className="text-xl font-bold">Sign in to view your orders</p>
-            <Link href="/login" className="mt-6 inline-block rounded-xl bg-[#9C2B44] px-6 py-3 font-black text-white">Sign In</Link>
+            <Link href="/login" className="mt-6 inline-block rounded-xl bg-[#A6412B] px-6 py-3 font-black text-white">Sign In</Link>
           </div>
         ) : loading ? (
           <LoadingSpinner message="Loading your orders..." />
@@ -174,8 +174,8 @@ function MyOrdersContent() {
             <p className="text-xl font-bold">No orders yet</p>
             <p className="mt-3 text-[#0A3161]/78">Browse the catalog and create your first order.</p>
             <div className="mt-6 flex gap-4">
-              <Link href="/catalog" className="rounded-xl bg-[#9C2B44] px-6 py-3 font-black text-white hover:bg-[#7A2036]">Browse Catalog</Link>
-              <Link href="/pricing" className="rounded-xl border border-black/12 px-6 py-3 font-black text-[#0A3161] hover:border-[#9C2B44]">View Pricing</Link>
+              <Link href="/catalog" className="rounded-xl bg-[#A6412B] px-6 py-3 font-black text-white hover:bg-[#8C3520]">Browse Catalog</Link>
+              <Link href="/pricing" className="rounded-xl border border-black/12 px-6 py-3 font-black text-[#0A3161] hover:border-[#A6412B]">View Pricing</Link>
             </div>
           </div>
         ) : (
@@ -183,11 +183,11 @@ function MyOrdersContent() {
             {/* Tab switcher */}
             <div className="mt-8 flex gap-3">
               <button onClick={() => setTab("orders")}
-                className={"rounded-full px-5 py-2 text-sm font-black transition " + (tab === "orders" ? "bg-[#9C2B44] text-white" : "border border-black/12 text-[#0A3161]/78 hover:border-[#9C2B44]")}>
+                className={"rounded-full px-5 py-2 text-sm font-black transition " + (tab === "orders" ? "bg-[#A6412B] text-white" : "border border-black/12 text-[#0A3161]/78 hover:border-[#A6412B]")}>
                 Images ({individualOrders.length})
               </button>
               <button onClick={() => setTab("subscriptions")}
-                className={"rounded-full px-5 py-2 text-sm font-black transition " + (tab === "subscriptions" ? "bg-[#9C2B44] text-white" : "border border-black/12 text-[#0A3161]/78 hover:border-[#9C2B44]")}>
+                className={"rounded-full px-5 py-2 text-sm font-black transition " + (tab === "subscriptions" ? "bg-[#A6412B] text-white" : "border border-black/12 text-[#0A3161]/78 hover:border-[#A6412B]")}>
                 Plans & Packages ({subscriptions.length})
               </button>
             </div>
@@ -198,13 +198,13 @@ function MyOrdersContent() {
                 {individualOrders.length === 0 ? (
                   <div className="rounded-3xl border border-black/10 bg-white p-10 text-center">
                     <p className="font-bold text-[#0A3161]/78">No single-image orders yet</p>
-                    <Link href="/catalog" className="mt-4 inline-block rounded-xl bg-[#9C2B44] px-6 py-3 font-black text-white">Browse Catalog</Link>
+                    <Link href="/catalog" className="mt-4 inline-block rounded-xl bg-[#A6412B] px-6 py-3 font-black text-white">Browse Catalog</Link>
                   </div>
                 ) : individualOrders.map((order) => {
                   const image = images[order.id];
                   const isPending = !order.payment_status || order.payment_status === "pending" || order.payment_status === "unpaid";
                   return (
-                    <div key={order.id} className={"rounded-3xl border bg-white p-6 " + (isPending ? "border-[#7A2036]/40" : "border-black/10")}>
+                    <div key={order.id} className={"rounded-3xl border bg-white p-6 " + (isPending ? "border-[#8C3520]/40" : "border-black/10")}>
                       <div className="grid gap-6 lg:grid-cols-[180px_1fr_auto]">
                         <div>
                           {image?.image_url ? (
@@ -222,7 +222,7 @@ function MyOrdersContent() {
                           <RecipientCard recipientId={order.recipient_id} />
                         </div>
                         <div className="text-left lg:text-right">
-                          <span className={"inline-block rounded-full px-3 py-1 text-xs font-bold uppercase " + (order.payment_status === "paid" ? "bg-green-100 text-green-700" : "bg-[#7A2036]/20 text-[#9C2B44]")}>
+                          <span className={"inline-block rounded-full px-3 py-1 text-xs font-bold uppercase " + (order.payment_status === "paid" ? "bg-green-100 text-green-700" : "bg-[#8C3520]/20 text-[#A6412B]")}>
                             {order.payment_status === "paid" ? "Paid" : "Payment Pending"}
                           </span>
                           <p className="mt-2 text-xs text-[#0A3161]/72">{order.delivery_status || order.status}</p>
@@ -241,14 +241,14 @@ function MyOrdersContent() {
                 {subscriptions.length === 0 ? (
                   <div className="rounded-3xl border border-black/10 bg-white p-10 text-center">
                     <p className="font-bold text-[#0A3161]/78">No packages or subscriptions yet</p>
-                    <Link href="/pricing" className="mt-4 inline-block rounded-xl bg-[#9C2B44] px-6 py-3 font-black text-white">View Plans</Link>
+                    <Link href="/pricing" className="mt-4 inline-block rounded-xl bg-[#A6412B] px-6 py-3 font-black text-white">View Plans</Link>
                   </div>
                 ) : subscriptions.map((sub) => {
                   const isDaily = !!sub.next_delivery_date || (sub.plan_name || "").includes("subscription") || (sub.plan_name || "").includes("day");
                   const usedPct = sub.images_total ? Math.round(((sub.images_total - (sub.images_remaining || 0)) / sub.images_total) * 100) : 0;
                   const statusColors: Record<string, string> = {
                     active: "bg-green-100 text-green-700",
-                    paused: "bg-[#7A2036]/20 text-[#9C2B44]",
+                    paused: "bg-[#8C3520]/20 text-[#A6412B]",
                     cancelled: "bg-red-100 text-red-700",
                     completed: "bg-black/10 text-[#0A3161]/78",
                   };
@@ -267,10 +267,10 @@ function MyOrdersContent() {
                       <div className="mt-6">
                         <div className="flex items-end justify-between text-sm">
                           <p className="font-bold text-[#0A3161]/85">Images Remaining</p>
-                          <p className="font-black"><span className="text-[#9C2B44] text-xl">{sub.images_remaining ?? "?"}</span><span className="text-[#0A3161]/68">/{sub.images_total}</span></p>
+                          <p className="font-black"><span className="text-[#A6412B] text-xl">{sub.images_remaining ?? "?"}</span><span className="text-[#0A3161]/68">/{sub.images_total}</span></p>
                         </div>
                         <div className="mt-2 h-2 w-full rounded-full bg-[#F1F4F9]">
-                          <div className="h-full rounded-full bg-[#9C2B44] transition-all" style={{ width: `${100 - usedPct}%` }} />
+                          <div className="h-full rounded-full bg-[#A6412B] transition-all" style={{ width: `${100 - usedPct}%` }} />
                         </div>
                         <p className="mt-1 text-xs text-[#0A3161]/68">{usedPct}% used</p>
                       </div>
@@ -278,8 +278,8 @@ function MyOrdersContent() {
                       <div className="mt-5 grid gap-4 sm:grid-cols-2">
                         <div>
                           {isDaily && sub.next_delivery_date && (
-                            <div className="rounded-xl border border-[#9C2B44]/20 bg-[#9C2B44]/5 p-3">
-                              <p className="text-xs font-bold text-[#9C2B44]">Next Delivery</p>
+                            <div className="rounded-xl border border-[#A6412B]/20 bg-[#A6412B]/5 p-3">
+                              <p className="text-xs font-bold text-[#A6412B]">Next Delivery</p>
                               <p className="mt-1 font-black">{fmt(sub.next_delivery_date)}</p>
                             </div>
                           )}
@@ -293,7 +293,7 @@ function MyOrdersContent() {
                       </div>
 
                       {!isDaily && (sub.images_remaining || 0) > 0 && (
-                        <Link href={`/order?plan=single`} className="mt-5 inline-block rounded-xl bg-[#9C2B44] px-5 py-2.5 text-sm font-black text-white hover:bg-[#7A2036]">
+                        <Link href={`/order?plan=single`} className="mt-5 inline-block rounded-xl bg-[#A6412B] px-5 py-2.5 text-sm font-black text-white hover:bg-[#8C3520]">
                           Use a Credit →
                         </Link>
                       )}

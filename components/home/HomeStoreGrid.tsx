@@ -54,7 +54,7 @@ function StoreCard({ image }: { image: StoreImage }) {
           href={`/order?imageId=${encodeURIComponent(image.id)}`}
           aria-label="Add to cart"
           title="Add to cart"
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#9C2B44] text-white shadow-sm transition hover:scale-105 hover:bg-[#7A2036]"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#A6412B] text-white shadow-sm transition hover:scale-105 hover:bg-[#8C3520]"
         >
           <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -85,7 +85,7 @@ export default function HomeStoreGrid({ initialImages, initialHasMore }: Props) 
     if (loading || !hasMore) return;
     setLoading(true);
 
-    const params = new URLSearchParams({ offset: String(offsetRef.current) });
+    const params = new URLSearchParams({ offset: String(offsetRef.current), exclude: "sensitive" });
     const res = await fetch(`/api/catalog/images?${params}`);
     const data = await res.json();
 

@@ -2,7 +2,7 @@ export default function OfflinePage() {
   return (
     <main className="min-h-screen bg-[#FAF8F5] px-6 py-20 text-[#0A3161]">
       <div className="mx-auto max-w-xl rounded-3xl border border-black/10 bg-white p-8">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#9C2B44]">
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#A6412B]">
           Friends Behind Bars
         </p>
 

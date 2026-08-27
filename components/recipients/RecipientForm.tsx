@@ -51,11 +51,11 @@ export default function RecipientForm() {
       <input value={state} onChange={(e) => setState(e.target.value)} className="rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="State" />
       <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="min-h-28 rounded-xl border border-black/12 bg-white p-3 text-[#0A3161]" placeholder="Mailing rules or notes" />
 
-      <button type="button" onClick={saveRecipient} className="rounded-xl bg-[#9C2B44] px-6 py-3 font-black text-white">
+      <button type="button" onClick={saveRecipient} className="rounded-xl bg-[#A6412B] px-6 py-3 font-black text-white">
         Save Recipient
       </button>
 
-      {status && <p className="font-bold text-[#9C2B44]">{status}</p>}
+      {status && <p className="font-bold text-[#A6412B]">{status}</p>}
     </form>
   );
 }

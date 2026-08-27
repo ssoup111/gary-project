@@ -2,7 +2,7 @@ export default function InstallPage() {
   return (
     <main className="min-h-screen bg-[#FAF8F5] px-6 py-16 text-[#0A3161]">
       <div className="mx-auto max-w-4xl">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#9C2B44]">
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#A6412B]">
           Friends Behind Bars
         </p>
 

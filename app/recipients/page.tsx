@@ -75,7 +75,7 @@ export default function RecipientsPage() {
   return (
     <main className="min-h-screen bg-[#FAF8F5] px-6 py-16 text-[#0A3161]">
       <div className="mx-auto max-w-4xl">
-        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#9C2B44]">Friends Behind Bars</p>
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#A6412B]">Friends Behind Bars</p>
         <h1 className="mt-4 text-5xl font-black">Saved Recipients</h1>
         <p className="mt-4 max-w-2xl text-[#0A3161]/78">Save recipient information once, then reuse it for future image orders.</p>
 
@@ -83,11 +83,11 @@ export default function RecipientsPage() {
           <h2 className="text-2xl font-black">Add Recipient</h2>
           <div className="mt-6 grid gap-5">
             <div>
-              <label className="block text-sm font-bold text-[#0A3161]/85">Full Name <span className="text-[#9C2B44]">*</span></label>
+              <label className="block text-sm font-bold text-[#0A3161]/85">Full Name <span className="text-[#A6412B]">*</span></label>
               <input value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="e.g. John Smith" className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161] placeholder:text-[#0A3161]/55" />
             </div>
             <div>
-              <label className="block text-sm font-bold text-[#0A3161]/85">Inmate / DOC Number <span className="text-[#9C2B44]">*</span></label>
+              <label className="block text-sm font-bold text-[#0A3161]/85">Inmate / DOC Number <span className="text-[#A6412B]">*</span></label>
               <input value={inmateNumber} onChange={(e) => setInmateNumber(e.target.value)} placeholder="e.g. 123456" className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161] placeholder:text-[#0A3161]/55" />
             </div>
             <div>
@@ -102,10 +102,10 @@ export default function RecipientsPage() {
               <label className="block text-sm font-bold text-[#0A3161]/85">Notes</label>
               <textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Mailing rules or delivery notes" className="mt-2 min-h-24 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161] placeholder:text-[#0A3161]/55" />
             </div>
-            <button type="button" onClick={saveRecipient} disabled={saving} className="rounded-xl bg-[#9C2B44] px-6 py-3 font-black text-white disabled:opacity-60">
+            <button type="button" onClick={saveRecipient} disabled={saving} className="rounded-xl bg-[#A6412B] px-6 py-3 font-black text-white disabled:opacity-60">
               {saving ? "Saving..." : "Save Recipient"}
             </button>
-            {status && <p className={"text-sm font-bold " + (status.startsWith("Recipient saved") ? "text-green-700" : "text-[#9C2B44]")}>{status}</p>}
+            {status && <p className={"text-sm font-bold " + (status.startsWith("Recipient saved") ? "text-green-700" : "text-[#A6412B]")}>{status}</p>}
           </div>
         </section>
 

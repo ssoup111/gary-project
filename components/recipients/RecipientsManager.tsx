@@ -200,7 +200,7 @@ export default function RecipientsManager() {
           <button
             type="button"
             onClick={editingId ? updateRecipient : saveRecipient}
-            className="rounded-xl bg-[#9C2B44] px-6 py-3 font-black text-white"
+            className="rounded-xl bg-[#A6412B] px-6 py-3 font-black text-white"
           >
             {editingId ? "Update Recipient" : "Save Recipient"}
           </button>
@@ -223,7 +223,7 @@ export default function RecipientsManager() {
             </button>
           )}
 
-          {status && <p className="font-bold text-[#9C2B44]">{status}</p>}
+          {status && <p className="font-bold text-[#A6412B]">{status}</p>}
         </form>
       </section>
 
@@ -246,7 +246,7 @@ export default function RecipientsManager() {
                   <button
                     type="button"
                     onClick={() => startEdit(recipient)}
-                    className="rounded-xl border border-[#9C2B44]/50 px-4 py-2 text-sm font-bold text-[#9C2B44] hover:bg-[#9C2B44]/10"
+                    className="rounded-xl border border-[#A6412B]/50 px-4 py-2 text-sm font-bold text-[#A6412B] hover:bg-[#A6412B]/10"
                   >
                     Edit Recipient
                   </button>
