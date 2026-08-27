@@ -31,10 +31,19 @@ export async function POST(req: Request) {
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
     const { orderId, planId, planType, planSlug, imageCount, durationDays, recipientId } = session.metadata || {};
-    const customerEmail = session.customer_details?.email || null;
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL || "https://friendsbehindbars.com";
 
     if (!orderId) return NextResponse.json({ received: true });
+
+    // The order was created under the customer's actual signed-in account email
+    // (see /api/checkout/create). Stripe's own checkout page can show/accept a
+    // different email (saved card, edited field, etc.) — session.customer_details.email
+    // reflects THAT, not the account. Always prefer the account's email so the
+    // confirmation lands in the right inbox and subscriptions/orders line up under
+    // the same account (this also keeps them visible under the RLS policies on
+    // /my-orders, which match on the account's email).
+    const { data: orderRow } = await supabase.from("orders").select("customer_email").eq("id", orderId).single();
+    const customerEmail = orderRow?.customer_email || session.customer_details?.email || null;
 
     // Mark order paid
     await supabase.from("orders").update({
