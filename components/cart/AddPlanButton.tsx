@@ -13,6 +13,9 @@ export default function AddPlanButton({ plan }: { plan: CartPlan }) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
   const [justAdded, setJustAdded] = useState(false);
+  // Cached as {key, count} so nothing has to be reset synchronously when the
+  // selection changes - a stale key simply reads as "still checking".
+  const [availability, setAvailability] = useState<{ key: string; count: number } | null>(null);
 
   useEffect(() => {
     if (!open || categories.length > 0) return;
@@ -24,7 +27,33 @@ export default function AddPlanButton({ plan }: { plan: CartPlan }) {
       .then(({ data }) => setCategories(data || []));
   }, [open, categories.length]);
 
+  const selectionKey = [...selected].sort().join(",");
+
+  // How many approved pictures actually exist in the chosen categories.
+  // Selling a 50-pack out of a category holding 13 pictures would leave the
+  // order unfillable, so the button stays locked until there are enough.
+  useEffect(() => {
+    if (selected.length === 0) return;
+    let cancelled = false;
+    supabase
+      .from("generated_images")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "approved")
+      .in("category_slug", selected)
+      .then(({ count }) => {
+        if (!cancelled) setAvailability({ key: selectionKey, count: count ?? 0 });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [selected, selectionKey]);
+
+  const checking = selected.length > 0 && availability?.key !== selectionKey;
+  const available =
+    availability?.key === selectionKey ? availability.count : null;
+
   const alreadyInCart = hasPlan(plan.id, selected);
+  const notEnough = available !== null && available < plan.image_count;
 
   function toggle(slug: string) {
     setSelected((prev) =>
@@ -33,7 +62,7 @@ export default function AddPlanButton({ plan }: { plan: CartPlan }) {
   }
 
   function confirm() {
-    if (selected.length === 0) return;
+    if (selected.length === 0 || notEnough || checking) return;
     addPlan(plan, selected);
     setJustAdded(true);
     setOpen(false);
@@ -148,6 +177,14 @@ export default function AddPlanButton({ plan }: { plan: CartPlan }) {
         </p>
       )}
 
+      {notEnough && (
+        <p className="mt-3 rounded-lg bg-[#A6412B]/10 px-3 py-2 text-xs font-bold leading-5 text-[#A6412B]">
+          Only {available} picture{available === 1 ? "" : "s"} available in{" "}
+          {selected.length === 1 ? "this category" : "these categories"}, and this
+          plan sends {plan.image_count}. Add another category or two.
+        </p>
+      )}
+
       {alreadyInCart && selected.length > 0 && (
         <p className="mt-3 text-xs font-bold text-[#A6412B]">
           This plan with these exact categories is already in your cart.
@@ -168,7 +205,7 @@ export default function AddPlanButton({ plan }: { plan: CartPlan }) {
         <button
           type="button"
           onClick={confirm}
-          disabled={selected.length === 0 || alreadyInCart}
+          disabled={selected.length === 0 || alreadyInCart || notEnough || checking}
           className="flex-1 rounded-xl bg-[#A6412B] py-2.5 text-sm font-black text-white hover:bg-[#8C3520] disabled:cursor-not-allowed disabled:bg-black/20"
         >
           Add to Cart
