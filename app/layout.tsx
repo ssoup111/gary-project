@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SiteNav from "@/components/layout/SiteNav";
 import SiteFooter from "@/components/layout/SiteFooter";
+import { CartProvider } from "@/lib/cart";
 
 const inter = Inter({ subsets: ["latin"], weight: ["400", "600", "700", "900"] });
 
@@ -20,9 +21,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SiteNav />
-        {children}
-        <SiteFooter />
+        <CartProvider>
+          <SiteNav />
+          {children}
+          <SiteFooter />
+        </CartProvider>
       </body>
     </html>
   );
