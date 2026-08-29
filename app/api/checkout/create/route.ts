@@ -33,7 +33,26 @@ export async function POST(req: Request) {
   try {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
     const supabase = getServiceClient();
+    // Send the customer back to whichever deployment they are actually on.
+    // On a Vercel preview that is the preview URL, so a test checkout does
+    // not bounce the tester over to the live site afterwards.
+    const requestOrigin = (() => {
+      try {
+        const origin = req.headers.get("origin");
+        if (origin) return origin;
+        const host = req.headers.get("host");
+        if (host) {
+          const protocol = host.startsWith("localhost") ? "http" : "https";
+          return `${protocol}://${host}`;
+        }
+      } catch {
+        /* fall through to the configured URL */
+      }
+      return null;
+    })();
+
     const appUrl =
+      requestOrigin ||
       process.env.NEXT_PUBLIC_APP_URL ||
       process.env.NEXT_PUBLIC_SITE_URL ||
       "https://friendsbehindbars.com";
