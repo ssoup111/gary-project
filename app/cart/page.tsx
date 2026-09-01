@@ -175,7 +175,13 @@ export default function CartPage() {
               href="/catalog"
               className="flex-1 rounded-xl border border-black/12 py-2.5 text-center text-sm font-bold hover:border-[#A6412B]"
             >
-              Keep Shopping
+              More Pictures
+            </Link>
+            <Link
+              href="/pricing"
+              className="flex-1 rounded-xl border border-black/12 py-2.5 text-center text-sm font-bold hover:border-[#A6412B]"
+            >
+              Add a Package
             </Link>
             <button
               type="button"

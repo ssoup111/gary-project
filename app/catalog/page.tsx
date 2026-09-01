@@ -98,6 +98,21 @@ export default async function CatalogPage({
           </div>
         </div>
 
+        {/* Buying more than a few? Packages are cheaper per picture, and
+            before this strip existed the only route to them was a nav link. */}
+        <Link
+          href="/pricing"
+          className="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#A6412B]/25 bg-[#A6412B]/[0.06] px-6 py-4 transition hover:border-[#A6412B]"
+        >
+          <span className="text-sm font-bold text-[#0A3161]">
+            Sending more than a few? Packages run from 5 to 100 pictures — as low as
+            $0.35 each.
+          </span>
+          <span className="shrink-0 text-sm font-black text-[#A6412B]">
+            See Packages →
+          </span>
+        </Link>
+
         {/* Category filter pills */}
         {categories && categories.length > 0 && (
           <div className="mt-10 flex flex-wrap gap-3">
