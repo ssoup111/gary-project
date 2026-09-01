@@ -32,6 +32,11 @@ export default function CheckoutPage() {
 
   const [status, setStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  // The facility picker is only shown when there is nothing to show yet, or
+  // when the customer asks to change it. A saved recipient already carries a
+  // facility and state, and re-asking for them reads as the form losing the
+  // answer it was just given.
+  const [editingFacility, setEditingFacility] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -62,6 +67,7 @@ export default function CheckoutPage() {
       setInmateNumber("");
       setFacilityName("");
       setState("");
+      setEditingFacility(false);
       return;
     }
     setSelectedRecipientId(r.id);
@@ -69,7 +75,11 @@ export default function CheckoutPage() {
     setInmateNumber(r.inmate_number || "");
     setFacilityName(r.facility_name || "");
     setState(r.state || "");
+    setEditingFacility(false);
   }
+
+  const facilityKnown = Boolean(facilityName.trim() && state.trim());
+  const showFacilityPicker = editingFacility || !facilityKnown;
 
   async function placeOrder() {
     setStatus("");
@@ -278,16 +288,40 @@ export default function CheckoutPage() {
                   className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161] placeholder:text-[#0A3161]/55"
                 />
               </div>
-              <FacilityTypeahead
-                onSelect={(name, stateCode) => {
-                  setFacilityName(name);
-                  setState(stateCode);
-                }}
-              />
-              {facilityName && (
-                <p className="text-xs font-bold text-[#0A3161]/70">
-                  Facility: {facilityName} {state && `· ${state}`}
-                </p>
+              {showFacilityPicker ? (
+                <>
+                  <FacilityTypeahead
+                    onSelect={(name, stateCode) => {
+                      setFacilityName(name);
+                      setState(stateCode);
+                      if (name.trim() && stateCode.trim()) setEditingFacility(false);
+                    }}
+                  />
+                  {facilityKnown && (
+                    <button
+                      type="button"
+                      onClick={() => setEditingFacility(false)}
+                      className="text-xs font-bold text-[#0A3161]/70 underline hover:text-[#A6412B]"
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </>
+              ) : (
+                <div className="rounded-xl border border-black/10 bg-[#F1F4F9] p-4">
+                  <p className="text-xs font-bold uppercase tracking-wider text-[#A6412B]">
+                    Facility
+                  </p>
+                  <p className="mt-1 font-black text-[#0A3161]">{facilityName}</p>
+                  <p className="text-xs text-[#0A3161]/72">{state}</p>
+                  <button
+                    type="button"
+                    onClick={() => setEditingFacility(true)}
+                    className="mt-2 text-xs font-bold text-[#A6412B] underline"
+                  >
+                    Change facility
+                  </button>
+                </div>
               )}
             </div>
           </section>
