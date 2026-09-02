@@ -86,6 +86,21 @@ function isAnime(hit) {
   return true;
 }
 
+/** Pixabay throttles bursts. Back off and retry rather than losing the image. */
+async function fetchImage(url, attempt = 1) {
+  const res = await fetch(url, {
+    headers: { "User-Agent": "Mozilla/5.0 (friendsbehindbars catalog import)" },
+    redirect: "follow",
+  });
+  if (res.status === 429 && attempt <= 4) {
+    const wait = [5000, 15000, 30000, 60000][attempt - 1];
+    process.stdout.write(`  waiting ${wait / 1000}s (rate limited)\r`);
+    await new Promise((r) => setTimeout(r, wait));
+    return fetchImage(url, attempt + 1);
+  }
+  return res;
+}
+
 async function search(query, page) {
   const url =
     "https://pixabay.com/api/?key=" + encodeURIComponent(PIXABAY_KEY) +
@@ -156,10 +171,7 @@ for (const id of todo) {
   const tags = tagList(hit);
 
   try {
-    const res = await fetch(source, {
-      headers: { "User-Agent": "Mozilla/5.0 (friendsbehindbars catalog import)" },
-      redirect: "follow",
-    });
+    const res = await fetchImage(source);
     if (!res.ok) { failures.push(`${id}: HTTP ${res.status}`); console.log(`  failed  ${id}  HTTP ${res.status}`); continue; }
 
     const contentType = res.headers.get("content-type") || "image/jpeg";
@@ -197,7 +209,7 @@ for (const id of todo) {
     console.log(`  failed  ${id}  ${e.message}`);
   }
 
-  await new Promise((r) => setTimeout(r, 200));
+  await new Promise((r) => setTimeout(r, 800));
 }
 
 console.log(`\n  imported: ${saved}`);
