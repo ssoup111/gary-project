@@ -81,17 +81,29 @@ def main():
     suffix = f"?teamId={team_id}&upsert=true" if team_id else "?upsert=true"
     url = f"https://api.vercel.com/v10/projects/{project_id}/env{suffix}"
 
-    body = {
-        "key": key,
-        "value": value,
-        "type": "encrypted",
-        "target": targets,
-    }
-    _, err = api("POST", url, token, body)
-    if err:
-        die(f"FAILED  {key}   {err}")
+    # One request per environment: a refusal on production should not stop
+    # preview from being set, and the error text tells us which is which.
+    # Some teams require production/preview variables to be "sensitive", so
+    # fall back to that when "encrypted" is refused.
+    print()
+    ok_targets = []
+    for target in targets:
+        last_err = None
+        for var_type in ("encrypted", "sensitive"):
+            body = {"key": key, "value": value, "type": var_type, "target": [target]}
+            _, err = api("POST", url, token, body)
+            if not err:
+                print(f"  ok      {key} -> {target}  ({var_type})")
+                ok_targets.append(target)
+                last_err = None
+                break
+            last_err = err
+        if last_err:
+            print(f"  FAILED  {key} -> {target}")
+            print(f"            {last_err}")
 
-    print(f"\n  ok  {key} -> {', '.join(targets)}")
+    if not ok_targets:
+        die("Nothing was set.")
 
     listing, err = api(
         "GET",
