@@ -2,7 +2,8 @@
 /**
  * Re-host Pixabay images into Supabase Storage.
  *
- * Rows whose image_url points at https://pixabay.com/get/... do not render:
+ * Approved rows whose image_url points at https://pixabay.com/get/... do not
+ * render:
  * those are Pixabay's own download URLs, not a public CDN, and hotlinking
  * them from another domain fails. Pixabay's licence expects the file to be
  * downloaded and served from your own storage anyway.
@@ -48,6 +49,7 @@ const { data: rows, error } = await supabase
   .from("generated_images")
   .select("id, image_url, category_slug")
   .like("image_url", "https://pixabay.com/get/%")
+  .eq("status", "approved")
   .limit(LIMIT);
 
 if (error) {
@@ -148,7 +150,8 @@ if (failures.length) {
 const { count: remaining } = await supabase
   .from("generated_images")
   .select("id", { count: "exact", head: true })
-  .like("image_url", "https://pixabay.com/get/%");
+  .like("image_url", "https://pixabay.com/get/%")
+  .eq("status", "approved");
 
-console.log(`\n  Still on pixabay.com: ${remaining ?? "?"}`);
+console.log(`\n  Approved images still on pixabay.com: ${remaining ?? "?"}`);
 console.log();
