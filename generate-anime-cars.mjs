@@ -21,7 +21,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const BUCKET = "jpix-generated";
 const PREFIX = "anime-cars";
 
-const SCENES = [
+const SCENES_SOLO = [
   "a tuned Japanese sports coupe mid-drift on a mountain touge road at dusk, tyre smoke curling, headlights cutting the haze",
   "a neon-lit night street race through a rain-slicked Tokyo district, reflections of signage across a low widebody coupe",
   "a parking-garage meet at night, a row of tuner cars with popped hoods and underglow, city skyline beyond the open wall",
@@ -36,10 +36,36 @@ const SCENES = [
   "a hilltop viewpoint at night, a tuner car parked facing the city lights below, stars above",
 ];
 
+// Scenes with a crowd - people watching, filming, hanging around the cars.
+const SCENES_CROWD = [
+  "a packed night car meet in a city parking lot, dozens of people standing between rows of tuner cars, hoods up, underglow lighting the asphalt",
+  "two tuner cars launching side by side down a closed street at night, a crowd of spectators lining both kerbs, arms up, phones out",
+  "a drift car sliding past a crowd of onlookers on a mountain hairpin, tyre smoke drifting over the barrier, people filming",
+  "a street takeover in an industrial estate, a car doing donuts in the middle of a ring of spectators, smoke and headlights",
+  "friends sitting on the bonnets of parked tuner cars in a rooftop car park at night, city lights behind them, talking and laughing",
+  "a crowded pit lane at a night drift event, teams working on cars, spectators leaning over the barrier",
+  "a group gathered around an open engine bay under a work light in a car park, pointing and talking",
+  "two cars drifting in tandem past a packed grandstand at a night circuit, smoke lit by floodlights",
+  "a convenience store car park at night, tuner cars parked up, a group of friends standing around with drinks and food",
+  "a starting line on a closed road, a marshal signalling between two revving cars, crowd pressed behind the barriers",
+  "a drift car kicking smoke across a corner as a crowd of photographers crouch at the apex",
+  "a busy underground car park meet, people walking between parked cars, neon strip lights overhead",
+];
+
 const STYLE =
   "Anime illustration in the style of Japanese animation cel art: clean linework, " +
   "bold saturated colour, dramatic cinematic lighting, detailed background art. " +
-  "No people, no text, no logos, no lettering of any kind.";
+  "No text, no logos, no lettering of any kind.";
+
+/**
+ * These images are delivered into correctional facilities, so the content
+ * rules are strict and worth stating to the model rather than hoping.
+ */
+const PEOPLE_RULES =
+  "Everyone shown is an adult, fully clothed in ordinary casual streetwear. " +
+  "No children or teenagers. No nudity, no revealing clothing, no sexual content. " +
+  "No weapons, no alcohol, no drugs, no smoking, no gang signs or gestures, " +
+  "no gambling, no violence.";
 
 // ---- env ----------------------------------------------------------------
 const env = {};
@@ -63,6 +89,18 @@ const COUNT = countArg > -1 ? Math.max(1, parseInt(process.argv[countArg + 1], 1
 const catArg = process.argv.indexOf("--category");
 const CATEGORY_SLUG = catArg > -1 ? process.argv[catArg + 1] : "anime";
 
+const setArg = process.argv.indexOf("--set");
+const SET = setArg > -1 ? String(process.argv[setArg + 1] || "all").toLowerCase() : "all";
+
+// "crowd" = people and racing, "solo" = empty roads and parked cars,
+// "all" = alternating between the two.
+const SCENES =
+  SET === "crowd" ? SCENES_CROWD
+  : SET === "solo" ? SCENES_SOLO
+  : SCENES_CROWD.flatMap((c, i) => [c, SCENES_SOLO[i]]);
+
+const hasPeople = (scene) => SCENES_CROWD.includes(scene);
+
 // ---- category -----------------------------------------------------------
 const { data: category } = await supabase
   .from("categories")
@@ -83,7 +121,9 @@ const failures = [];
 
 for (let i = 0; i < COUNT; i++) {
   const scene = SCENES[i % SCENES.length];
-  const prompt = `${STYLE}\n\nScene: ${scene}`;
+  const prompt = hasPeople(scene)
+    ? `${STYLE}\n\n${PEOPLE_RULES}\n\nScene: ${scene}`
+    : `${STYLE} No people.\n\nScene: ${scene}`;
 
   try {
     process.stdout.write(`  [${i + 1}/${COUNT}] drawing...`);
@@ -116,7 +156,9 @@ for (let i = 0; i < COUNT; i++) {
       prompt: `Anime — tuner car, drift, ${scene.split(",")[0].replace(/^a /, "")}`,
       image_url: publicUrl,
       status: "pending_review",
-      tags: ["anime", "car", "tuner", "drift", "jdm"],
+      tags: hasPeople(scene)
+        ? ["anime", "car", "tuner", "drift", "jdm", "car meet", "crowd"]
+        : ["anime", "car", "tuner", "drift", "jdm"],
       sell_price_cents: 99,
     });
     if (insErr) { failures.push(`${i + 1}: db ${insErr.message}`); console.log(` db failed: ${insErr.message}`); continue; }
