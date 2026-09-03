@@ -3,19 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
+import { isAdminEmail } from "@/lib/adminEmails";
 
-/**
- * Who can open /admin. Comma-separated, so more than one account can be an
- * administrator without a code change. The fallback keeps the original
- * address working if the variable is ever missing, so a misconfigured
- * environment can't lock everyone out.
- */
-const ADMIN_EMAILS = (
-  process.env.NEXT_PUBLIC_ADMIN_EMAIL || "ssoup1@protonmail.com"
-)
-  .split(",")
-  .map((email) => email.trim().toLowerCase())
-  .filter(Boolean);
 
 export default function AdminLayout({
   children,
@@ -28,8 +17,7 @@ export default function AdminLayout({
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (!user) { router.replace("/login"); return; }
-      const email = (user.email || "").toLowerCase();
-      if (!ADMIN_EMAILS.includes(email)) { router.replace("/"); return; }
+      if (!isAdminEmail(user.email)) { router.replace("/"); return; }
       setAllowed(true);
     });
   }, [router]);
