@@ -6,6 +6,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
 import FavoriteButton from "@/components/favorites/FavoriteButton";
 import { categoryLabel } from "@/lib/categoryLabel";
+import AddImageButton from "@/components/cart/AddImageButton";
 
 type CatalogImage = {
   id: string;
@@ -113,12 +114,15 @@ export default function ImageDetailPage() {
               <p className="mt-2 text-4xl font-black">$0.99</p>
               <p className="mt-2 text-sm text-[#0A3161]/78">Delivered directly to your recipient's facility.</p>
 
-              <Link
-                href={`/order?imageId=${encodeURIComponent(image.id)}`}
-                className="mt-6 block w-full rounded-xl bg-[#A6412B] px-6 py-3 text-center font-black text-white hover:bg-[#8C3520]"
-              >
-                Add to Order →
-              </Link>
+              <AddImageButton
+                variant="full"
+                image={{
+                  id: image.id,
+                  image_url: image.image_url,
+                  prompt: image.prompt,
+                  category_slug: image.category_slug,
+                }}
+              />
             </div>
 
             <div className="rounded-2xl border border-black/10 bg-white p-6">

@@ -45,31 +45,57 @@ export async function GET(req: Request) {
         let customerEmail: string | null = null;
         let imageUrl: string | null = null;
         let imagePrompt: string | null = null;
+        const images: {
+          itemId: string;
+          url: string;
+          prompt: string;
+          category: string;
+          source: string;
+          deliveredAt: string | null;
+        }[] = [];
         let recipientName: string | null = null;
         let inmateNumber: string | null = null;
         let facility: string | null = null;
         let state: string | null = null;
 
-        // Get order → customer email + image
+        // Get order -> customer email + EVERY picture on it.
+        // A cart order can carry dozens; sending only the first one back
+        // meant a 52-picture job showed a single image.
         if (item.order_id) {
           const { data: order } = await supabase
             .from("orders")
-            .select("customer_email, order_items(generated_images(image_url, prompt))")
+            .select("customer_email")
             .eq("id", item.order_id)
             .single();
+          if (order) customerEmail = order.customer_email || null;
 
-          if (order) {
-            customerEmail = order.customer_email || null;
-            const orderItems = (order as any).order_items;
-            if (Array.isArray(orderItems) && orderItems.length > 0) {
-              const img = orderItems[0]?.generated_images;
-              if (img) {
-                const imgObj = Array.isArray(img) ? img[0] : img;
-                imageUrl = imgObj?.image_url || null;
-                imagePrompt = imgObj?.prompt || null;
-              }
-            }
+          const { data: rows } = await supabase
+            .from("order_items")
+            .select("id, source, delivered_at, generated_images(image_url, prompt, category_slug)")
+            .eq("order_id", item.order_id)
+            .order("source", { ascending: true })
+            .order("created_at", { ascending: true });
+
+          for (const row of rows || []) {
+            const raw = (row as unknown as { generated_images: unknown }).generated_images;
+            const img = (Array.isArray(raw) ? raw[0] : raw) as
+              | { image_url?: string; prompt?: string; category_slug?: string }
+              | null;
+            if (!img?.image_url) continue;
+            images.push({
+              itemId: (row as unknown as { id: string }).id,
+              url: img.image_url,
+              prompt: img.prompt || "",
+              category: img.category_slug || "",
+              source: (row as unknown as { source: string }).source || "individual",
+              deliveredAt: (row as unknown as { delivered_at: string | null }).delivered_at,
+            });
           }
+
+          // Keep the old single-image fields pointing at the first picture,
+          // so the card still has a thumbnail.
+          imageUrl = images[0]?.url ?? null;
+          imagePrompt = images[0]?.prompt ?? null;
         }
 
         // Get recipient from recipients table
@@ -93,6 +119,9 @@ export async function GET(req: Request) {
           customerEmail,
           imageUrl,
           imagePrompt,
+          images,
+          imageCount: images.length,
+          deliveredCount: images.filter((i) => i.deliveredAt).length,
           recipientName,
           inmateNumber,
           facility,

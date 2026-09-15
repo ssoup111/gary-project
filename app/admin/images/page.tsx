@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import ImageUploader from "@/components/admin/ImageUploader";
 import AdminNav from "@/components/admin/AdminNav";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
@@ -121,8 +122,22 @@ export default function AdminImagesPage() {
 
   useEffect(() => { loadData(); }, [filterStatus, filterCategory]);
 
+  /**
+   * The admin API rejects anything without a bearer token. These calls were
+   * sending none, so every approve came back 401 while the page reported
+   * success.
+   */
+  async function authHeaders() {
+    const { data: { session } } = await supabase.auth.getSession();
+    const token = session?.access_token;
+    return {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+  }
+
   async function handleStatusChange(imageId: string, newStatus: string) {
-    const response = await fetch("/api/admin/images/update-status", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ imageId, status: newStatus }) });
+    const response = await fetch("/api/admin/images/update-status", { method: "POST", headers: await authHeaders(), body: JSON.stringify({ imageId, status: newStatus }) });
     const result = await response.json();
     if (!result.success) { setStatusMsg(result.error || "Update failed."); return; }
     setStatusMsg("Marked as " + newStatus + ".");
@@ -131,7 +146,7 @@ export default function AdminImagesPage() {
 
   async function handleCategoryChange(imageId: string, categorySlug: string) {
     setSavingId(imageId);
-    const response = await fetch("/api/admin/images/update-category", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ imageId, categorySlug }) });
+    const response = await fetch("/api/admin/images/update-category", { method: "POST", headers: await authHeaders(), body: JSON.stringify({ imageId, categorySlug }) });
     const result = await response.json();
     setSavingId(null);
     if (!result.success) { setStatusMsg(result.error || "Category update failed."); return; }
@@ -150,11 +165,45 @@ export default function AdminImagesPage() {
     if (selected.size === 0) return;
     setBulkSaving(true);
     const ids = Array.from(selected);
-    await Promise.all(ids.map((id) =>
-      fetch("/api/admin/images/update-status", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ imageId: id, status: newStatus }) })
-    ));
-    setStatusMsg(`${ids.length} images marked ${newStatus}.`);
+    const headers = await authHeaders();
+
+    let ok = 0;
+    let failed = 0;
+    let firstError = "";
+
+    // In batches, so a few hundred images don't all fire at once.
+    const BATCH = 8;
+    for (let i = 0; i < ids.length; i += BATCH) {
+      const batch = ids.slice(i, i + BATCH);
+      setStatusMsg(`Saving ${Math.min(i + BATCH, ids.length)} of ${ids.length}...`);
+      const results = await Promise.all(
+        batch.map(async (id) => {
+          try {
+            const res = await fetch("/api/admin/images/update-status", {
+              method: "POST",
+              headers,
+              body: JSON.stringify({ imageId: id, status: newStatus }),
+            });
+            const body = await res.json().catch(() => ({ success: false, error: `HTTP ${res.status}` }));
+            return body?.success === true ? null : (body?.error || `HTTP ${res.status}`);
+          } catch (e) {
+            return e instanceof Error ? e.message : "Request failed";
+          }
+        })
+      );
+      for (const err of results) {
+        if (err === null) ok++;
+        else { failed++; if (!firstError) firstError = err; }
+      }
+    }
+
+    setSelected(new Set());
     setBulkSaving(false);
+    setStatusMsg(
+      failed === 0
+        ? `${ok} image${ok === 1 ? "" : "s"} marked ${newStatus}.`
+        : `${ok} marked ${newStatus}, ${failed} failed — ${firstError}`
+    );
     await loadData();
   }
 
@@ -171,6 +220,10 @@ export default function AdminImagesPage() {
         <AdminNav />
         <h1 className="text-5xl font-black">All Images</h1>
         <p className="mt-2 text-zinc-400">Browse, filter, approve, reject, and categorize images.</p>
+
+        <div className="mt-6">
+          <ImageUploader categories={categories} onDone={loadData} />
+        </div>
 
         {/* Status filter */}
         <div className="mt-6 flex flex-wrap gap-3">

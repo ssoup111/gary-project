@@ -3,9 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
+import { isAdminEmail } from "@/lib/adminEmails";
 
-const ADMIN_EMAIL =
-  process.env.NEXT_PUBLIC_ADMIN_EMAIL || "ssoup1@protonmail.com";
 
 export default function AdminLayout({
   children,
@@ -18,7 +17,7 @@ export default function AdminLayout({
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (!user) { router.replace("/login"); return; }
-      if (user.email !== ADMIN_EMAIL) { router.replace("/"); return; }
+      if (!isAdminEmail(user.email)) { router.replace("/"); return; }
       setAllowed(true);
     });
   }, [router]);

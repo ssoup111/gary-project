@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AddPlanButton from "@/components/cart/AddPlanButton";
 import { createClient } from "@supabase/supabase-js";
 
 export const metadata = {
@@ -71,8 +72,8 @@ export default async function PricingPage() {
               {plan.savings_pct && (
                 <p className="mt-2 text-sm font-bold text-amber-700">Save {plan.savings_pct}% vs buying one at a time</p>
               )}
-              <Link href={`/order?plan=${plan.slug}`} className="mt-8 block rounded-2xl bg-[#A6412B] py-3 text-center font-black text-white hover:bg-[#8C3520]">
-                Get Started →
+              <Link href="/catalog" className="mt-8 block rounded-2xl bg-[#A6412B] py-3 text-center font-black text-white hover:bg-[#8C3520]">
+                Browse Pictures →
               </Link>
             </div>
           ))}
@@ -83,7 +84,7 @@ export default async function PricingPage() {
       <section className="bg-white px-6 py-20">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-3xl font-black">Image Packages</h2>
-          <p className="mt-2 text-[#0A3161]/78">Buy a bundle and send images whenever you want — credits never expire.</p>
+          <p className="mt-2 text-[#0A3161]/78">Pick your categories and we send the whole batch to your recipient right away.</p>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {packages.map((plan: Plan) => (
               <div key={plan.id} className={"relative flex flex-col rounded-3xl border p-6 transition " + (plan.badge === "Popular" ? "border-[#A6412B] bg-[#F1F4F9] shadow-xl shadow-black/10 sm:scale-105" : plan.badge === "Best Value" ? "border-amber-400 bg-[#F1F4F9]" : "border-black/10 bg-white")}>
@@ -97,10 +98,20 @@ export default async function PricingPage() {
                 {plan.savings_pct && (
                   <p className="mt-2 text-xs font-bold text-amber-700">Save {plan.savings_pct}%</p>
                 )}
-                <p className="mt-3 text-xs text-[#0A3161]/68">Credits never expire · one recipient per pack</p>
-                <Link href={`/order?plan=${plan.slug}`} className={"mt-auto pt-6 block rounded-2xl py-3 text-center text-sm font-black " + (plan.badge ? "bg-[#A6412B] text-white hover:bg-[#8C3520]" : "border border-black/12 text-[#0A3161] hover:border-[#A6412B]")}>
-                  Buy Package →
-                </Link>
+                <p className="mt-3 text-xs text-[#0A3161]/68">Split across the categories you pick · one recipient per pack</p>
+                <div className="mt-auto">
+                  <AddPlanButton
+                    plan={{
+                      id: plan.id,
+                      slug: plan.slug,
+                      name: plan.name,
+                      plan_type: plan.plan_type,
+                      image_count: plan.image_count,
+                      price_cents: plan.price_cents,
+                      duration_days: plan.duration_days,
+                    }}
+                  />
+                </div>
               </div>
             ))}
           </div>
@@ -125,9 +136,19 @@ export default async function PricingPage() {
                 <p className="text-xs text-[#0A3161]/72">${perDay}/day</p>
                 <p className="mt-2 text-xs font-bold text-amber-700">1 image delivered daily</p>
                 <p className="mt-1 text-xs text-[#0A3161]/68">One recipient per subscription</p>
-                <Link href={`/order?plan=${plan.slug}`} className={"mt-auto pt-6 block rounded-2xl py-3 text-center text-sm font-black " + (plan.badge ? "bg-[#A6412B] text-white hover:bg-[#8C3520]" : "border border-black/12 text-[#0A3161] hover:border-[#A6412B]")}>
-                  Start Subscription →
-                </Link>
+                <div className="mt-auto">
+                  <AddPlanButton
+                    plan={{
+                      id: plan.id,
+                      slug: plan.slug,
+                      name: plan.name,
+                      plan_type: plan.plan_type,
+                      image_count: plan.image_count,
+                      price_cents: plan.price_cents,
+                      duration_days: plan.duration_days,
+                    }}
+                  />
+                </div>
               </div>
             );
           })}
@@ -140,9 +161,9 @@ export default async function PricingPage() {
           <h2 className="text-3xl font-black">Common Questions</h2>
           <div className="mt-8 space-y-6">
             {[
-              { q: "Do package credits expire?", a: "No. Package credits never expire. Buy 50 images and use them at your own pace." },
+              { q: "How does a picture package work?", a: "Pick the package and the categories you want. We split the pictures evenly across those categories \u2014 50 pictures across two categories means 25 from each \u2014 and send them all to your recipient after checkout. Every picture is different." },
               { q: "How does the daily subscription work?", a: "We send one approved image to your recipient every day for the duration of your plan. You choose the category, we handle the rest." },
-              { q: "Can I send to multiple recipients?", a: "Each order is linked to one recipient. You can place multiple orders for different recipients." },
+              { q: "Can I buy more than one thing at a time?", a: "Yes. Add as many pictures and packages to your cart as you like and pay once. Each order goes to one recipient \u2014 to send to someone else, place a second order." },
               { q: "What happens after I pay?", a: "Your order goes into our delivery queue. We deliver it to your recipient's facility account, usually within 24 hours." },
               { q: "Is there a free trial?", a: "Yes — your first single image is just $0.99. Try it risk-free." },
             ].map(({ q, a }) => (

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import CartBadge from "@/components/cart/CartBadge";
 
 type Category = { id: string; name: string; slug: string };
 
@@ -122,6 +123,8 @@ export default function SiteNav() {
           <Link href="/contact" className={navLinkClass}>Contact</Link>
           <Link href="/how-it-works" className={navLinkClass}>About Us</Link>
 
+          <CartBadge />
+
           <div className="mx-1 h-6 w-px bg-white/20" />
 
           {ready && userEmail ? (
@@ -147,13 +150,16 @@ export default function SiteNav() {
           ) : null}
         </nav>
 
-        {/* Mobile menu button */}
-        <Link
-          href="/menu"
-          className="rounded-xl bg-[#A6412B] px-4 py-2 text-sm font-black text-white md:hidden"
-        >
-          Menu
-        </Link>
+        {/* Mobile cart + menu */}
+        <div className="flex items-center gap-2 md:hidden">
+          <CartBadge />
+          <Link
+            href="/menu"
+            className="rounded-xl bg-[#A6412B] px-4 py-2 text-sm font-black text-white"
+          >
+            Menu
+          </Link>
+        </div>
       </div>
     </header>
   );

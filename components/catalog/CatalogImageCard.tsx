@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { categoryLabel } from "@/lib/categoryLabel";
+import AddImageButton from "@/components/cart/AddImageButton";
 
 type Props = {
   id: string;
@@ -43,12 +44,7 @@ export default function CatalogImageCard({ id, image_url, prompt, category_slug 
       {/* Title + Select — persistent on mobile, hover-reveal on desktop */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-3 opacity-100 transition sm:opacity-0 sm:group-hover:opacity-100">
         <p className="truncate text-sm font-bold text-white">{categoryLabel(category_slug)}</p>
-        <Link
-          href={`/order?imageId=${encodeURIComponent(id)}`}
-          className="pointer-events-auto shrink-0 rounded-lg bg-[#A6412B] px-3 py-1.5 text-xs font-black text-white hover:bg-[#8C3520]"
-        >
-          Select · $0.99
-        </Link>
+        <AddImageButton image={{ id, image_url, prompt, category_slug }} />
       </div>
     </div>
   );

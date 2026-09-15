@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { categoryLabel } from "@/lib/categoryLabel";
+import { useCart } from "@/lib/cart";
 
 type Order = {
   id: string;
@@ -65,6 +66,8 @@ function MyOrdersContent() {
   const [loading, setLoading] = useState(true);
   const [notSignedIn, setNotSignedIn] = useState(false);
   const [statusMsg, setStatusMsg] = useState("");
+  const [itemCounts, setItemCounts] = useState<Record<string, number>>({});
+  const { clear: clearCart } = useCart();
 
   async function loadData() {
     const { data: userData } = await supabase.auth.getUser();
@@ -95,15 +98,20 @@ function MyOrdersContent() {
       (recs || []).forEach((r) => { recipientMap[r.id] = r; });
     }
 
-    // Fetch images via order_items for individual orders
-    const orderIds = ordersList.filter((o) => o.purchase_type === "individual" || !o.purchase_type).map((o) => o.id);
+    // Fetch the pictures on every order that is not a pure subscription.
+    const orderIds = ordersList.filter((o) => o.purchase_type !== "subscription").map((o) => o.id);
     const imageMap: Record<string, CatalogImage> = {};
+    const countMap: Record<string, number> = {};
     if (orderIds.length > 0) {
       const { data: itemsData } = await supabase.from("order_items").select("order_id,generated_image_id").in("order_id", orderIds);
+      (itemsData || []).forEach((item) => {
+        countMap[item.order_id] = (countMap[item.order_id] || 0) + 1;
+      });
       const imageIds = Array.from(new Set((itemsData || []).map((i) => i.generated_image_id).filter(Boolean))) as string[];
       if (imageIds.length > 0) {
         const { data: imagesData } = await supabase.from("generated_images").select("id,prompt,image_url,category_slug").in("id", imageIds);
         (itemsData || []).forEach((item) => {
+          if (imageMap[item.order_id]) return; // first picture is the thumbnail
           const img = (imagesData || []).find((i) => i.id === item.generated_image_id);
           if (img) imageMap[item.order_id] = img;
         });
@@ -114,17 +122,21 @@ function MyOrdersContent() {
     setSubscriptions(subsList);
     setRecipients(recipientMap);
     setImages(imageMap);
+    setItemCounts(countMap);
     setLoading(false);
 
+    // Payment went through - the cart has become an order, so empty it.
+    if (paymentStatus === "success") clearCart();
+
     // Auto-switch to subscriptions tab if user has subs but no individual orders
-    if (subsList.length > 0 && ordersList.filter((o) => o.purchase_type === "individual").length === 0) {
+    if (subsList.length > 0 && ordersList.filter((o) => o.purchase_type !== "subscription").length === 0) {
       setTab("subscriptions");
     }
   }
 
   useEffect(() => { loadData(); }, []);
 
-  const individualOrders = orders.filter((o) => o.purchase_type === "individual" || !o.purchase_type);
+  const individualOrders = orders.filter((o) => o.purchase_type !== "subscription");
 
   function RecipientCard({ recipientId }: { recipientId: string | null }) {
     const rec = recipientId ? recipients[recipientId] : null;
@@ -184,7 +196,7 @@ function MyOrdersContent() {
             <div className="mt-8 flex gap-3">
               <button onClick={() => setTab("orders")}
                 className={"rounded-full px-5 py-2 text-sm font-black transition " + (tab === "orders" ? "bg-[#A6412B] text-white" : "border border-black/12 text-[#0A3161]/78 hover:border-[#A6412B]")}>
-                Images ({individualOrders.length})
+                Orders ({individualOrders.length})
               </button>
               <button onClick={() => setTab("subscriptions")}
                 className={"rounded-full px-5 py-2 text-sm font-black transition " + (tab === "subscriptions" ? "bg-[#A6412B] text-white" : "border border-black/12 text-[#0A3161]/78 hover:border-[#A6412B]")}>
@@ -197,7 +209,7 @@ function MyOrdersContent() {
               <div className="mt-6 grid gap-5">
                 {individualOrders.length === 0 ? (
                   <div className="rounded-3xl border border-black/10 bg-white p-10 text-center">
-                    <p className="font-bold text-[#0A3161]/78">No single-image orders yet</p>
+                    <p className="font-bold text-[#0A3161]/78">No picture orders yet</p>
                     <Link href="/catalog" className="mt-4 inline-block rounded-xl bg-[#A6412B] px-6 py-3 font-black text-white">Browse Catalog</Link>
                   </div>
                 ) : individualOrders.map((order) => {
@@ -218,7 +230,13 @@ function MyOrdersContent() {
                         <div>
                           <p className="text-lg font-black">Order #{order.id.slice(0, 8).toUpperCase()}</p>
                           <p className="mt-1 text-xs text-[#0A3161]/72">{new Date(order.created_at).toLocaleString()}</p>
-                          {image && <p className="mt-3 text-sm font-bold leading-6 text-[#0A3161]">{categoryLabel(image.category_slug)}</p>}
+                          {itemCounts[order.id] > 1 ? (
+                            <p className="mt-3 text-sm font-bold leading-6 text-[#0A3161]">
+                              {itemCounts[order.id]} pictures in this order
+                            </p>
+                          ) : image ? (
+                            <p className="mt-3 text-sm font-bold leading-6 text-[#0A3161]">{categoryLabel(image.category_slug)}</p>
+                          ) : null}
                           <RecipientCard recipientId={order.recipient_id} />
                         </div>
                         <div className="text-left lg:text-right">

@@ -16,6 +16,16 @@ type DeliveryItem = {
   customerEmail: string | null;
   imageUrl: string | null;
   imagePrompt: string | null;
+  images?: {
+    itemId: string;
+    url: string;
+    prompt: string;
+    category: string;
+    source: string;
+    deliveredAt: string | null;
+  }[];
+  imageCount?: number;
+  deliveredCount?: number;
   recipientName: string | null;
   inmateNumber: string | null;
   facility: string | null;
@@ -36,33 +46,93 @@ function badgeColor(s: string | null) {
   return "bg-zinc-700 text-zinc-300";
 }
 
-function DeliveryCard({ item, onUpdate }: { item: DeliveryItem; onUpdate: (id: string, status: string, notes: string) => void }) {
+function DeliveryCard({ item, onUpdate, onMarkImage }: {
+  item: DeliveryItem;
+  onUpdate: (id: string, status: string, notes: string) => void;
+  onMarkImage: (itemId: string, delivered: boolean) => void;
+}) {
   const notesRef = useRef<HTMLTextAreaElement>(null);
+  const [showAll, setShowAll] = useState(false);
+
+  const images = item.images || [];
+  const sentCount = images.filter((i) => i.deliveredAt).length;
+  const visible = showAll ? images : images.slice(0, 8);
 
   return (
     <div className={`rounded-2xl border bg-zinc-900 p-6 ${statusColor(item.status)}`}>
       <div className="flex flex-wrap gap-6">
 
-        {/* Image */}
-        {item.imageUrl ? (
-          <div className="flex-shrink-0 w-36">
-            <img
-              src={item.imageUrl}
-              alt={item.imagePrompt || "Order image"}
-              className="h-44 w-36 rounded-xl object-cover bg-black"
-            />
-            <a
-              href={item.imageUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-2 block rounded-lg bg-amber-400 px-3 py-2 text-center text-xs font-black text-black hover:bg-amber-300"
-            >
-              ↓ Download for JPay
-            </a>
+        {/* Pictures on this order */}
+        {images.length > 0 ? (
+          <div className="w-full">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="text-sm font-black text-white">
+                {images.length} picture{images.length === 1 ? "" : "s"} to send
+                {sentCount > 0 && (
+                  <span className={sentCount === images.length ? "text-green-400" : "text-amber-300"}>
+                    {" "}— {sentCount} of {images.length} done
+                  </span>
+                )}
+              </p>
+              <button
+                type="button"
+                onClick={() => setShowAll((v) => !v)}
+                className="rounded-lg border border-zinc-700 px-3 py-1 text-xs font-bold text-zinc-300 hover:border-amber-400"
+              >
+                {showAll ? "Show fewer" : `Show all ${images.length}`}
+              </button>
+            </div>
+
+            <div className="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-8">
+              {visible.map((img, idx) => {
+                const done = Boolean(img.deliveredAt);
+                return (
+                  <div
+                    key={img.itemId}
+                    className={"overflow-hidden rounded-xl border " + (done ? "border-green-500/60 opacity-50" : "border-zinc-700")}
+                  >
+                    <div className="relative">
+                      <img src={img.url} alt={img.prompt} className="h-24 w-full bg-black object-cover" />
+                      <span className="absolute left-1 top-1 rounded bg-black/70 px-1.5 text-[10px] font-black text-white">
+                        {idx + 1}
+                      </span>
+                      {done && (
+                        <span className="absolute right-1 top-1 rounded bg-green-500 px-1 text-[10px] font-black text-black">
+                          SENT
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex">
+                      <a
+                        href={img.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 bg-amber-400 py-1.5 text-center text-[10px] font-black text-black hover:bg-amber-300"
+                      >
+                        ↓ Open
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => onMarkImage(img.itemId, !done)}
+                        className={"flex-1 py-1.5 text-center text-[10px] font-black " + (done ? "bg-zinc-700 text-zinc-200" : "bg-green-600 text-white hover:bg-green-500")}
+                      >
+                        {done ? "Undo" : "Sent"}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {!showAll && images.length > visible.length && (
+              <p className="mt-2 text-xs text-zinc-500">
+                {images.length - visible.length} more not shown.
+              </p>
+            )}
           </div>
         ) : (
           <div className="flex h-44 w-36 flex-shrink-0 items-center justify-center rounded-xl border border-zinc-700 bg-zinc-800">
-            <span className="text-xs text-zinc-600">No image</span>
+            <span className="text-xs text-zinc-600">No images</span>
           </div>
         )}
 
@@ -158,6 +228,36 @@ export default function AdminDeliveryPage() {
     setLoading(false);
   }
 
+  /**
+   * Tick one picture off. Updated locally first so ticking through fifty
+   * doesn't reload the whole queue fifty times.
+   */
+  async function markImage(itemId: string, delivered: boolean) {
+    setItems((prev) =>
+      prev.map((it) => ({
+        ...it,
+        images: (it.images || []).map((img) =>
+          img.itemId === itemId
+            ? { ...img, deliveredAt: delivered ? new Date().toISOString() : null }
+            : img
+        ),
+      }))
+    );
+
+    const { data: { session } } = await supabase.auth.getSession();
+    const token = session?.access_token;
+    const res = await fetch("/api/admin/delivery/mark-image", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      body: JSON.stringify({ itemId, delivered }),
+    });
+    const result = await res.json().catch(() => ({ success: false, error: `HTTP ${res.status}` }));
+    if (!result.success) {
+      setStatusMsg(result.error || "Could not save that.");
+      await loadQueue();
+    }
+  }
+
   async function updateDelivery(deliveryId: string, newStatus: string, adminNotes: string) {
     setStatusMsg("Updating...");
     const { data: { session } } = await supabase.auth.getSession();
@@ -212,7 +312,7 @@ export default function AdminDeliveryPage() {
         ) : (
           <div className="mt-8 grid gap-5">
             {items.map((item) => (
-              <DeliveryCard key={item.id} item={item} onUpdate={updateDelivery} />
+              <DeliveryCard key={item.id} item={item} onUpdate={updateDelivery} onMarkImage={markImage} />
             ))}
           </div>
         )}

@@ -22,6 +22,7 @@ export default function MenuPage() {
     { label: "Home", href: "/" },
     { label: "Catalog", href: "/catalog" },
     { label: "Categories", href: "/categories" },
+    { label: "Cart", href: "/cart" },
     { label: "How It Works", href: "/how-it-works" },
     { label: "FAQ", href: "/faq" },
     { label: "Contact", href: "/contact" },
