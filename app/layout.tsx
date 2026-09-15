@@ -4,6 +4,7 @@ import "./globals.css";
 import SiteNav from "@/components/layout/SiteNav";
 import SiteFooter from "@/components/layout/SiteFooter";
 import { CartProvider } from "@/lib/cart";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"], weight: ["400", "600", "700", "900"] });
 
@@ -26,6 +27,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           {children}
           <SiteFooter />
         </CartProvider>
+        {/* Visitor counts and page views. No cookies, no per-person tracking. */}
+        <Analytics />
       </body>
     </html>
   );
