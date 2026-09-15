@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import ImageUploader from "@/components/admin/ImageUploader";
 import AdminNav from "@/components/admin/AdminNav";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
@@ -219,6 +220,10 @@ export default function AdminImagesPage() {
         <AdminNav />
         <h1 className="text-5xl font-black">All Images</h1>
         <p className="mt-2 text-zinc-400">Browse, filter, approve, reject, and categorize images.</p>
+
+        <div className="mt-6">
+          <ImageUploader categories={categories} onDone={loadData} />
+        </div>
 
         {/* Status filter */}
         <div className="mt-6 flex flex-wrap gap-3">

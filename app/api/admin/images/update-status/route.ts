@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { requireAdmin } from "@/lib/requireAdmin";
 
 export async function POST(req: Request) {
   try {
@@ -11,17 +12,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: "Supabase is not configured." }, { status: 500 });
     }
 
-    // Verify the user is authenticated
-    const authHeader = req.headers.get("authorization");
-    if (!authHeader) {
-      return NextResponse.json({ success: false, error: "Unauthorized." }, { status: 401 });
-    }
-    const supabaseAuth = createClient(supabaseUrl, supabaseAnonKey, {
-      global: { headers: { Authorization: authHeader } },
-    });
-    const { data: userData } = await supabaseAuth.auth.getUser();
-    if (!userData.user) {
-      return NextResponse.json({ success: false, error: "Unauthorized." }, { status: 401 });
+    const auth = await requireAdmin(req);
+    if (!auth.ok) {
+      return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
     }
 
     // Use service role key to bypass RLS
