@@ -334,7 +334,9 @@ export async function POST(req: Request) {
         recipientId: recipientId || "",
         itemCount: String(itemCount),
       },
-      success_url: `${appUrl}/my-orders?payment=success&session_id={CHECKOUT_SESSION_ID}`,
+      // Everyone lands on the thank-you page: guests have no order history
+      // to be sent to, and it confirms the order either way.
+      success_url: `${appUrl}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/cart?payment=cancelled`,
     });
 

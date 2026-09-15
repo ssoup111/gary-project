@@ -37,6 +37,9 @@ export default function CheckoutPage() {
   // facility and state, and re-asking for them reads as the form losing the
   // answer it was just given.
   const [editingFacility, setEditingFacility] = useState(false);
+  // Guests check out with just an email. Requiring an account to buy one
+  // 99c picture loses people who were ready to pay.
+  const [guestEmail, setGuestEmail] = useState("");
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -86,11 +89,15 @@ export default function CheckoutPage() {
 
     const name = fullName.trim();
     const inmate = inmateNumber.trim();
+    const email = (userEmail || guestEmail).trim();
 
     if (!name) return setStatus("Please enter your recipient's full name.");
     if (!inmate) return setStatus("Please enter the inmate / offender number.");
     if (!state.trim()) return setStatus("Please choose your recipient's facility.");
-    if (!userEmail) return setStatus("Please sign in to place your order.");
+    if (!email) return setStatus("Please enter your email address.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return setStatus("That email address doesn't look right.");
+    }
     if (count === 0) return setStatus("Your cart is empty.");
 
     setSubmitting(true);
@@ -119,7 +126,7 @@ export default function CheckoutPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customerEmail: userEmail,
+          customerEmail: email,
           items: items.map((i) =>
             i.item_type === "image"
               ? { item_type: "image", imageId: i.image?.id }
@@ -181,33 +188,6 @@ export default function CheckoutPage() {
     );
   }
 
-  if (!userEmail) {
-    return (
-      <main className="min-h-screen bg-[#FAF8F5] px-6 py-16 text-[#0A3161]">
-        <div className="mx-auto max-w-md text-center">
-          <h1 className="text-3xl font-black">Sign in to check out</h1>
-          <p className="mt-3 text-[#0A3161]/78">
-            Your cart is saved — signing in won&apos;t lose it.
-          </p>
-          <div className="mt-8 flex flex-col gap-3">
-            <Link
-              href="/login"
-              className="rounded-2xl bg-[#A6412B] px-8 py-3 font-black text-white hover:bg-[#8C3520]"
-            >
-              Sign In →
-            </Link>
-            <Link
-              href="/signup"
-              className="rounded-2xl border border-black/12 px-8 py-3 font-bold hover:border-[#A6412B]"
-            >
-              Create an Account
-            </Link>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
   return (
     <main className="min-h-screen bg-[#FAF8F5] px-6 py-12 text-[#0A3161]">
       <div className="mx-auto max-w-5xl">
@@ -222,6 +202,29 @@ export default function CheckoutPage() {
         <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_400px]">
           {/* Recipient */}
           <section className="rounded-3xl border border-black/10 bg-white p-8">
+            {!userEmail && (
+              <div className="mb-6 rounded-2xl border border-black/10 bg-[#FAF8F5] p-5">
+                <label className="block text-sm font-bold text-[#0A3161]/85">
+                  Your email <span className="text-[#A6412B]">*</span>
+                </label>
+                <input
+                  type="email"
+                  value={guestEmail}
+                  onChange={(e) => setGuestEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  autoComplete="email"
+                  className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161] placeholder:text-[#0A3161]/55"
+                />
+                <p className="mt-2 text-xs leading-5 text-[#0A3161]/68">
+                  Your receipt and delivery confirmation go here. No account needed —{" "}
+                  <Link href="/login" className="font-bold text-[#A6412B] underline">
+                    sign in
+                  </Link>{" "}
+                  if you have one and your saved recipients will fill in.
+                </p>
+              </div>
+            )}
+
             <h2 className="text-xl font-black">Who is this going to?</h2>
 
             {savedRecipients.length > 0 && (
