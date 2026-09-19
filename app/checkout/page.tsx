@@ -6,6 +6,11 @@ import { supabase } from "@/lib/supabaseClient";
 import FacilityTypeahead from "@/components/order/FacilityTypeahead";
 import { useCart, formatPrice } from "@/lib/cart";
 import { categoryLabel } from "@/lib/categoryLabel";
+import {
+  checkInmateNumber,
+  checkRecipientName,
+  looksLikeSingleName,
+} from "@/lib/recipientValidation";
 
 type SavedRecipient = {
   id: string;
@@ -40,6 +45,10 @@ export default function CheckoutPage() {
   // Guests check out with just an email. Requiring an account to buy one
   // 99c picture loses people who were ready to pay.
   const [guestEmail, setGuestEmail] = useState("");
+  // Nothing stopped an order going to a made-up inmate number, and the
+  // money was taken before anyone looked. The customer now confirms the
+  // details they typed before paying.
+  const [detailsConfirmed, setDetailsConfirmed] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -62,6 +71,11 @@ export default function CheckoutPage() {
   const images = items.filter((i) => i.item_type === "image");
   const plans = items.filter((i) => i.item_type === "plan");
   const planPictureTotal = plans.reduce((s, i) => s + (i.plan?.image_count || 0), 0);
+
+  const nameCheck = checkRecipientName(fullName);
+  const numberCheck = checkInmateNumber(inmateNumber);
+  const singleName = fullName.trim().length > 0 && looksLikeSingleName(fullName);
+  const detailsUsable = nameCheck.ok && numberCheck.ok && Boolean(state.trim());
 
   function pickSaved(r: SavedRecipient) {
     if (selectedRecipientId === r.id) {
@@ -91,8 +105,11 @@ export default function CheckoutPage() {
     const inmate = inmateNumber.trim();
     const email = (userEmail || guestEmail).trim();
 
-    if (!name) return setStatus("Please enter your recipient's full name.");
-    if (!inmate) return setStatus("Please enter the inmate / offender number.");
+    if (!nameCheck.ok) return setStatus(nameCheck.message);
+    if (!numberCheck.ok) return setStatus(numberCheck.message);
+    if (!detailsConfirmed) {
+      return setStatus("Please confirm your recipient's details before paying.");
+    }
     if (!state.trim()) return setStatus("Please choose your recipient's facility.");
     if (!email) return setStatus("Please enter your email address.");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -272,10 +289,19 @@ export default function CheckoutPage() {
                   onChange={(e) => {
                     setFullName(e.target.value);
                     setSelectedRecipientId("");
+                    setDetailsConfirmed(false);
                   }}
                   placeholder="e.g. John Smith"
                   className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161] placeholder:text-[#0A3161]/55"
                 />
+                {fullName.trim().length > 0 && !nameCheck.ok && (
+                  <p className="mt-1 text-xs font-bold text-[#A6412B]">{nameCheck.message}</p>
+                )}
+                {singleName && nameCheck.ok && (
+                  <p className="mt-1 text-xs text-[#0A3161]/70">
+                    Facilities usually need a first and last name.
+                  </p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-bold text-[#0A3161]/85">
@@ -286,10 +312,14 @@ export default function CheckoutPage() {
                   onChange={(e) => {
                     setInmateNumber(e.target.value);
                     setSelectedRecipientId("");
+                    setDetailsConfirmed(false);
                   }}
-                  placeholder="e.g. 123456"
+                  placeholder="As it appears on their mail"
                   className="mt-2 w-full rounded-xl border border-black/12 bg-white p-3 text-[#0A3161] placeholder:text-[#0A3161]/55"
                 />
+                {inmateNumber.trim().length > 0 && !numberCheck.ok && (
+                  <p className="mt-1 text-xs font-bold text-[#A6412B]">{numberCheck.message}</p>
+                )}
               </div>
               {showFacilityPicker ? (
                 <>
@@ -392,11 +422,63 @@ export default function CheckoutPage() {
               {images.length + planPictureTotal} pictures in total
             </p>
 
+            {/* Read it back before taking the money. A wrong DOC number
+                means pictures that never arrive and a refund to process. */}
+            <div
+              className={
+                "mt-6 rounded-2xl border-2 p-4 transition " +
+                (detailsConfirmed ? "border-[#0A3161] bg-[#F1F4F9]" : "border-[#A6412B]/40 bg-[#A6412B]/[0.05]")
+              }
+            >
+              <p className="text-xs font-black uppercase tracking-widest text-[#A6412B]">
+                Check before you pay
+              </p>
+
+              {detailsUsable ? (
+                <>
+                  <p className="mt-2 text-sm leading-6 text-[#0A3161]">
+                    Sending to{" "}
+                    <span className="font-black">{fullName.trim()}</span>
+                    {", #"}
+                    <span className="font-black">{inmateNumber.trim()}</span>
+                    {facilityName ? (
+                      <>
+                        {" at "}
+                        <span className="font-black">{facilityName}</span>
+                      </>
+                    ) : null}
+                    {state ? `, ${state}` : ""}.
+                  </p>
+
+                  <label className="mt-3 flex cursor-pointer items-start gap-2.5">
+                    <input
+                      type="checkbox"
+                      checked={detailsConfirmed}
+                      onChange={(e) => setDetailsConfirmed(e.target.checked)}
+                      className="mt-0.5 h-4 w-4 shrink-0 accent-[#A6412B]"
+                    />
+                    <span className="text-sm font-bold leading-5 text-[#0A3161]">
+                      I&apos;ve checked the name and number are exactly right.
+                    </span>
+                  </label>
+
+                  <p className="mt-2 text-xs leading-5 text-[#0A3161]/68">
+                    Pictures sent to a wrong number can&apos;t be recovered — the
+                    facility rejects them and we have to refund you.
+                  </p>
+                </>
+              ) : (
+                <p className="mt-2 text-sm leading-6 text-[#0A3161]/78">
+                  Fill in your recipient&apos;s name, number and facility above.
+                </p>
+              )}
+            </div>
+
             <button
               type="button"
               onClick={placeOrder}
-              disabled={submitting}
-              className="mt-6 w-full rounded-2xl bg-[#A6412B] py-4 text-lg font-black text-white hover:bg-[#8C3520] disabled:cursor-not-allowed disabled:bg-black/20"
+              disabled={submitting || !detailsUsable || !detailsConfirmed}
+              className="mt-4 w-full rounded-2xl bg-[#A6412B] py-4 text-lg font-black text-white hover:bg-[#8C3520] disabled:cursor-not-allowed disabled:bg-black/20"
             >
               {submitting ? "Please wait…" : "Pay Securely →"}
             </button>

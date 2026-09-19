@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
+import { checkInmateNumber, checkRecipientName } from "@/lib/recipientValidation";
 
 export const runtime = "nodejs";
 
@@ -95,6 +96,20 @@ export async function POST(req: Request) {
         { success: false, error: "Recipient name and ID number are required." },
         { status: 400 }
       );
+    }
+
+    // The page checks these too; repeated here so nothing that skips the
+    // page can book an order to an invented recipient.
+    const fullName = [recipientData.firstName, recipientData.lastName]
+      .filter(Boolean)
+      .join(" ");
+    const nameCheck = checkRecipientName(fullName);
+    if (!nameCheck.ok) {
+      return NextResponse.json({ success: false, error: nameCheck.message }, { status: 400 });
+    }
+    const numberCheck = checkInmateNumber(recipientData.offenderId);
+    if (!numberCheck.ok) {
+      return NextResponse.json({ success: false, error: numberCheck.message }, { status: 400 });
     }
 
     const imageItems = items.filter((i) => i.item_type === "image");
