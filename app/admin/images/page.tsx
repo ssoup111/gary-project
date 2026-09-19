@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
+import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
-import ImageUploader from "@/components/admin/ImageUploader";
 import AdminNav from "@/components/admin/AdminNav";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
@@ -221,8 +221,16 @@ export default function AdminImagesPage() {
         <h1 className="text-5xl font-black">All Images</h1>
         <p className="mt-2 text-zinc-400">Browse, filter, approve, reject, and categorize images.</p>
 
-        <div className="mt-6">
-          <ImageUploader categories={categories} onDone={loadData} />
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-zinc-800 bg-zinc-900 px-6 py-4">
+          <p className="text-sm text-zinc-300">
+            Adding pictures from your computer or phone?
+          </p>
+          <Link
+            href="/admin/upload"
+            className="rounded-xl bg-amber-400 px-5 py-2 text-sm font-black text-black hover:bg-amber-300"
+          >
+            + Add Pictures
+          </Link>
         </div>
 
         {/* Status filter */}

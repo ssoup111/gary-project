@@ -3,6 +3,11 @@ import Link from "next/link";
 export default function AdminNav() {
   return (
     <div className="mb-8 flex flex-wrap gap-3">
+      {/* First and highlighted: uploading was previously buried inside the
+          Images page with nothing pointing at it. */}
+      <Link href="/admin/upload" className="rounded-xl bg-amber-400 px-4 py-2 text-sm font-black text-black hover:bg-amber-300">
+        + Add Pictures
+      </Link>
       <Link href="/admin" className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-black text-white hover:border-amber-400">
         Review Queue
       </Link>
