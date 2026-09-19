@@ -294,10 +294,13 @@ export default function CheckoutPage() {
               {showFacilityPicker ? (
                 <>
                   <FacilityTypeahead
-                    onSelect={(name, stateCode) => {
+                    onSelect={(name, stateCode, confirmed) => {
                       setFacilityName(name);
                       setState(stateCode);
-                      if (name.trim() && stateCode.trim()) setEditingFacility(false);
+                      // Collapse only once a facility is actually chosen.
+                      // Collapsing on any non-empty value hid the field on
+                      // the first keystroke, which read as "won't let me type".
+                      if (confirmed) setEditingFacility(false);
                     }}
                   />
                   {facilityKnown && (

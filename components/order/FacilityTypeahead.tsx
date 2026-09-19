@@ -38,7 +38,13 @@ type Facility = {
 };
 
 type Props = {
-  onSelect: (facilityName: string, stateCode: string) => void;
+  /**
+   * Fires on every keystroke as well as on a real choice. `confirmed` is
+   * true only when a facility was picked from the list (or entered
+   * deliberately with Enter) - a parent that collapses this field must wait
+   * for that, or typing the first letter hides the box mid-word.
+   */
+  onSelect: (facilityName: string, stateCode: string, confirmed: boolean) => void;
 };
 
 export default function FacilityTypeahead({ onSelect }: Props) {
@@ -62,7 +68,7 @@ export default function FacilityTypeahead({ onSelect }: Props) {
       .then(({ data }) => setFacilities(data || []));
     setSearchText("");
     setConfirmed(false);
-    onSelect("", selectedState);
+    onSelect("", selectedState, false);
   }, [selectedState]);
 
   // Show all when no text typed; filter as user types (cap at 25 matches)
@@ -76,7 +82,7 @@ export default function FacilityTypeahead({ onSelect }: Props) {
     setSearchText(facility.name);
     setShowDropdown(false);
     setConfirmed(true);
-    onSelect(facility.name, facility.state);
+    onSelect(facility.name, facility.state, true);
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -97,7 +103,7 @@ export default function FacilityTypeahead({ onSelect }: Props) {
         // Allow manual entry if no match found
         setConfirmed(true);
         setShowDropdown(false);
-        onSelect(searchText.trim(), selectedState);
+        onSelect(searchText.trim(), selectedState, true);
       }
     } else if (e.key === "Escape") {
       setShowDropdown(false);
@@ -144,7 +150,7 @@ export default function FacilityTypeahead({ onSelect }: Props) {
               setShowDropdown(true);
               setHighlightedIndex(-1);
               setConfirmed(false);
-              onSelect(e.target.value, selectedState);
+              onSelect(e.target.value, selectedState, false);
             }}
             onFocus={() => setShowDropdown(true)}
             onBlur={() => setTimeout(() => setShowDropdown(false), 150)}

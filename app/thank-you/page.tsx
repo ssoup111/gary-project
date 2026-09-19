@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { useCart, formatPrice } from "@/lib/cart";
@@ -19,7 +19,8 @@ type OrderSummary = {
 function ThankYou() {
   const params = useSearchParams();
   const sessionId = params.get("session_id");
-  const { clear, count } = useCart();
+  const { clear, ready: cartReady } = useCart();
+  const cleared = useRef(false);
 
   const [order, setOrder] = useState<OrderSummary | null>(null);
   // No session id means nothing to confirm, so don't start in a loading state.
@@ -29,6 +30,25 @@ function ThankYou() {
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setSignedIn(Boolean(data.user)));
   }, []);
+
+  /**
+   * Reaching this page with a session id means Stripe took the payment, so
+   * the cart is spent - empty it regardless of whether the order lookup has
+   * caught up yet.
+   *
+   * This used to hang off the lookup and read `count > 0`, but `count` was
+   * captured before the cart had loaded from browser storage, so it was
+   * always 0 and the cart never emptied. A customer then paid a second time
+   * for the same basket.
+   */
+  useEffect(() => {
+    if (!sessionId || !cartReady || cleared.current) return;
+    cleared.current = true;
+    // Emptying the cart is the point of this effect, and the ref makes it
+    // run exactly once.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    clear();
+  }, [sessionId, cartReady, clear]);
 
   useEffect(() => {
     if (!sessionId) return;
@@ -46,7 +66,6 @@ function ThankYou() {
       if (result.success && result.order) {
         setOrder(result.order);
         setStillWorking(false);
-        if (count > 0) clear();
         return;
       }
       // Stripe's webhook can lag a second or two behind the redirect.
