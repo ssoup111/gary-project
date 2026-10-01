@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import CartBadge from "@/components/cart/CartBadge";
@@ -58,14 +59,14 @@ export default function SiteNav() {
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
         {/* Logo + company name — left */}
         <Link href="/" className="flex items-center gap-2 shrink-0">
-          <svg viewBox="0 0 24 24" fill="none" className="h-8 w-8" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M12 2 3 6v6c0 5 3.8 8.7 9 10 5.2-1.3 9-5 9-10V6l-9-4Z"
-              fill="#A6412B"
-              stroke="#FAF8F5"
-              strokeWidth="1"
-            />
-          </svg>
+          <Image
+            src="/logo.png"
+            alt="Friends Behind Bars"
+            width={40}
+            height={40}
+            className="h-9 w-9 sm:h-10 sm:w-10"
+            priority
+          />
           <span className="text-lg font-black tracking-tighter text-white sm:text-xl">
             Friends Behind Bars
           </span>

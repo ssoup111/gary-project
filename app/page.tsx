@@ -4,6 +4,7 @@ export const metadata = {
 };
 
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@supabase/supabase-js";
 import HomeStoreGrid from "@/components/home/HomeStoreGrid";
 import { SENSITIVE_HOME_CATEGORY_SLUGS } from "@/lib/sensitiveCategories";
@@ -39,6 +40,14 @@ export default async function Home() {
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#0A3161] to-[#0a2449] px-6 py-14 text-white sm:py-16">
         <div className="mx-auto max-w-3xl text-center">
+          <Image
+            src="/logo.png"
+            alt="Friends Behind Bars"
+            width={96}
+            height={96}
+            className="mx-auto mb-6 h-20 w-20 sm:h-24 sm:w-24"
+            priority
+          />
           <h1 className="text-4xl font-black leading-tight sm:text-5xl">
             Stay connected, one photo at a time.
           </h1>
