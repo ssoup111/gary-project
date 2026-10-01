@@ -7,9 +7,13 @@ export default function SiteFooter() {
       <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-3">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#FAF8F5] p-1">
-              <Image src="/logo.png" alt="Friends Behind Bars" width={44} height={44} className="h-full w-full object-contain" />
-            </span>
+            <Image
+              src="/logo.png"
+              alt="Friends Behind Bars"
+              width={44}
+              height={44}
+              className="h-10 w-10 shrink-0 drop-shadow-[0_0_8px_rgba(250,248,245,0.4)]"
+            />
             <p className="text-xl font-black text-white">Friends Behind Bars</p>
           </div>
           <p className="mt-3 text-sm leading-6 text-white/70">

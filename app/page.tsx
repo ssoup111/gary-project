@@ -40,16 +40,14 @@ export default async function Home() {
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#0A3161] to-[#0a2449] px-6 py-14 text-white sm:py-16">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="mx-auto mb-6 flex h-28 w-28 items-center justify-center rounded-full bg-[#FAF8F5] p-2.5 shadow-xl sm:h-32 sm:w-32">
-            <Image
-              src="/logo.png"
-              alt="Friends Behind Bars"
-              width={128}
-              height={128}
-              className="h-full w-full object-contain"
-              priority
-            />
-          </span>
+          <Image
+            src="/logo.png"
+            alt="Friends Behind Bars"
+            width={128}
+            height={128}
+            className="mx-auto mb-6 h-24 w-24 drop-shadow-[0_0_24px_rgba(250,248,245,0.5)] sm:h-28 sm:w-28"
+            priority
+          />
           <h1 className="text-4xl font-black leading-tight sm:text-5xl">
             Stay connected, one photo at a time.
           </h1>

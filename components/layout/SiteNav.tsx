@@ -59,16 +59,14 @@ export default function SiteNav() {
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
         {/* Logo + company name — left */}
         <Link href="/" className="flex items-center gap-2.5 shrink-0">
-          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#FAF8F5] p-1 shadow-md sm:h-14 sm:w-14">
-            <Image
-              src="/logo.png"
-              alt="Friends Behind Bars"
-              width={56}
-              height={56}
-              className="h-full w-full object-contain"
-              priority
-            />
-          </span>
+          <Image
+            src="/logo.png"
+            alt="Friends Behind Bars"
+            width={56}
+            height={56}
+            className="h-11 w-11 shrink-0 drop-shadow-[0_0_10px_rgba(250,248,245,0.45)] sm:h-12 sm:w-12"
+            priority
+          />
           <span className="text-lg font-black tracking-tighter text-white sm:text-xl">
             Friends Behind Bars
           </span>
