@@ -6,8 +6,10 @@ export default function SiteFooter() {
     <footer className="border-t border-white/10 bg-[#0A3161] px-6 py-10 text-white">
       <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-3">
         <div>
-          <div className="flex items-center gap-2">
-            <Image src="/logo.png" alt="Friends Behind Bars" width={32} height={32} className="h-8 w-8" />
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#FAF8F5] p-1">
+              <Image src="/logo.png" alt="Friends Behind Bars" width={44} height={44} className="h-full w-full object-contain" />
+            </span>
             <p className="text-xl font-black text-white">Friends Behind Bars</p>
           </div>
           <p className="mt-3 text-sm leading-6 text-white/70">

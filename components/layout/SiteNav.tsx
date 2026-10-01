@@ -58,15 +58,17 @@ export default function SiteNav() {
     <header className="sticky top-0 z-50 bg-[#0A3161] px-4 py-3 text-white shadow-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
         {/* Logo + company name — left */}
-        <Link href="/" className="flex items-center gap-2 shrink-0">
-          <Image
-            src="/logo.png"
-            alt="Friends Behind Bars"
-            width={40}
-            height={40}
-            className="h-9 w-9 sm:h-10 sm:w-10"
-            priority
-          />
+        <Link href="/" className="flex items-center gap-2.5 shrink-0">
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#FAF8F5] p-1 shadow-md sm:h-14 sm:w-14">
+            <Image
+              src="/logo.png"
+              alt="Friends Behind Bars"
+              width={56}
+              height={56}
+              className="h-full w-full object-contain"
+              priority
+            />
+          </span>
           <span className="text-lg font-black tracking-tighter text-white sm:text-xl">
             Friends Behind Bars
           </span>
