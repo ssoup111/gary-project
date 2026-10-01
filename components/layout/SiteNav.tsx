@@ -56,9 +56,16 @@ export default function SiteNav() {
 
   return (
     <header className="sticky top-0 z-50 bg-[#0A3161] px-4 py-3 text-white shadow-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
-        {/* Logo + company name — nudged right of the edge, not pinned to it */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0 md:ml-6 lg:ml-14">
+      <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-4 md:justify-end">
+        {/* Logo + company name — truly centered in the bar on desktop (equal
+            space either side), independent of the nav's width. Left as
+            normal left-aligned flow on mobile, where there's no room to
+            spare and centering it would risk colliding with the cart/menu
+            buttons on the right. */}
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 shrink-0 md:absolute md:left-1/2 md:-translate-x-1/2"
+        >
           <Image
             src="/logo.png"
             alt="Friends Behind Bars"
