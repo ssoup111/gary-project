@@ -56,19 +56,9 @@ export default function SiteNav() {
 
   return (
     <header className="sticky top-0 z-50 bg-[#0A3161] px-4 py-3 text-white shadow-md">
-      <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-4 sm:justify-end">
-        {/* Logo + company name — truly centered in the bar (equal space
-            either side), independent of the nav's width. Kicks in from the
-            `sm` breakpoint up (640px) rather than waiting for `md` (768px),
-            since a narrowed desktop window (e.g. a browser sitting next to
-            a chat panel) is often in that range and should still see it.
-            Only the very narrowest phone widths keep the plain left-aligned
-            layout, where there's no room to spare next to the cart/menu
-            buttons on the right. */}
-        <Link
-          href="/"
-          className="flex items-center gap-2.5 shrink-0 sm:absolute sm:left-1/2 sm:-translate-x-1/2"
-        >
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
+        {/* Logo + company name — left */}
+        <Link href="/" className="flex items-center gap-2.5 shrink-0">
           <Image
             src="/logo.png"
             alt="Friends Behind Bars"
