@@ -207,35 +207,51 @@ export async function POST(req: Request) {
   if (!orderId) return NextResponse.json({ received: true });
 
   /* ------------------------------------------------------------------ *
+   * Atomically claim this order for fulfillment. Stripe retries/duplicates
+   * webhook deliveries, and two deliveries for the same event can arrive
+   * close enough together to run concurrently. A plain "SELECT, check
+   * payment_status, then UPDATE" has a gap between the check and the write:
+   * both deliveries can read "not yet paid" before either one writes "paid",
+   * and both go on to pick and insert pictures - the order ends up with more
+   * order_items rows than its item_count field reflects (My Orders counts
+   * the rows directly; the thank-you page shows item_count).
+   *
+   * Folding the check into the UPDATE's WHERE clause makes it atomic: the
+   * database serializes concurrent updates to the same row, so only one
+   * delivery's UPDATE can match `payment_status != 'paid'` and succeed. The
+   * other gets back no row and bails out below.
+   *
    * The order was created under the customer's signed-in account email.
    * Stripe's own page can show a different one (saved card, edited field),
    * so the account email always wins - it is what /my-orders matches on.
    * ------------------------------------------------------------------ */
-  const { data: orderRow } = await supabase
-    .from("orders")
-    .select("customer_email, recipient_id, payment_status")
-    .eq("id", orderId)
-    .single();
-
-  if (!orderRow) return NextResponse.json({ received: true });
-
-  // Stripe retries webhooks. Fulfilling twice would send duplicate pictures.
-  if (orderRow.payment_status === "paid") {
-    return NextResponse.json({ received: true, alreadyProcessed: true });
-  }
-
-  const customerEmail =
-    orderRow.customer_email || session.customer_details?.email || null;
-  const recipientId: string | null = orderRow.recipient_id;
-
-  await supabase
+  const { data: claimedOrder, error: claimError } = await supabase
     .from("orders")
     .update({
       payment_status: "paid",
       status: "paid",
       stripe_checkout_session_id: session.id,
     })
-    .eq("id", orderId);
+    .eq("id", orderId)
+    .neq("payment_status", "paid")
+    .select("customer_email, recipient_id")
+    .maybeSingle();
+
+  if (claimError) {
+    console.error("Order claim failed:", claimError);
+    return NextResponse.json({ received: true, error: "claim_failed" });
+  }
+
+  if (!claimedOrder) {
+    // Either the order doesn't exist, or another delivery of this same
+    // webhook event already claimed it (and is fulfilling it, or already
+    // has).
+    return NextResponse.json({ received: true, alreadyProcessed: true });
+  }
+
+  const customerEmail =
+    claimedOrder.customer_email || session.customer_details?.email || null;
+  const recipientId: string | null = claimedOrder.recipient_id;
 
   /* ------------------------------------------------------------------ *
    * Build the no-repeat exclusion set: everything this recipient has

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { categoryLabel } from "@/lib/categoryLabel";
+import FavoriteButton from "@/components/favorites/FavoriteButton";
 
 type StoreImage = {
   id: string;
@@ -23,7 +24,7 @@ function StoreCard({ image }: { image: StoreImage }) {
   const [broken, setBroken] = useState(false);
 
   return (
-    <div className="group overflow-hidden rounded-2xl border border-black/5 bg-white shadow-md shadow-black/10 transition hover:shadow-xl hover:shadow-black/15">
+    <div className="group relative overflow-hidden rounded-2xl border border-black/5 bg-white shadow-md shadow-black/10 transition hover:shadow-xl hover:shadow-black/15">
       <Link href={`/catalog/${encodeURIComponent(image.id)}`} className="block">
         <div className="aspect-[4/5] w-full overflow-hidden bg-[#f1f4f9]">
           {image.image_url && !broken ? (
@@ -41,6 +42,10 @@ function StoreCard({ image }: { image: StoreImage }) {
           )}
         </div>
       </Link>
+
+      <div className="absolute right-3 top-3 opacity-100 transition sm:opacity-0 sm:group-hover:opacity-100">
+        <FavoriteButton imageId={image.id} variant="icon" />
+      </div>
 
       <div className="flex items-center justify-between gap-3 p-3.5">
         <div className="min-w-0">

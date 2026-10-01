@@ -3,7 +3,14 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
-export default function FavoriteButton({ imageId }: { imageId: string }) {
+type Props = {
+  imageId: string;
+  /** "full" is the button on the detail page. "icon" is the compact heart
+   *  used on catalog grid tiles, where there's no room for button text. */
+  variant?: "full" | "icon";
+};
+
+export default function FavoriteButton({ imageId, variant = "full" }: Props) {
   const [isFavorite, setIsFavorite] = useState(false);
   const [status, setStatus] = useState("");
 
@@ -64,6 +71,37 @@ export default function FavoriteButton({ imageId }: { imageId: string }) {
   useEffect(() => {
     checkFavorite();
   }, []);
+
+  if (variant === "icon") {
+    return (
+      <button
+        type="button"
+        onClick={(e) => {
+          // Cards wrap this in a <Link> to the detail page — don't navigate.
+          e.preventDefault();
+          e.stopPropagation();
+          toggleFavorite();
+        }}
+        aria-label={isFavorite ? "Remove from favorites" : "Save to favorites"}
+        aria-pressed={isFavorite}
+        title={status || (isFavorite ? "Saved to favorites" : "Save to favorites")}
+        className="pointer-events-auto flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-black/55 backdrop-blur-sm transition hover:bg-black/70"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          className={`h-4 w-4 ${isFavorite ? "text-[#A6412B]" : "text-white"}`}
+          fill={isFavorite ? "currentColor" : "none"}
+        >
+          <path
+            d="M12 20.5s-7.5-4.6-10-9.3C.4 7.8 2 4.5 5.3 4c2-.3 3.9.6 5 2.3a1 1 0 0 0 1.4 0c1.1-1.7 3-2.6 5-2.3 3.3.5 4.9 3.8 3.3 7.2-2.5 4.7-10 9.3-10 9.3Z"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+    );
+  }
 
   return (
     <div>

@@ -112,6 +112,11 @@ type CartContextValue = {
   count: number;
   totalCents: number;
   ready: boolean;
+  /** True once it's safe to clear the cart without a pending server-cart
+   *  sync resurrecting old items: for guests, as soon as localStorage has
+   *  loaded; for signed-in customers, once their server cart has been
+   *  fetched and merged in at least once. */
+  synced: boolean;
   hasImage: (imageId: string) => boolean;
   hasPlan: (planId: string, categorySlugs: string[]) => boolean;
   addImage: (image: CartImage, priceCents: number) => void;
@@ -126,6 +131,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [ready, setReady] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [synced, setSynced] = useState(false);
   const cartIdRef = useRef<string | null>(null);
 
   /* ---- hydrate from localStorage immediately ----
@@ -180,12 +186,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!ready) return;
 
-    // Signed out: the browser cart is the whole story.
+    // Signed out: the browser cart is the whole story, so there is nothing
+    // server-side that could later resurrect a cleared cart.
     if (!userId) {
       cartIdRef.current = null;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSynced(true);
       return;
     }
 
+    // A new sign-in: don't let a clear() fire against the old synced state
+    // before this account's server cart has been fetched.
+    setSynced(false);
     let cancelled = false;
 
     (async () => {
@@ -206,7 +218,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           .single();
         cartId = created?.id ?? null;
       }
-      if (!cartId || cancelled) return;
+      if (!cartId || cancelled) {
+        // Could not establish a server cart (or we were cancelled) — don't
+        // leave the page waiting on a sync that will never finish.
+        if (!cancelled) setSynced(true);
+        return;
+      }
       cartIdRef.current = cartId;
 
       // Pull what the account already had.
@@ -262,6 +279,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         void pushToServer(merged);
         return merged;
       });
+      setSynced(true);
     })();
 
     return () => {
@@ -359,6 +377,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     count: items.length,
     totalCents,
     ready,
+    synced,
     hasImage,
     hasPlan,
     addImage,

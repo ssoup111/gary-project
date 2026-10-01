@@ -19,7 +19,7 @@ type OrderSummary = {
 function ThankYou() {
   const params = useSearchParams();
   const sessionId = params.get("session_id");
-  const { clear, ready: cartReady } = useCart();
+  const { clear, ready: cartReady, synced: cartSynced } = useCart();
   const cleared = useRef(false);
 
   const [order, setOrder] = useState<OrderSummary | null>(null);
@@ -40,15 +40,22 @@ function ThankYou() {
    * captured before the cart had loaded from browser storage, so it was
    * always 0 and the cart never emptied. A customer then paid a second time
    * for the same basket.
+   *
+   * It also has to wait for `cartSynced`, not just `cartReady`: for a
+   * signed-in customer, a separate effect fetches their server-side cart and
+   * merges it in shortly after the page loads. Clearing before that merge
+   * finishes meant the merge saw an empty local cart, pulled the (still
+   * un-deleted) old server cart back in, and re-saved it — the cart never
+   * actually emptied, so the same item got bought again on the next order.
    */
   useEffect(() => {
-    if (!sessionId || !cartReady || cleared.current) return;
+    if (!sessionId || !cartReady || !cartSynced || cleared.current) return;
     cleared.current = true;
     // Emptying the cart is the point of this effect, and the ref makes it
     // run exactly once.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     clear();
-  }, [sessionId, cartReady, clear]);
+  }, [sessionId, cartReady, cartSynced, clear]);
 
   useEffect(() => {
     if (!sessionId) return;

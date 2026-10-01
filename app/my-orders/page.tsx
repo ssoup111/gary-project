@@ -215,6 +215,7 @@ function MyOrdersContent() {
                 ) : individualOrders.map((order) => {
                   const image = images[order.id];
                   const isPending = !order.payment_status || order.payment_status === "pending" || order.payment_status === "unpaid";
+                  const isAbandoned = order.payment_status === "abandoned" || order.status === "abandoned";
                   return (
                     <div key={order.id} className={"rounded-3xl border bg-white p-6 " + (isPending ? "border-[#8C3520]/40" : "border-black/10")}>
                       <div className="grid gap-6 lg:grid-cols-[180px_1fr_auto]">
@@ -240,8 +241,8 @@ function MyOrdersContent() {
                           <RecipientCard recipientId={order.recipient_id} />
                         </div>
                         <div className="text-left lg:text-right">
-                          <span className={"inline-block rounded-full px-3 py-1 text-xs font-bold uppercase " + (order.payment_status === "paid" ? "bg-green-100 text-green-700" : "bg-[#8C3520]/20 text-[#A6412B]")}>
-                            {order.payment_status === "paid" ? "Paid" : "Payment Pending"}
+                          <span className={"inline-block rounded-full px-3 py-1 text-xs font-bold uppercase " + (order.payment_status === "paid" ? "bg-green-100 text-green-700" : isAbandoned ? "bg-black/10 text-[#0A3161]/70" : "bg-[#8C3520]/20 text-[#A6412B]")}>
+                            {order.payment_status === "paid" ? "Paid" : isAbandoned ? "Cancelled" : "Payment Pending"}
                           </span>
                           <p className="mt-2 text-xs text-[#0A3161]/72">{order.delivery_status || order.status}</p>
                           <p className="mt-3 text-2xl font-black">${((order.total_cents || 0) / 100).toFixed(2)}</p>

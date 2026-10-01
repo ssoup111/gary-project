@@ -349,6 +349,12 @@ export async function POST(req: Request) {
         recipientId: recipientId || "",
         itemCount: String(itemCount),
       },
+      // Stripe's "Save my information" (Link) checkbox is on by default and
+      // makes a phone number required to proceed. We don't need a phone
+      // number for anything here, so turn off phone collection explicitly -
+      // otherwise a card-only customer gets stuck on "Required" until they
+      // either fill in a phone or notice and uncheck that box.
+      phone_number_collection: { enabled: false },
       // Everyone lands on the thank-you page: guests have no order history
       // to be sent to, and it confirms the order either way.
       success_url: `${appUrl}/thank-you?session_id={CHECKOUT_SESSION_ID}`,

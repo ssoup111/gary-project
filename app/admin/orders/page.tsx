@@ -42,6 +42,9 @@ const STATUS_COLORS: Record<string, string> = {
   completed: "text-green-400",
   cancelled: "text-red-400",
   refunded: "text-red-400",
+  // Checkout was started but never finished within 24 hours — the
+  // expire-stale-orders cron marks these so they stop looking unresolved.
+  abandoned: "text-white/40",
 };
 
 export default function AdminOrdersPage() {
