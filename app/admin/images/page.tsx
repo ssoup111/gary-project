@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
 import AdminNav from "@/components/admin/AdminNav";
@@ -82,26 +82,30 @@ export default function AdminImagesPage() {
   async function loadData() {
     setLoading(true);
 
-    const [{ data: categoryData }, { data: approvedSlugs }, { data: pendingSlugs }] = await Promise.all([
-      supabase.from("categories").select("id,name,slug").order("name"),
-      supabase.from("generated_images").select("category_slug").eq("status", "approved"),
-      supabase.from("generated_images").select("category_slug").eq("status", "pending_review"),
-    ]);
+    const { data: categoryData } = await supabase.from("categories").select("id,name,slug").order("name");
+    const cats = categoryData || [];
+    setCategories(cats);
 
-    setCategories(categoryData || []);
-
-    // Build approved count map
+    // Exact per-category counts. (Selecting the rows themselves is capped at
+    // 1000 by the API, which hid every category past the first few.)
+    const countFor = async (slug: string, status: string) => {
+      const { count } = await supabase
+        .from("generated_images")
+        .select("id", { count: "exact", head: true })
+        .eq("category_slug", slug)
+        .eq("status", status);
+      return count || 0;
+    };
+    const results = await Promise.all(
+      cats.map(async (c) => [c.slug, await countFor(c.slug, "approved"), await countFor(c.slug, "pending_review")] as const)
+    );
     const aCounts: Record<string, number> = {};
-    for (const row of approvedSlugs || []) {
-      if (row.category_slug) aCounts[row.category_slug] = (aCounts[row.category_slug] || 0) + 1;
+    const pCounts: Record<string, number> = {};
+    for (const [slug, approved, pending] of results) {
+      aCounts[slug] = approved;
+      pCounts[slug] = pending;
     }
     setApprovedCounts(aCounts);
-
-    // Build pending count map
-    const pCounts: Record<string, number> = {};
-    for (const row of pendingSlugs || []) {
-      if (row.category_slug) pCounts[row.category_slug] = (pCounts[row.category_slug] || 0) + 1;
-    }
     setPendingCounts(pCounts);
 
     // Load images with both filters
@@ -207,11 +211,6 @@ export default function AdminImagesPage() {
     await loadData();
   }
 
-  // Categories with pending images (for the filter pills)
-  const categoriesWithPending = useMemo(() => {
-    return categories.filter((c) => (pendingCounts[c.slug] || 0) > 0);
-  }, [categories, pendingCounts]);
-
   const totalPending = Object.values(pendingCounts).reduce((a, b) => a + b, 0);
 
   return (
@@ -248,28 +247,23 @@ export default function AdminImagesPage() {
           ))}
         </div>
 
-        {/* Category filter — only shown when filtering pending */}
-        {filterStatus === "pending_review" && categoriesWithPending.length > 0 && (
-          <div className="mt-4">
-            <p className="mb-2 text-xs font-bold uppercase tracking-wider text-zinc-500">Filter by category</p>
-            <div className="flex flex-wrap gap-2">
-              <button onClick={() => setFilterCategory("all")}
-                className={"rounded-full px-3 py-1.5 text-xs font-bold transition " + (filterCategory === "all" ? "bg-amber-400 text-black" : "border border-zinc-700 text-zinc-300 hover:border-amber-400")}>
-                All categories
-              </button>
-              {categoriesWithPending.map((c) => {
-                const approved = approvedCounts[c.slug] || 0;
-                const pending = pendingCounts[c.slug] || 0;
-                return (
-                  <button key={c.slug} onClick={() => setFilterCategory(c.slug)}
-                    className={"rounded-full px-3 py-1.5 text-xs font-bold transition " + (filterCategory === c.slug ? "bg-amber-400 text-black" : "border border-zinc-700 text-zinc-300 hover:border-amber-400")}>
-                    {c.name} · {pending} pending · {approved} ✓
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
+        {/* Category filter: one dropdown listing every category */}
+        <div className="mt-4">
+          <label htmlFor="category-filter" className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-500">Filter by category</label>
+          <select
+            id="category-filter"
+            value={filterCategory}
+            onChange={(e) => setFilterCategory(e.target.value)}
+            className="w-full rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-base font-bold text-white focus:border-amber-400 focus:outline-none sm:w-auto sm:min-w-[22rem]"
+          >
+            <option value="all">All categories ({totalPending} pending)</option>
+            {categories.map((c) => (
+              <option key={c.slug} value={c.slug}>
+                {c.name} · {pendingCounts[c.slug] || 0} pending · {approvedCounts[c.slug] || 0} ✓
+              </option>
+            ))}
+          </select>
+        </div>
 
         {/* Bulk actions */}
         {images.length > 0 && (
