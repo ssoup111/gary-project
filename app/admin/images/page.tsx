@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
 import AdminNav from "@/components/admin/AdminNav";
@@ -11,7 +11,7 @@ type GeneratedImage = { id: string; prompt: string; image_url: string | null; st
 
 type Mark = "approved" | "rejected";
 
-function ImageCard({ image, categories, approvedCounts, onCategoryChange, saving, mark, onMark }: {
+function ImageCard({ image, categories, approvedCounts, onCategoryChange, saving, mark, onMark, onOpen }: {
   image: GeneratedImage;
   categories: Category[];
   approvedCounts: Record<string, number>;
@@ -19,6 +19,7 @@ function ImageCard({ image, categories, approvedCounts, onCategoryChange, saving
   saving: string | null;
   mark: Mark | undefined;
   onMark: (id: string, mark: Mark | null) => void;
+  onOpen: () => void;
 }) {
   const [selectedSlug, setSelectedSlug] = useState(image.category_slug || "");
   const approvedCount = image.category_slug ? (approvedCounts[image.category_slug] ?? 0) : null;
@@ -26,7 +27,12 @@ function ImageCard({ image, categories, approvedCounts, onCategoryChange, saving
   return (
     <div className={"overflow-hidden rounded-2xl border-2 bg-zinc-900 " + (mark === "approved" ? "border-green-500" : mark === "rejected" ? "border-red-500" : "border-zinc-800")}>
       <div className="relative">
-        {image.image_url && <img src={image.image_url} alt={image.prompt} className="h-56 w-full object-cover" />}
+        {image.image_url && (
+          <button type="button" onClick={onOpen} className="block w-full cursor-zoom-in" aria-label="View full picture">
+            <img src={image.image_url} alt={image.prompt} className="h-56 w-full object-cover" />
+            <span className="absolute bottom-2 right-2 rounded-full bg-black/60 px-2 py-1 text-xs font-bold text-white">Tap to enlarge</span>
+          </button>
+        )}
         {/* Approved count badge */}
         {approvedCount !== null && (
           <span className={"absolute top-2 right-2 rounded-full px-2 py-1 text-xs font-bold " + (approvedCount >= 50 ? "bg-red-600 text-white" : approvedCount >= 20 ? "bg-amber-500 text-black" : "bg-green-600 text-white")}>
@@ -209,6 +215,34 @@ export default function AdminImagesPage() {
     await loadData();
   }
 
+  // Full-picture pop-up: index into `images`, or null when closed.
+  const [viewIndex, setViewIndex] = useState<number | null>(null);
+  const closeViewer = useCallback(() => setViewIndex(null), []);
+  const stepViewer = useCallback((delta: number) => {
+    setViewIndex((i) => (i === null ? i : Math.min(Math.max(i + delta, 0), images.length - 1)));
+  }, [images.length]);
+
+  useEffect(() => {
+    if (viewIndex === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeViewer();
+      else if (e.key === "ArrowRight") stepViewer(1);
+      else if (e.key === "ArrowLeft") stepViewer(-1);
+    };
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = prevOverflow; };
+  }, [viewIndex, closeViewer, stepViewer]);
+
+  // Mark from inside the pop-up, then move on to the next picture.
+  function markAndNext(id: string, mark: Mark) {
+    setMark(id, marks[id] === mark ? null : mark);
+    if (marks[id] !== mark) stepViewer(1);
+  }
+
+  const viewed = viewIndex !== null ? images[viewIndex] : null;
+
   const approveCount = Object.values(marks).filter((m) => m === "approved").length;
   const rejectCount = Object.values(marks).filter((m) => m === "rejected").length;
   const totalPending = Object.values(pendingCounts).reduce((a, b) => a + b, 0);
@@ -298,11 +332,31 @@ export default function AdminImagesPage() {
                 saving={savingId}
                 mark={marks[image.id]}
                 onMark={setMark}
+                onOpen={() => setViewIndex(images.indexOf(image))}
               />
             ))}
           </div>
         )}
       </div>
+
+      {/* Full-picture pop-up */}
+      {viewed && viewed.image_url && (
+        <div className="fixed inset-0 z-[60] flex flex-col bg-black/95" role="dialog" aria-modal="true">
+          <div className="flex items-center justify-between px-4 py-3 text-white">
+            <span className="text-sm font-bold">{(viewIndex ?? 0) + 1} of {images.length}{marks[viewed.id] ? ` · marked ${marks[viewed.id] === "approved" ? "Approve" : "Reject"}` : ""}</span>
+            <button onClick={closeViewer} className="rounded-lg border border-zinc-600 px-4 py-2 text-sm font-bold">Close ✕</button>
+          </div>
+          <div className="relative flex min-h-0 flex-1 items-center justify-center px-2" onClick={closeViewer}>
+            <img src={viewed.image_url} alt={viewed.prompt} onClick={(e) => e.stopPropagation()} className="max-h-full max-w-full object-contain" />
+          </div>
+          <div className="grid grid-cols-4 gap-2 px-3 py-3">
+            <button onClick={() => stepViewer(-1)} disabled={viewIndex === 0} className="rounded-xl border border-zinc-600 py-4 text-base font-black text-white disabled:opacity-30">← Prev</button>
+            <button onClick={() => markAndNext(viewed.id, "approved")} className={"rounded-xl py-4 text-base font-black " + (marks[viewed.id] === "approved" ? "bg-green-500 text-black ring-4 ring-green-300" : "bg-green-600 text-black")}>Approve</button>
+            <button onClick={() => markAndNext(viewed.id, "rejected")} className={"rounded-xl py-4 text-base font-black " + (marks[viewed.id] === "rejected" ? "bg-red-500 text-white ring-4 ring-red-300" : "bg-red-700 text-white")}>Reject</button>
+            <button onClick={() => stepViewer(1)} disabled={viewIndex === images.length - 1} className="rounded-xl border border-zinc-600 py-4 text-base font-black text-white disabled:opacity-30">Next →</button>
+          </div>
+        </div>
+      )}
 
       {/* Sticky submit bar, always in reach on a phone */}
       {approveCount + rejectCount > 0 && (
