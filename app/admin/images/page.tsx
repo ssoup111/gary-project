@@ -9,21 +9,22 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 type Category = { id: string; name: string; slug: string; };
 type GeneratedImage = { id: string; prompt: string; image_url: string | null; status: string; created_at: string; category_slug: string | null; };
 
-function ImageCard({ image, categories, approvedCounts, onStatusChange, onCategoryChange, saving, selected, onSelect }: {
+type Mark = "approved" | "rejected";
+
+function ImageCard({ image, categories, approvedCounts, onCategoryChange, saving, mark, onMark }: {
   image: GeneratedImage;
   categories: Category[];
   approvedCounts: Record<string, number>;
-  onStatusChange: (id: string, status: string) => void;
   onCategoryChange: (id: string, slug: string) => void;
   saving: string | null;
-  selected: boolean;
-  onSelect: (id: string, checked: boolean) => void;
+  mark: Mark | undefined;
+  onMark: (id: string, mark: Mark | null) => void;
 }) {
   const [selectedSlug, setSelectedSlug] = useState(image.category_slug || "");
   const approvedCount = image.category_slug ? (approvedCounts[image.category_slug] ?? 0) : null;
 
   return (
-    <div className={"overflow-hidden rounded-2xl border bg-zinc-900 " + (selected ? "border-amber-400" : "border-zinc-800")}>
+    <div className={"overflow-hidden rounded-2xl border-2 bg-zinc-900 " + (mark === "approved" ? "border-green-500" : mark === "rejected" ? "border-red-500" : "border-zinc-800")}>
       <div className="relative">
         {image.image_url && <img src={image.image_url} alt={image.prompt} className="h-56 w-full object-cover" />}
         {/* Approved count badge */}
@@ -32,10 +33,6 @@ function ImageCard({ image, categories, approvedCounts, onStatusChange, onCatego
             {approvedCount} approved
           </span>
         )}
-        {/* Checkbox */}
-        <label className="absolute top-2 left-2 flex h-6 w-6 cursor-pointer items-center justify-center rounded border-2 border-white bg-black/50">
-          <input type="checkbox" checked={selected} onChange={(e) => onSelect(image.id, e.target.checked)} className="h-4 w-4 accent-amber-400" />
-        </label>
       </div>
       <div className="p-4">
         <p className="text-xs leading-5 text-zinc-400 line-clamp-2">{image.prompt}</p>
@@ -57,9 +54,15 @@ function ImageCard({ image, categories, approvedCounts, onStatusChange, onCatego
           </button>
           {image.category_slug && <p className="mt-1 text-xs text-amber-300">Current: {image.category_slug}</p>}
         </div>
-        <div className="mt-3 flex gap-2">
-          <button onClick={() => onStatusChange(image.id, "approved")} className="flex-1 rounded-lg bg-green-500 py-2 text-sm font-bold text-black">Approve</button>
-          <button onClick={() => onStatusChange(image.id, "rejected")} className="flex-1 rounded-lg bg-red-500 py-2 text-sm font-bold text-white">Reject</button>
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <label className={"flex cursor-pointer items-center justify-center gap-2 rounded-lg border-2 py-3 text-sm font-black " + (mark === "approved" ? "border-green-500 bg-green-500 text-black" : "border-zinc-700 text-zinc-300")}>
+            <input type="checkbox" checked={mark === "approved"} onChange={(e) => onMark(image.id, e.target.checked ? "approved" : null)} className="h-5 w-5 accent-green-600" />
+            Approve
+          </label>
+          <label className={"flex cursor-pointer items-center justify-center gap-2 rounded-lg border-2 py-3 text-sm font-black " + (mark === "rejected" ? "border-red-500 bg-red-500 text-white" : "border-zinc-700 text-zinc-300")}>
+            <input type="checkbox" checked={mark === "rejected"} onChange={(e) => onMark(image.id, e.target.checked ? "rejected" : null)} className="h-5 w-5 accent-red-600" />
+            Reject
+          </label>
         </div>
       </div>
     </div>
@@ -76,7 +79,8 @@ export default function AdminImagesPage() {
   const [filterCategory, setFilterCategory] = useState("all");
   const [statusMsg, setStatusMsg] = useState("");
   const [savingId, setSavingId] = useState<string | null>(null);
-  const [selected, setSelected] = useState<Set<string>>(new Set());
+  // What the reviewer has ticked on this page: approve or reject per image.
+  const [marks, setMarks] = useState<Record<string, Mark>>({});
   const [bulkSaving, setBulkSaving] = useState(false);
 
   async function loadData() {
@@ -120,7 +124,7 @@ export default function AdminImagesPage() {
 
     const { data } = await query;
     setImages(data || []);
-    setSelected(new Set());
+    setMarks({});
     setLoading(false);
   }
 
@@ -140,14 +144,6 @@ export default function AdminImagesPage() {
     };
   }
 
-  async function handleStatusChange(imageId: string, newStatus: string) {
-    const response = await fetch("/api/admin/images/update-status", { method: "POST", headers: await authHeaders(), body: JSON.stringify({ imageId, status: newStatus }) });
-    const result = await response.json();
-    if (!result.success) { setStatusMsg(result.error || "Update failed."); return; }
-    setStatusMsg("Marked as " + newStatus + ".");
-    await loadData();
-  }
-
   async function handleCategoryChange(imageId: string, categorySlug: string) {
     setSavingId(imageId);
     const response = await fetch("/api/admin/images/update-category", { method: "POST", headers: await authHeaders(), body: JSON.stringify({ imageId, categorySlug }) });
@@ -158,63 +154,67 @@ export default function AdminImagesPage() {
     await loadData();
   }
 
-  function toggleSelect(id: string, checked: boolean) {
-    setSelected((prev) => { const s = new Set(prev); checked ? s.add(id) : s.delete(id); return s; });
+  function setMark(id: string, mark: Mark | null) {
+    setMarks((prev) => {
+      const next = { ...prev };
+      if (mark) next[id] = mark; else delete next[id];
+      return next;
+    });
   }
+  function markAll(mark: Mark) { setMarks(Object.fromEntries(images.map((i) => [i.id, mark]))); }
+  function clearMarks() { setMarks({}); }
 
-  function selectAll() { setSelected(new Set(images.map((i) => i.id))); }
-  function selectNone() { setSelected(new Set()); }
-
-  async function bulkUpdateStatus(newStatus: string) {
-    if (selected.size === 0) return;
+  /** Apply every tick on the page: ticked Approve -> approved, ticked Reject -> rejected. */
+  async function submitMarks() {
+    const entries = Object.entries(marks);
+    if (entries.length === 0) return;
     setBulkSaving(true);
-    const ids = Array.from(selected);
     const headers = await authHeaders();
 
-    let ok = 0;
+    let approved = 0;
+    let rejected = 0;
     let failed = 0;
     let firstError = "";
 
     // In batches, so a few hundred images don't all fire at once.
     const BATCH = 8;
-    for (let i = 0; i < ids.length; i += BATCH) {
-      const batch = ids.slice(i, i + BATCH);
-      setStatusMsg(`Saving ${Math.min(i + BATCH, ids.length)} of ${ids.length}...`);
+    for (let i = 0; i < entries.length; i += BATCH) {
+      const batch = entries.slice(i, i + BATCH);
+      setStatusMsg(`Saving ${Math.min(i + BATCH, entries.length)} of ${entries.length}...`);
       const results = await Promise.all(
-        batch.map(async (id) => {
+        batch.map(async ([id, status]) => {
           try {
             const res = await fetch("/api/admin/images/update-status", {
               method: "POST",
               headers,
-              body: JSON.stringify({ imageId: id, status: newStatus }),
+              body: JSON.stringify({ imageId: id, status }),
             });
             const body = await res.json().catch(() => ({ success: false, error: `HTTP ${res.status}` }));
-            return body?.success === true ? null : (body?.error || `HTTP ${res.status}`);
+            return { status, error: body?.success === true ? null : (body?.error || `HTTP ${res.status}`) };
           } catch (e) {
-            return e instanceof Error ? e.message : "Request failed";
+            return { status, error: e instanceof Error ? e.message : "Request failed" };
           }
         })
       );
-      for (const err of results) {
-        if (err === null) ok++;
-        else { failed++; if (!firstError) firstError = err; }
+      for (const r of results) {
+        if (r.error === null) { if (r.status === "approved") approved++; else rejected++; }
+        else { failed++; if (!firstError) firstError = r.error; }
       }
     }
 
-    setSelected(new Set());
     setBulkSaving(false);
     setStatusMsg(
-      failed === 0
-        ? `${ok} image${ok === 1 ? "" : "s"} marked ${newStatus}.`
-        : `${ok} marked ${newStatus}, ${failed} failed — ${firstError}`
+      `${approved} approved, ${rejected} rejected` + (failed ? `, ${failed} failed — ${firstError}` : ".")
     );
     await loadData();
   }
 
+  const approveCount = Object.values(marks).filter((m) => m === "approved").length;
+  const rejectCount = Object.values(marks).filter((m) => m === "rejected").length;
   const totalPending = Object.values(pendingCounts).reduce((a, b) => a + b, 0);
 
   return (
-    <main className="min-h-screen bg-zinc-950 px-6 py-16 text-white">
+    <main className="min-h-screen bg-zinc-950 px-6 py-16 pb-28 text-white">
       <div className="mx-auto max-w-7xl">
         <AdminNav />
         <h1 className="text-5xl font-black">All Images</h1>
@@ -265,22 +265,13 @@ export default function AdminImagesPage() {
           </select>
         </div>
 
-        {/* Bulk actions */}
+        {/* Quick helpers: tick everything on this page one way, or clear */}
         {images.length > 0 && (
           <div className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl border border-zinc-800 bg-zinc-900 px-5 py-4">
-            <span className="text-sm font-bold text-zinc-300">{selected.size} selected</span>
-            <button onClick={selectAll} className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-bold hover:border-amber-400">Select All ({images.length})</button>
-            {selected.size > 0 && <button onClick={selectNone} className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-bold hover:border-amber-400">Clear</button>}
-            {selected.size > 0 && (
-              <>
-                <button onClick={() => bulkUpdateStatus("approved")} disabled={bulkSaving} className="rounded-lg bg-green-500 px-4 py-1.5 text-xs font-black text-black disabled:opacity-60">
-                  {bulkSaving ? "Saving..." : `Approve Selected (${selected.size})`}
-                </button>
-                <button onClick={() => bulkUpdateStatus("rejected")} disabled={bulkSaving} className="rounded-lg bg-red-500 px-4 py-1.5 text-xs font-black text-white disabled:opacity-60">
-                  {bulkSaving ? "Saving..." : `Reject Selected (${selected.size})`}
-                </button>
-              </>
-            )}
+            <span className="text-sm font-bold text-zinc-300">Tick Approve or Reject on each picture, then press Submit.</span>
+            <button onClick={() => markAll("approved")} className="rounded-lg border border-green-600 px-3 py-1.5 text-xs font-bold text-green-400">Tick all Approve ({images.length})</button>
+            <button onClick={() => markAll("rejected")} className="rounded-lg border border-red-600 px-3 py-1.5 text-xs font-bold text-red-400">Tick all Reject ({images.length})</button>
+            {approveCount + rejectCount > 0 && <button onClick={clearMarks} className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-bold">Clear ticks</button>}
           </div>
         )}
 
@@ -303,16 +294,31 @@ export default function AdminImagesPage() {
                 image={image}
                 categories={categories}
                 approvedCounts={approvedCounts}
-                onStatusChange={handleStatusChange}
                 onCategoryChange={handleCategoryChange}
                 saving={savingId}
-                selected={selected.has(image.id)}
-                onSelect={toggleSelect}
+                mark={marks[image.id]}
+                onMark={setMark}
               />
             ))}
           </div>
         )}
       </div>
+
+      {/* Sticky submit bar, always in reach on a phone */}
+      {approveCount + rejectCount > 0 && (
+        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-zinc-700 bg-zinc-950/95 px-4 py-3 backdrop-blur">
+          <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
+            <p className="text-sm font-bold">
+              <span className="text-green-400">{approveCount} approve</span>
+              <span className="text-zinc-500"> · </span>
+              <span className="text-red-400">{rejectCount} reject</span>
+            </p>
+            <button onClick={submitMarks} disabled={bulkSaving} className="rounded-xl bg-amber-400 px-6 py-3 text-base font-black text-black disabled:opacity-60">
+              {bulkSaving ? "Saving..." : "Submit"}
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

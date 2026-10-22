@@ -12,6 +12,7 @@
  * All:    node import-folder.mjs all
  */
 import fs from "node:fs";
+import { execFileSync } from "node:child_process";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -83,7 +84,17 @@ async function importFolder(folder) {
       const publicUrl = supabase.storage.from(BUCKET).getPublicUrl(key).data.publicUrl;
       if (have.has(publicUrl)) { stats.skipped++; continue; }
       try {
-        const buf = fs.readFileSync(path.join(dir, file));
+        let buf = fs.readFileSync(path.join(dir, file));
+        // Museum scans can be 5-10 MB. Shrink big files to a web-friendly size
+        // (macOS sips) so storage and page loads stay light.
+        if (buf.length > 800 * 1024 && /\.jpe?g$/i.test(file)) {
+          const tmp = path.join(os.tmpdir(), "fbb-" + process.pid + "-" + file);
+          try {
+            execFileSync("sips", ["-Z", "1800", "-s", "format", "jpeg", "-s", "formatOptions", "82", path.join(dir, file), "--out", tmp], { stdio: "ignore" });
+            const small = fs.readFileSync(tmp);
+            if (small.length > 20000 && small.length < buf.length) buf = small;
+          } finally { fs.rmSync(tmp, { force: true }); }
+        }
         const contentType = /\.png$/i.test(file) ? "image/png" : /\.webp$/i.test(file) ? "image/webp" : "image/jpeg";
         const { error: upErr } = await supabase.storage.from(BUCKET).upload(key, buf, { contentType, upsert: true });
         if (upErr) throw new Error("upload: " + upErr.message);
