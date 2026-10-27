@@ -130,6 +130,7 @@ export default function SiteNav() {
 
           {ready && userEmail ? (
             <>
+              <Link href="/dashboard" className={navLinkClass}>Dashboard</Link>
               <Link href="/my-orders" className={navLinkClass}>My Orders</Link>
               <button
                 onClick={signOut}
