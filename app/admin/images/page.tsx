@@ -217,7 +217,7 @@ export default function AdminImagesPage() {
 
   // Full-picture pop-up: index into `images`, or null when closed.
   const [viewIndex, setViewIndex] = useState<number | null>(null);
-  const closeViewer = useCallback(() => setViewIndex(null), []);
+  const closeViewer = useCallback(() => { setViewIndex(null); }, []);
   const stepViewer = useCallback((delta: number) => {
     setViewIndex((i) => (i === null ? i : Math.min(Math.max(i + delta, 0), images.length - 1)));
   }, [images.length]);
@@ -235,11 +235,76 @@ export default function AdminImagesPage() {
     return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = prevOverflow; };
   }, [viewIndex, closeViewer, stepViewer]);
 
-  // Mark from inside the pop-up, then move on to the next picture.
-  function markAndNext(id: string, mark: Mark) {
-    setMark(id, marks[id] === mark ? null : mark);
-    if (marks[id] !== mark) stepViewer(1);
+  // Pop-up buttons save straight away (no Submit needed), then move to the next
+  // picture. The last action can be undone.
+  const [viewerMsg, setViewerMsg] = useState("");
+  const [viewerBusy, setViewerBusy] = useState(false);
+  const [lastAction, setLastAction] = useState<{ image: GeneratedImage; index: number; prev: string; now: Mark } | null>(null);
+
+  function bumpCounts(slug: string | null, prev: string, next: string) {
+    if (!slug) return;
+    setPendingCounts((c) => ({ ...c, [slug]: Math.max(0, (c[slug] || 0) - (prev === "pending_review" ? 1 : 0) + (next === "pending_review" ? 1 : 0)) }));
+    setApprovedCounts((c) => ({ ...c, [slug]: Math.max(0, (c[slug] || 0) - (prev === "approved" ? 1 : 0) + (next === "approved" ? 1 : 0)) }));
   }
+
+  async function saveStatus(id: string, status: string): Promise<string | null> {
+    try {
+      const res = await fetch("/api/admin/images/update-status", { method: "POST", headers: await authHeaders(), body: JSON.stringify({ imageId: id, status }) });
+      const body = await res.json().catch(() => ({ success: false, error: `HTTP ${res.status}` }));
+      return body?.success === true ? null : (body?.error || `HTTP ${res.status}`);
+    } catch (e) {
+      return e instanceof Error ? e.message : "Request failed";
+    }
+  }
+
+  async function decideNow(mark: Mark) {
+    if (viewIndex === null || viewerBusy) return;
+    const image = images[viewIndex];
+    if (!image) return;
+    setViewerBusy(true);
+    setViewerMsg("Saving...");
+    const err = await saveStatus(image.id, mark);
+    setViewerBusy(false);
+    if (err) { setViewerMsg(`NOT saved: ${err}`); return; }
+    bumpCounts(image.category_slug, image.status, mark);
+    setLastAction({ image, index: viewIndex, prev: image.status, now: mark });
+    setMarks((m) => { const n = { ...m }; delete n[image.id]; return n; });
+    if (filterStatus === "all") {
+      setImages((list) => list.map((i) => (i.id === image.id ? { ...i, status: mark } : i)));
+      setViewIndex(Math.min(viewIndex + 1, images.length - 1));
+    } else {
+      // The picture no longer belongs in this filter, so it leaves the list and the next one slides in.
+      const remaining = images.length - 1;
+      setImages((list) => list.filter((i) => i.id !== image.id));
+      if (remaining <= 0) setViewIndex(null); else setViewIndex(Math.min(viewIndex, remaining - 1));
+    }
+    setViewerMsg(`Saved: ${mark === "approved" ? "approved ✓" : "rejected ✗"}`);
+  }
+
+  async function undoLast() {
+    if (!lastAction || viewerBusy) return;
+    setViewerBusy(true);
+    const err = await saveStatus(lastAction.image.id, lastAction.prev);
+    setViewerBusy(false);
+    if (err) { setViewerMsg(`Undo failed: ${err}`); return; }
+    bumpCounts(lastAction.image.category_slug, lastAction.now, lastAction.prev);
+    const restored = { ...lastAction.image };
+    setImages((list) => {
+      if (list.some((i) => i.id === restored.id)) return list.map((i) => (i.id === restored.id ? restored : i));
+      const copy = [...list]; copy.splice(Math.min(lastAction.index, copy.length), 0, restored); return copy;
+    });
+    setViewIndex(Math.min(lastAction.index, images.length));
+    setLastAction(null);
+    setViewerMsg("Undone");
+  }
+
+  // Warn before leaving the page with ticks that were never submitted.
+  useEffect(() => {
+    if (Object.keys(marks).length === 0) return;
+    const warn = (e: BeforeUnloadEvent) => { e.preventDefault(); e.returnValue = ""; };
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [marks]);
 
   const viewed = viewIndex !== null ? images[viewIndex] : null;
 
@@ -343,7 +408,7 @@ export default function AdminImagesPage() {
       {viewed && viewed.image_url && (
         <div className="fixed inset-0 z-[60] flex flex-col bg-black/95" role="dialog" aria-modal="true">
           <div className="flex items-center justify-between px-4 py-3 text-white">
-            <span className="text-sm font-bold">{(viewIndex ?? 0) + 1} of {images.length}{marks[viewed.id] ? ` · marked ${marks[viewed.id] === "approved" ? "Approve" : "Reject"}` : ""}</span>
+            <span className="text-sm font-bold">{(viewIndex ?? 0) + 1} of {images.length}{viewerMsg ? <span className={viewerMsg.startsWith("NOT") || viewerMsg.includes("failed") ? " text-red-400" : " text-green-400"}> · {viewerMsg}</span> : null}</span>
             <button onClick={closeViewer} className="rounded-lg border border-zinc-600 px-4 py-2 text-sm font-bold">Close ✕</button>
           </div>
           <div className="relative flex min-h-0 flex-1 items-center justify-center px-2" onClick={closeViewer}>
@@ -351,9 +416,13 @@ export default function AdminImagesPage() {
           </div>
           <div className="grid grid-cols-4 gap-2 px-3 py-3">
             <button onClick={() => stepViewer(-1)} disabled={viewIndex === 0} className="rounded-xl border border-zinc-600 py-4 text-base font-black text-white disabled:opacity-30">← Prev</button>
-            <button onClick={() => markAndNext(viewed.id, "approved")} className={"rounded-xl py-4 text-base font-black " + (marks[viewed.id] === "approved" ? "bg-green-500 text-black ring-4 ring-green-300" : "bg-green-600 text-black")}>Approve</button>
-            <button onClick={() => markAndNext(viewed.id, "rejected")} className={"rounded-xl py-4 text-base font-black " + (marks[viewed.id] === "rejected" ? "bg-red-500 text-white ring-4 ring-red-300" : "bg-red-700 text-white")}>Reject</button>
+            <button onClick={() => decideNow("approved")} disabled={viewerBusy} className="rounded-xl bg-green-600 py-4 text-base font-black text-black disabled:opacity-50">Approve</button>
+            <button onClick={() => decideNow("rejected")} disabled={viewerBusy} className="rounded-xl bg-red-700 py-4 text-base font-black text-white disabled:opacity-50">Reject</button>
             <button onClick={() => stepViewer(1)} disabled={viewIndex === images.length - 1} className="rounded-xl border border-zinc-600 py-4 text-base font-black text-white disabled:opacity-30">Next →</button>
+          </div>
+          <div className="px-3 pb-4 text-center">
+            <button onClick={undoLast} disabled={!lastAction || viewerBusy} className="text-sm font-bold text-amber-300 underline disabled:opacity-30">Undo last</button>
+            <span className="ml-3 text-xs text-zinc-500">Approve / Reject here save right away</span>
           </div>
         </div>
       )}
